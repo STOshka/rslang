@@ -8,6 +8,7 @@ export default class SprintGame {
     currentPage: number;
     randomIndex: number;
     arrLength: number;
+    score: string;
 
     constructor(api: API) {
         this.api = api;
@@ -16,15 +17,7 @@ export default class SprintGame {
         this.currentPage = 0;
         this.randomIndex = 0;
         this.arrLength = 0;
-    }
-
-    wordsSelect(group: number, page: number): void {
-        this.page = page;
-        this.group = group;
-        if (page) {
-            this.currentPage = 0;
-        }
-        this.currentPage = 1;
+        this.score = '';
     }
 
     mixWords(array: IWordsInf[]): IWordsInf[] {
@@ -59,5 +52,22 @@ export default class SprintGame {
             }
             return wordForGame;
         });
+    }
+
+    addAnswerYes(right: IWordsInf[], info?: IWordsInf) {
+        const sprintScore = document.querySelector('#sprint-score') as Element;
+        this.score = sprintScore.innerHTML;
+        const baseBill = 10;
+        if (info) {
+            right[right.length] = info;
+            this.score = String(baseBill + Number(this.score));
+            sprintScore.classList.add('active');
+        }
+    }
+
+    addAnswerNo(wrong: IWordsInf[], info?: IWordsInf) {
+        if (info) {
+            wrong[wrong.length] = info;
+        }
     }
 }

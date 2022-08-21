@@ -70,4 +70,12 @@ export default class SprintGame {
             wrong[wrong.length] = info;
         }
     }
+
+    drawWords(word: IWordsInf, wordTranslate: IWordsInf) {
+        const sprintWord = document.querySelector('#word') as Element;
+        const sprintTranslate = document.querySelector('#translate') as Element;
+
+        sprintWord.innerHTML = word.word;
+        sprintTranslate.innerHTML = wordTranslate.wordTranslate;
+    }
 }

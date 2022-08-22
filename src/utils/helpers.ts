@@ -1,3 +1,12 @@
+export function createHTMLElement(tag: string, className = '', innerHTML = ''): HTMLElement {
+    const htmlElement = document.createElement(tag);
+    if (className !== '') {
+        htmlElement.className = className;
+    }
+    htmlElement.innerHTML = innerHTML;
+    return htmlElement;
+}
+
 export function shuffle<T>(array: T[]): T[] {
     const newArray = [...array];
     newArray.forEach((item, index) => {

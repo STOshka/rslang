@@ -62,3 +62,12 @@ body {
 .audio__challenge__button:hover {
     background-color:  #568cdc;
 }
+
+.audio__challenge__answer.correct {
+    background-color: #00ff00;
+}
+
+.audio__challenge__answer.incorrect {
+    background-color: #ff0000;
+    color: #ffffff;
+}

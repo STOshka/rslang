@@ -9,8 +9,7 @@ import './index.css';
 class AudioChallengePage extends BasePage {
     words: IWordsInf[] = [];
     answers: Answer[] = [];
-    correctAnswer = '';
-    correctAnswerNode: Answer | undefined;
+    correctAnswer: Answer | undefined;
     answered = true;
     constructor(api: API) {
         super(api);
@@ -31,32 +30,30 @@ class AudioChallengePage extends BasePage {
         this.generateWord();
     }
     checkAnswer(answer: Answer) {
-        if (answer && this.correctAnswerNode) {
-            if (answer === this.correctAnswerNode) {
-                answer.markAsCorrect();
-            } else {
-                answer.markAsIncorrect();
-                this.correctAnswerNode.markAsCorrect();
-            }
-            (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
-            this.answered = true;
+        if (answer === this.correctAnswer) {
+            answer.markAsCorrect();
+        } else {
+            answer.markAsIncorrect();
+            this.correctAnswer?.markAsCorrect();
         }
+        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
+        this.answered = true;
     }
     async generateWord(): Promise<void> {
         (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
         this.words = await this.api.getWordList(0, 0);
-        this.correctAnswer = this.words[0].wordTranslate;
+        const correctAnswer = this.words[0].wordTranslate;
         const possibleAnswers = this.words
-            .filter((el) => el.wordTranslate !== this.correctAnswer)
+            .filter((el) => el.wordTranslate !== correctAnswer)
             .map((el) => el.wordTranslate);
         if (possibleAnswers) {
             this.answers = shuffle([
-                this.correctAnswer,
+                correctAnswer,
                 ...shuffle(possibleAnswers).slice(0, Constants.AUDIO_CHALLENGE_COUNT_ANSWERS - 1),
-            ]).map((answer, index) => new Answer(index, answer, answer === this.correctAnswer));
+            ]).map((answer, index) => new Answer(index, answer, answer === correctAnswer));
             const answersDiv = document.querySelector('.audio__challenge__answers') as HTMLElement;
             this.answers.forEach((answer) => answersDiv.append(answer.node));
-            this.correctAnswerNode = this.answers.find((el) => el.isCorrect);
+            this.correctAnswer = this.answers.find((el) => el.isCorrect);
             this.answered = false;
         }
     }

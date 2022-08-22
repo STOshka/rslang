@@ -72,6 +72,7 @@ class AudioChallengePage extends BasePage {
             this.correctAnswer = this.answers.find((el) => el.isCorrect);
             this.answered = false;
             (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
+            this.playCurrentWordMusic();
         }
     }
     renderWordGame() {
@@ -81,10 +82,9 @@ class AudioChallengePage extends BasePage {
             <div class="audio__challenge__answers"></div>
             <div class="audio__challenge__button"></div>
         </main>`;
-        (BODY.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () => {
-            const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);
-            audio.play();
-        });
+        (BODY.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () =>
+            this.playCurrentWordMusic()
+        );
         (BODY.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
             if (this.answered) return;
             const target: HTMLElement = (e.target as HTMLElement).closest('.audio__challenge__answer') as HTMLElement;
@@ -104,6 +104,10 @@ class AudioChallengePage extends BasePage {
         }
         (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
         this.answered = true;
+    }
+    playCurrentWordMusic() {
+        const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);
+        audio.play();
     }
 }
 

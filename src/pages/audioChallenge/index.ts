@@ -23,7 +23,7 @@ class AudioChallengePage extends BasePage {
             <div class="audio__challenge__button">I don't know</div>
         </main>`;
         (document.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () => {
-            const audio = new Audio(`${Constants.URL}${this.words[0].audio}`);
+            const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);
             audio.play();
         });
         (document.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
@@ -55,7 +55,6 @@ class AudioChallengePage extends BasePage {
     nextWord(): void {
         if (this.words && this.wordIndex < this.words.length - 1) {
             this.wordIndex += 1;
-            console.log(this.wordIndex);
             const correctAnswer = this.words[this.wordIndex].wordTranslate;
             const possibleAnswers = this.words
                 .filter((el) => el.wordTranslate !== correctAnswer)

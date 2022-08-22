@@ -27,6 +27,10 @@ class AudioChallengePage extends BasePage {
             const answer = this.answers.find((el) => el.node === target);
             answer && this.checkAnswer(answer);
         });
+        (document.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () => {
+            const audio = new Audio(`${Constants.URL}${this.words[0].audio}`);
+            audio.play();
+        })
         this.generateWord();
     }
     checkAnswer(answer: Answer) {

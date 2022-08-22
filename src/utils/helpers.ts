@@ -30,3 +30,13 @@ export function randomInt(max: number): number {
 export function randomIntRange(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min) + min);
 }
+
+export function inRange(num: number, max: number, def: number): number {
+    if (isNaN(num)) {
+        return def;
+    }
+    if (num >= 0 && num <= max) {
+        return num;
+    }
+    return def;
+}

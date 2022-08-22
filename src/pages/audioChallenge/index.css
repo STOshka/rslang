@@ -18,6 +18,23 @@ body {
     font-size: 1.2em;
 }
 
+
+.audio__challenge__name {
+    font-size: 4rem;
+}
+
+.audio__challenge__groups__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.audio__challenge__groups {
+    display: flex;
+    gap: 10px;
+}
+
 .audio__challenge__svg {
     width: 5em;
     height: 5em;
@@ -39,11 +56,23 @@ body {
     min-height: 3.6em;
 }
 
-.audio__challenge__answer {
+.audio__challenge__answer,
+.audio__challenge__group {
     cursor: pointer;
     padding: 1em;
     transition: 0.3s;
     border: 0.25em solid #ffffff;
+    text-align: center;
+}
+
+.audio__challenge__group {
+    font-size: 1.5rem;
+    border-radius: 20%;
+}
+
+.audio__challenge__group:hover {
+    background-color: #0000ff;
+    color: #ffffff;
 }
 
 .audio__challenge__answer:hover {

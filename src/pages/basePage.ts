@@ -5,7 +5,7 @@ abstract class BasePage {
     constructor(api: API) {
         this.api = api;
     }
-    abstract init(): void;
+    abstract init(query?: URLSearchParams): void;
 }
 
 export default BasePage;

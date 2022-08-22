@@ -5,7 +5,6 @@ class Answer {
     isCorrect: boolean;
     node: HTMLElement;
     index: number;
-    answered = false;
     constructor(index: number, answer: string, isCorrect: boolean) {
         this.index = index;
         this.answer = answer;

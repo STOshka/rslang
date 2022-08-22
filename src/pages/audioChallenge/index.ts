@@ -11,6 +11,7 @@ class AudioChallengePage extends BasePage {
     answers: Answer[] = [];
     correctAnswer = '';
     correctAnswerNode: Answer | undefined;
+    answered = true;
     constructor(api: API) {
         super(api);
     }
@@ -21,22 +22,25 @@ class AudioChallengePage extends BasePage {
             <div class="audio__challenge__answers"></div>
             <div class="audio__challenge__button">I don't know</div>
         </main>`;
-
         (document.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
+            if (this.answered) return;
             const target: HTMLElement = (e.target as HTMLElement).closest('.audio__challenge__answer') as HTMLElement;
             const answer = this.answers.find((el) => el.node === target);
-            if (answer && this.correctAnswer && this.correctAnswerNode) {
-                if (answer === this.correctAnswerNode) {
-                    answer.markAsCorrect();
-                } else {
-                    answer.markAsIncorrect();
-                    this.correctAnswerNode.markAsCorrect();
-                }
-            }
+            answer && this.checkAnswer(answer);
         });
-        this.words = await this.api.getWordList(0, 0);
-        this.correctAnswer = this.words[0].wordTranslate;
-        this.generateAnswers();
+        this.generateWord();
+    }
+    checkAnswer(answer: Answer) {
+        if (answer && this.correctAnswerNode) {
+            if (answer === this.correctAnswerNode) {
+                answer.markAsCorrect();
+            } else {
+                answer.markAsIncorrect();
+                this.correctAnswerNode.markAsCorrect();
+            }
+            (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
+            this.answered = true;
+        }
     }
     getAudioSvg(): string {
         return `<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -44,7 +48,10 @@ class AudioChallengePage extends BasePage {
             3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
         </svg>`;
     }
-    generateAnswers(): void {
+    async generateWord(): Promise<void> {
+        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
+        this.words = await this.api.getWordList(0, 0);
+        this.correctAnswer = this.words[0].wordTranslate;
         const possibleAnswers = this.words
             .filter((el) => el.wordTranslate !== this.correctAnswer)
             .map((el) => el.wordTranslate);
@@ -56,6 +63,7 @@ class AudioChallengePage extends BasePage {
             const answersDiv = document.querySelector('.audio__challenge__answers') as HTMLElement;
             this.answers.forEach((answer) => answersDiv.append(answer.node));
             this.correctAnswerNode = this.answers.find((el) => el.isCorrect);
+            this.answered = false;
         }
     }
 }

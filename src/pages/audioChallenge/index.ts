@@ -115,6 +115,25 @@ class AudioChallengePage extends BasePage {
         (BODY.querySelector('.audio__challenge__button') as HTMLElement).addEventListener('click', () => {
             this.nextWord();
         });
+        this.addHotKeys();
+    }
+    addHotKeys() {
+        (document.querySelector('body') as HTMLElement).addEventListener('keypress', (e) => {
+            if (this.state !== GameState.Question) return;
+            const HOT_KEYS: Record<string, () => void> = {
+                Numpad1: () => this.checkAnswer(this.answers[0]),
+                Numpad2: () => this.checkAnswer(this.answers[1]),
+                Numpad3: () => this.checkAnswer(this.answers[2]),
+                Numpad4: () => this.checkAnswer(this.answers[3]),
+                Numpad5: () => this.checkAnswer(this.answers[4]),
+                Digit1: () => this.checkAnswer(this.answers[0]),
+                Digit2: () => this.checkAnswer(this.answers[1]),
+                Digit3: () => this.checkAnswer(this.answers[2]),
+                Digit4: () => this.checkAnswer(this.answers[3]),
+                Digit5: () => this.checkAnswer(this.answers[4]),
+            };
+            HOT_KEYS[e.code]?.();
+        });
     }
     checkAnswer(answer: Answer): void {
         const correctAnswer = this.answers.find(

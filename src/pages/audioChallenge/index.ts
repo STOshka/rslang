@@ -1,27 +1,11 @@
 import API from '../../application/api';
+import GameStatictic from '../../components/statictics';
 import { Constants } from '../../utils/constants';
 import { getAudioSvg, randomInt, shuffle, inRange, createHTMLElement } from '../../utils/helpers';
-import { IWordsInf, ROUTES } from '../../utils/types';
+import { GameState, IWordsInf, ROUTES, WordStatictic, WordStatus } from '../../utils/types';
 import BasePage from '../basePage';
 import Answer from './answer';
 import './index.css';
-
-enum GameState {
-    StartScreen,
-    Question,
-    Answer,
-    GameOver,
-}
-
-interface WordStatictic {
-    word: IWordsInf;
-    status: WordStatus;
-}
-
-enum WordStatus {
-    INCORRECT = 'incorrect',
-    CORRECT = 'correct',
-}
 
 class AudioChallengePage extends BasePage {
     words: IWordsInf[] = [];
@@ -93,7 +77,9 @@ class AudioChallengePage extends BasePage {
             this.state = GameState.Question;
         } else {
             this.state = GameState.GameOver;
-            console.log(this.statictic);
+            const BODY = document.querySelector('body') as HTMLElement;
+            BODY.innerHTML = '';
+            BODY.append(new GameStatictic(this.statictic).getNode());
         }
     }
     renderWordGame() {

@@ -30,3 +30,20 @@ export interface IWordsInf {
     textMeaningTranslate: string;
     wordTranslate: string;
 }
+
+export enum GameState {
+    StartScreen,
+    Question,
+    Answer,
+    GameOver,
+}
+
+export interface WordStatictic {
+    word: IWordsInf;
+    status: WordStatus;
+}
+
+export enum WordStatus {
+    INCORRECT = 'incorrect',
+    CORRECT = 'correct',
+}

@@ -1,23 +1,25 @@
 import API from '../../application/api';
-import { ISprintTranslate, IWordsInf } from '../../utils/types';
+import { IWordsInf } from '../../utils/types';
+import Word from './word';
 
 export default class SprintGame {
     readonly api: API;
-    page: number;
-    group: number;
-    currentPage: number;
-    randomIndex: number;
     arrLength: number;
     score: string;
 
+    word: Word;
+    translateNumber: number;
+    wordNew: string | HTMLDivElement;
+    point: number;
+
     constructor(api: API) {
         this.api = api;
-        this.group = 0;
-        this.page = 0;
-        this.currentPage = 0;
-        this.randomIndex = 0;
         this.arrLength = 0;
         this.score = '';
+        this.word = new Word();
+        this.translateNumber = 0;
+        this.wordNew = '';
+        this.point = 0;
     }
 
     mixWords(array: IWordsInf[]): IWordsInf[] {
@@ -36,22 +38,27 @@ export default class SprintGame {
         return copyArr;
     }
 
-    mixTranslation(arr: IWordsInf[]) {
-        return arr.map((word, index) => {
-            const wordForGame = { ...word } as ISprintTranslate;
-            if (Math.random() > 0.5) {
-                wordForGame.answer = true;
-                wordForGame.gameTranslate = wordForGame.wordTranslate;
-            } else {
-                this.randomIndex = index;
-                if (this.randomIndex === index) {
-                    this.randomIndex = Math.floor(Math.random() * arr.length);
-                }
-                wordForGame.answer = false;
-                wordForGame.gameTranslate = arr[this.randomIndex].wordTranslate;
-            }
-            return wordForGame;
-        });
+    mixTranslation(count: number, arr: IWordsInf[]) {
+        const wordCount = count;
+        const random = Math.random();
+        const partThird = 0.333;
+        if (random > partThird) {
+            this.translateNumber = wordCount;
+        } else {
+            this.translateNumber = Math.ceil(Math.random() * arr.length);
+        }
+        const wrapper = document.querySelector('#sprint-words') as HTMLElement;
+        wrapper.innerHTML = '';
+        if (arr[wordCount]) {
+            this.wordNew = (this.word.template(arr[wordCount], arr[this.translateNumber]) as unknown) as HTMLDivElement;
+        } else {
+            return false;
+        }
+        wrapper.appendChild(this.wordNew);
+        if (this.translateNumber === wordCount) {
+            return true;
+        }
+        return false;
     }
 
     addAnswerYes(right: IWordsInf[], info?: IWordsInf) {
@@ -69,13 +76,5 @@ export default class SprintGame {
         if (info) {
             wrong[wrong.length] = info;
         }
-    }
-
-    drawWords(word: IWordsInf, wordTranslate: IWordsInf) {
-        const sprintWord = document.querySelector('#word') as Element;
-        const sprintTranslate = document.querySelector('#translate') as Element;
-
-        sprintWord.innerHTML = word.word;
-        sprintTranslate.innerHTML = wordTranslate.wordTranslate;
     }
 }

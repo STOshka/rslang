@@ -1,18 +1,18 @@
 import { createHTMLElement } from '../../utils/helpers';
 
 class Answer {
-    answer: string;
+    index: number;
+    text: string;
     isCorrect: boolean;
     node: HTMLElement;
-    index: number;
     constructor(index: number, answer: string, isCorrect: boolean) {
         this.index = index;
-        this.answer = answer;
+        this.text = answer;
         this.isCorrect = isCorrect;
         this.node = this.generateNode();
     }
     generateNode(): HTMLElement {
-        return createHTMLElement('div', 'audio__challenge__answer', `${this.index + 1} ${this.answer}`);
+        return createHTMLElement('div', 'audio__challenge__answer', `${this.index + 1} ${this.text}`);
     }
     markAnswer(type: string) {
         this.node.classList.add(type);

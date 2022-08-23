@@ -13,7 +13,7 @@ enum GameState {
     GameOver,
 }
 
-interface GameWordStatus {
+interface WordStatictic {
     word: IWordsInf;
     status: WordStatus;
 }
@@ -26,12 +26,11 @@ enum WordStatus {
 class AudioChallengePage extends BasePage {
     words: IWordsInf[] = [];
     answers: Answer[] = [];
-    statictic: GameWordStatus[] = [];
-    wordIndex = -1;
-    correctAnswer: Answer | undefined;
+    statictic: WordStatictic[] = [];
     state = GameState.StartScreen;
     group = -1;
     page = -1;
+    wordIndex = -1;
     constructor(api: API) {
         super(api);
     }
@@ -89,7 +88,6 @@ class AudioChallengePage extends BasePage {
             const answersDiv = document.querySelector('.audio__challenge__answers') as HTMLElement;
             answersDiv.innerHTML = '';
             this.answers.forEach((answer) => answersDiv.append(answer.node));
-            this.correctAnswer = this.answers.find((el) => el.isCorrect);
             (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
             this.playCurrentWordMusic();
             this.state = GameState.Question;
@@ -119,19 +117,22 @@ class AudioChallengePage extends BasePage {
         });
     }
     checkAnswer(answer: Answer): void {
-        if (answer === this.correctAnswer) {
+        const correctAnswer = this.answers.find(
+            (answer) => answer.text === this.words[this.wordIndex].wordTranslate
+        ) as Answer;
+        if (answer === correctAnswer) {
             answer.markAsCorrect();
             this.addWordStatictic(WordStatus.CORRECT);
         } else {
             answer.markAsIncorrect();
-            this.correctAnswer?.markAsCorrect();
+            correctAnswer.markAsCorrect();
             this.addWordStatictic(WordStatus.INCORRECT);
         }
         (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
         this.state = GameState.Answer;
     }
     addWordStatictic(status: WordStatus) {
-        const wordStat: GameWordStatus = {
+        const wordStat: WordStatictic = {
             word: this.words[this.wordIndex],
             status,
         };

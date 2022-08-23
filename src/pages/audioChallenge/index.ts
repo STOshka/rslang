@@ -112,14 +112,14 @@ class AudioChallengePage extends BasePage {
             const answer = this.answers.find((el) => el.node === target);
             answer && this.checkAnswer(answer);
         });
-        (BODY.querySelector('.audio__challenge__button') as HTMLElement).addEventListener('click', () => {
-            this.nextWord();
-        });
+        (BODY.querySelector('.audio__challenge__button') as HTMLElement).addEventListener('click', () =>
+            this.handleGameButton()
+        );
         this.addHotKeys();
     }
     addHotKeys() {
-        (document.querySelector('body') as HTMLElement).addEventListener('keypress', (e) => {
-            if (this.state !== GameState.Question) return;
+        (document.querySelector('body') as HTMLElement).addEventListener('keypress', (e: KeyboardEvent) => {
+            if (this.state !== GameState.Question && this.state !== GameState.Answer) return;
             const HOT_KEYS: Record<string, () => void> = {
                 Numpad1: () => this.checkAnswer(this.answers[0]),
                 Numpad2: () => this.checkAnswer(this.answers[1]),
@@ -131,9 +131,22 @@ class AudioChallengePage extends BasePage {
                 Digit3: () => this.checkAnswer(this.answers[2]),
                 Digit4: () => this.checkAnswer(this.answers[3]),
                 Digit5: () => this.checkAnswer(this.answers[4]),
+                Space: () => this.handleGameButton(),
             };
             HOT_KEYS[e.code]?.();
         });
+    }
+    handleGameButton() {
+        return this.state === GameState.Question ? this.skipWord() : this.nextWord();
+    }
+    skipWord() {
+        const correctAnswer = this.answers.find(
+            (answer) => answer.text === this.words[this.wordIndex].wordTranslate
+        ) as Answer;
+        correctAnswer.markAsCorrect();
+        this.addWordStatictic(WordStatus.INCORRECT);
+        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
+        this.state = GameState.Answer;
     }
     checkAnswer(answer: Answer): void {
         const correctAnswer = this.answers.find(

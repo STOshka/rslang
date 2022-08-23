@@ -6,12 +6,19 @@ import BasePage from '../basePage';
 import Answer from './answer';
 import './index.css';
 
+enum GameState {
+    StartScreen,
+    Question,
+    Answer,
+    GameOver,
+}
+
 class AudioChallengePage extends BasePage {
     words: IWordsInf[] = [];
     answers: Answer[] = [];
     wordIndex = -1;
     correctAnswer: Answer | undefined;
-    answered = true;
+    gameState = GameState.StartScreen;
     group = -1;
     page = -1;
     constructor(api: API) {
@@ -56,7 +63,8 @@ class AudioChallengePage extends BasePage {
         this.nextWord();
     }
     nextWord(): void {
-        if (this.words && this.wordIndex < this.words.length - 1) {
+        if (this.gameState !== GameState.Answer && this.gameState !== GameState.StartScreen) return;
+        if (this.wordIndex < this.words.length - 1) {
             this.wordIndex += 1;
             const correctTranslate = this.words[this.wordIndex].wordTranslate;
             const possibleAnswers = this.words
@@ -70,9 +78,11 @@ class AudioChallengePage extends BasePage {
             answersDiv.innerHTML = '';
             this.answers.forEach((answer) => answersDiv.append(answer.node));
             this.correctAnswer = this.answers.find((el) => el.isCorrect);
-            this.answered = false;
             (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
             this.playCurrentWordMusic();
+            this.gameState = GameState.Question;
+        } else {
+            this.gameState = GameState.GameOver;
         }
     }
     renderWordGame() {
@@ -86,7 +96,7 @@ class AudioChallengePage extends BasePage {
             this.playCurrentWordMusic()
         );
         (BODY.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
-            if (this.answered) return;
+            if (this.gameState !== GameState.Question) return;
             const target: HTMLElement = (e.target as HTMLElement).closest('.audio__challenge__answer') as HTMLElement;
             const answer = this.answers.find((el) => el.node === target);
             answer && this.checkAnswer(answer);
@@ -103,7 +113,7 @@ class AudioChallengePage extends BasePage {
             this.correctAnswer?.markAsCorrect();
         }
         (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
-        this.answered = true;
+        this.gameState = GameState.Answer;
     }
     playCurrentWordMusic() {
         const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);

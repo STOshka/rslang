@@ -13,12 +13,23 @@ enum GameState {
     GameOver,
 }
 
+interface GameWordStatus {
+    word: IWordsInf;
+    status: WordStatus;
+}
+
+enum WordStatus {
+    INCORRECT = 'incorrect',
+    CORRECT = 'correct',
+}
+
 class AudioChallengePage extends BasePage {
     words: IWordsInf[] = [];
     answers: Answer[] = [];
+    statictic: GameWordStatus[] = [];
     wordIndex = -1;
     correctAnswer: Answer | undefined;
-    gameState = GameState.StartScreen;
+    state = GameState.StartScreen;
     group = -1;
     page = -1;
     constructor(api: API) {
@@ -59,11 +70,12 @@ class AudioChallengePage extends BasePage {
     async generateWords(): Promise<void> {
         const words = await this.api.getWordList(this.group, this.page);
         this.words = shuffle(words);
+        this.statictic = [];
         this.renderWordGame();
         this.nextWord();
     }
     nextWord(): void {
-        if (this.gameState !== GameState.Answer && this.gameState !== GameState.StartScreen) return;
+        if (this.state !== GameState.Answer && this.state !== GameState.StartScreen) return;
         if (this.wordIndex < this.words.length - 1) {
             this.wordIndex += 1;
             const correctTranslate = this.words[this.wordIndex].wordTranslate;
@@ -80,9 +92,10 @@ class AudioChallengePage extends BasePage {
             this.correctAnswer = this.answers.find((el) => el.isCorrect);
             (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
             this.playCurrentWordMusic();
-            this.gameState = GameState.Question;
+            this.state = GameState.Question;
         } else {
-            this.gameState = GameState.GameOver;
+            this.state = GameState.GameOver;
+            console.log(this.statictic);
         }
     }
     renderWordGame() {
@@ -96,7 +109,7 @@ class AudioChallengePage extends BasePage {
             this.playCurrentWordMusic()
         );
         (BODY.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
-            if (this.gameState !== GameState.Question) return;
+            if (this.state !== GameState.Question) return;
             const target: HTMLElement = (e.target as HTMLElement).closest('.audio__challenge__answer') as HTMLElement;
             const answer = this.answers.find((el) => el.node === target);
             answer && this.checkAnswer(answer);
@@ -108,12 +121,21 @@ class AudioChallengePage extends BasePage {
     checkAnswer(answer: Answer): void {
         if (answer === this.correctAnswer) {
             answer.markAsCorrect();
+            this.addWordStatictic(WordStatus.CORRECT);
         } else {
             answer.markAsIncorrect();
             this.correctAnswer?.markAsCorrect();
+            this.addWordStatictic(WordStatus.INCORRECT);
         }
         (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
-        this.gameState = GameState.Answer;
+        this.state = GameState.Answer;
+    }
+    addWordStatictic(status: WordStatus) {
+        const wordStat: GameWordStatus = {
+            word: this.words[this.wordIndex],
+            status,
+        };
+        this.statictic = [...this.statictic, wordStat];
     }
     playCurrentWordMusic() {
         const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);

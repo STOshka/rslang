@@ -10,6 +10,7 @@ class API {
         const response = await fetch(`${this.url}${type}`, options);
         return response;
     }
+
     async getWordList(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(`words?group=${group}&page=${page}`, {
             method: 'GET',

@@ -1,5 +1,11 @@
 import API from '../../application/api';
 import BasePage from '../basePage';
+import { wordsPageHTML, pageData, api } from './constans';
+import {
+    getWordsData, constructWordBlocks, getGroup, getPage, setStatusPartitionBtns,
+    setStatusPaginationBtns, switchToPageNumber,
+} from './helpers';
+import { Constants } from '../../utils/constants';
 
 class WordListPage extends BasePage {
     constructor(api: API) {
@@ -11,5 +17,7 @@ class WordListPage extends BasePage {
         MAIN.innerHTML = 'WORD LIST';
     }
 }
+
+export const switchPage = new WordListPage(api);
 
 export default WordListPage;

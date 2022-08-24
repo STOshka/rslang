@@ -1,7 +1,7 @@
-
-h6 {
+h3,
+h4,
+p {
     margin: 0;
-    font-size: 1rem;
 }
 
 .header {
@@ -24,7 +24,7 @@ h6 {
 
 .header-nav-item {
     list-style: none;
-    font-size: 1.2rem;
+    font-size: 30px;
 }
 
 .header-nav-games {
@@ -36,9 +36,10 @@ h6 {
 .header-nav-games-container {
     display: none;
     background-color: rgb(231, 231, 231);
-    width: 70px;
-    height: 80px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    width: 100px;
+    height: 110px;
+    border-radius: 3px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 .header-nav-games:hover .header-nav-games-container {
@@ -53,7 +54,7 @@ h6 {
 
 .header-nav-link {
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 30px;
     color: rgb(65, 64, 64);
 }
 
@@ -76,7 +77,7 @@ h6 {
     align-items: center;
     width: 120px;
     height: 20px;
-    font-size: 1rem;
+    font-size: 20px;
 }
 
 .words-container {
@@ -88,32 +89,57 @@ h6 {
 
 .word-container {
     display: flex;
-    min-height: 100px;
+    height: 250px;
     margin: 0 20px;
     border: 2px solid rgb(214, 213, 213);
     border-radius: 3px;
 }
 
-.word-img {
-    width: 150px;
+.word-container:hover {
+    background-color: #e6e6e6;
 }
 
-.word-sound {
+.word-container-active {
+    background-color: #CDCDCD;
+}
+
+.word-img-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    border-left: 2px solid rgb(214, 213, 213);
-    /* background-image: url('../assets/svg/sound-icon.svg'); */
+    min-width: 350px;
 }
 
-.word-text {
+.word-img {
+    width: 350px;
+    height: 100%;
+}
+
+.word-sound-svg {
+    width: 40px;
+    cursor: pointer;
+}
+
+.word-text-container {
     display: flex;
     flex-direction: column;
+    gap: 5px;
     padding: 0 20px;
     width: 100%;
     border-left: 2px solid rgb(214, 213, 213);
     border-right: 2px solid rgb(214, 213, 213);
+}
+
+.word {
+    font-size: 30px;
+}
+
+.word-translate {
+    font-size: 26px;
+}
+
+.word-text {
+    font-size: 20px;
 }
 
 .word-btns {
@@ -128,12 +154,15 @@ h6 {
 .word-btn {
     width: 25px;
     height: 25px;
+    color: #CDCDCD;
+    border: 1px solid #CDCDCD;
+    border-radius: 3px;
 }
 
-.words-partition-pagination {
+.words-pagination {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 15px;
     margin: 30px 0;
 }
 
@@ -141,10 +170,15 @@ h6 {
     width: 150px;
 }
 
+.page-number-title {
+    font-size: 30px;
+    color: #545454;
+}
+
 .input-container {
     display: flex;
     align-items: center;
-    width: 80px;
+    width: 70px;
     border: solid #545454 1px;
     border-radius: 5px;
 }
@@ -153,11 +187,14 @@ h6 {
     box-sizing: border-box;
     width: 100%;
     height: 35px;
-    font-size: 25px;
     outline: none;
     border: 1px solid white;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
+    font-size: 26px;
+    font-weight: bolder;
+    color: #545454;
+    text-align: center;
 }
 
 .submit-page-number {
@@ -175,7 +212,22 @@ h6 {
     background-repeat: no-repeat;
     background-position: center;
     background-color: #dfdfdf;
+    font-size: 20px;
     text-align: center;
+}
+
+.active-btn,
+.active-nav {
+    background-color: rgb(113, 113, 113);
+    color: rgb(241, 241, 241);
+    border: 1px solid #7d7d7d;
+    border-radius: 3px;
+}
+
+.inactive-btn {
+    pointer-events: none;
+    color: #CDCDCD;
+    border: 1px solid #CDCDCD;
 }
 
 .footer {
@@ -191,5 +243,5 @@ h6 {
 }
 
 .footer-item {
-    font-size: 0.7rem;
+    font-size: 16px;
 }

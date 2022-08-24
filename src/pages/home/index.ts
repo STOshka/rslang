@@ -5,9 +5,10 @@ class MainPage extends BasePage {
     constructor(api: API) {
         super(api);
     }
-    init() {
-        const BODY = document.querySelector('body') as HTMLElement;
-        BODY.innerHTML = 'HOME_PAGE';
+    init(query: URLSearchParams) {
+        super.init(query);
+        const MAIN = document.querySelector('.main') as HTMLElement;
+        MAIN.innerHTML = 'MAIN PAGE';
     }
 }
 

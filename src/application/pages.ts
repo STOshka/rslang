@@ -1,15 +1,21 @@
-import AudioChallengePage from '../pages/audioChallenge';
 import MainPage from '../pages/home';
+import AuthPage from '../pages/auth';
+import WordListPage from '../pages/wordList';
+import AudioChallengePage from '../pages/audioChallenge';
 import SprintPage from '../pages/sprint';
 import ErrorPage from '../pages/error';
 import { PAGES, ROUTES } from '../utils/types';
-import WordListPage from '../pages/wordList';
 
 export const pages = [
     {
         name: PAGES.HOME_PAGE,
         route: ROUTES.HOME_PAGE,
         page: MainPage,
+    },
+    {
+        name: PAGES.AUTH_PAGE,
+        route: ROUTES.AUTH_PAGE,
+        page: AuthPage,
     },
     {
         name: PAGES.WORD_LIST,

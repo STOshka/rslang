@@ -7,13 +7,13 @@ class Router {
         this.routes = {};
         window.addEventListener('hashchange', this.onRouteChange.bind(this));
     }
-    addRoute(url: string, model: Page) {
-        this.routes[`${url}`] = model;
+    addRoute(url: string, page: Page) {
+        this.routes[`${url}`] = page;
     }
     onRouteChange() {
-        const { url } = this.getUrlParts();
+        const { url, query } = this.getUrlParts();
         if (this.routes[url]) {
-            this.routes[url].init();
+            this.routes[url].init(new URLSearchParams(`?${query}`));
         } else {
             this.moveToErrorPage();
         }

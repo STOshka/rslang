@@ -1,0 +1,32 @@
+.root__statistics__span {
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #000000;
+}
+
+.root__statistics__count {
+    padding: 3px 8px;
+}
+
+.root__statistics__correct .root__statistics__count {
+    background-color: #00ff00;
+    color: #ffffff;
+}
+
+.root__statistics__incorrect .root__statistics__count {
+    background-color: #ff0000;
+}
+
+.root__statistics__word {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.audio {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}

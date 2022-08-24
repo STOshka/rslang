@@ -6,7 +6,9 @@ import { IWordsData } from "./types";
 export function getWordsData(response: any) {
     wordsData.splice(0, wordsData.length);
     response.forEach((el: IWordsData) => wordsData.push(el));
+
     console.log(wordsData);
+    
     return wordsData;
 }
 
@@ -44,7 +46,6 @@ export function getGroup(event: MouseEvent) {
 
     switchPage.init();
     setStatusPartitionBtns();
-    console.log(pageData);
 }
 
 export function getPage(event: MouseEvent) {
@@ -66,6 +67,7 @@ export function getPage(event: MouseEvent) {
 
 export function setStatusPartitionBtns() {
     console.log(pageData);
+
     const partitionBtnId = document.getElementById(`group${pageData.group}`) as HTMLButtonElement;
     const partitionBtns = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
 

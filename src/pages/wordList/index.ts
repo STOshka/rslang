@@ -5,7 +5,6 @@ import {
     getWordsData, constructWordBlocks, getGroup, getPage, setStatusPartitionBtns,
     setStatusPaginationBtns, switchToPageNumber,
 } from './helpers';
-import { Constants } from '../../utils/constants';
 
 class WordListPage extends BasePage {
     constructor(api: API) {

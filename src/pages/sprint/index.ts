@@ -1,4 +1,8 @@
 import API from '../../application/api';
+import BaseGamePage from '../baseGamePage';
+
+class SprintPage extends BaseGamePage {
+
 import { IWordsInf } from '../../utils/types';
 import BasePage from '../basePage';
 import Timer from './timer';
@@ -34,6 +38,10 @@ class SprintPage extends BasePage {
         this.right = [];
         this.wrong = [];
     }
+    init(query: URLSearchParams) {
+        super.init(query);
+        const MAIN = document.querySelector('.main') as HTMLElement;
+        MAIN.innerHTML = 'SPRINT';
 
     async init() {
         const BODY = document.querySelector('body') as HTMLElement;

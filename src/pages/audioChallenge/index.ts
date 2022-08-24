@@ -1,66 +1,28 @@
 import API from '../../application/api';
-import GameStatictic from '../../components/statictics';
 import { Constants } from '../../utils/constants';
-import { getAudioSvg, randomInt, shuffle, inRange, createHTMLElement } from '../../utils/helpers';
-import { GameState, IWordsInf, ROUTES, WordStatictic, WordStatus } from '../../utils/types';
-import BasePage from '../basePage';
+import { getAudioSvg, shuffle } from '../../utils/helpers';
+import { GameState } from '../../utils/types';
+import BaseGamePage from '../baseGamePage';
 import Answer from './answer';
 import './index.css';
 
 const I_DONT_KNOW = 'Я не знаю!';
 
-class AudioChallengePage extends BasePage {
-    words: IWordsInf[] = [];
+class AudioChallengePage extends BaseGamePage {
     answers: Answer[] = [];
-    statictic: WordStatictic[] = [];
-    state = GameState.StartScreen;
-    group = -1;
-    page = -1;
-    wordIndex = -1;
     constructor(api: API) {
         super(api);
     }
-    init(query: URLSearchParams) {
-        this.page = inRange(
-            parseInt(query.get('page') as string) as number,
-            Constants.PAGE_PER_GROUP - 1,
-            randomInt(Constants.PAGE_PER_GROUP)
-        );
-        this.group = inRange(parseInt(query.get('group') as string) as number, Constants.COUNT_GROUPS - 1, -1);
-        if (this.group < 0) {
-            this.chooseGroup();
-        } else {
-            this.generateWords();
-        }
+    gameName(): string {
+        return `АУДИОВЫЗОВ`;
     }
-    chooseGroup() {
-        const BODY = document.querySelector('body') as HTMLElement;
-        BODY.innerHTML = `<main class="audio__challenge__main">
-            <div class="audio__challenge__name">АУДИОВЫЗОВ</div>
-            <div class="audio__challenge__groups__list">
-                <div>Выберите уровень сложности слов</div>
-                <div class="audio__challenge__groups">
-                </div>
-            </div>
-        </main>`;
-        const GROUPS = BODY.querySelector('.audio__challenge__groups') as HTMLElement;
-        new Array(Constants.COUNT_GROUPS).fill(null).forEach((el, ind) => {
-            const group = createHTMLElement('div', 'audio__challenge__group', `${ind + 1}`);
-            group.addEventListener('click', () => {
-                window.location.hash = ROUTES.AUDIO_CHALLENGE_GAME + `?group=${ind}`;
-            });
-            GROUPS.append(group);
-        });
-    }
-    async generateWords(): Promise<void> {
-        const words = await this.api.getWordList(this.group, this.page);
-        this.words = shuffle(words);
-        this.statictic = [];
-        this.renderWordGame();
+    async generateGame(): Promise<void> {
+        await super.generateGame();
+        this.renderWord();
         this.nextWord();
     }
     nextWord(): void {
-        if (this.state !== GameState.Answer && this.state !== GameState.StartScreen) return;
+        if (this.gameState !== GameState.Answer && this.gameState !== GameState.StartScreen) return;
         if (this.wordIndex < this.words.length - 1) {
             this.wordIndex += 1;
             const correctTranslate = this.words[this.wordIndex].wordTranslate;
@@ -76,38 +38,33 @@ class AudioChallengePage extends BasePage {
             this.answers.forEach((answer) => answersDiv.append(answer.node));
             (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = I_DONT_KNOW;
             this.playCurrentWordMusic();
-            this.state = GameState.Question;
+            this.gameState = GameState.Question;
         } else {
-            this.state = GameState.GameOver;
-            const BODY = document.querySelector('body') as HTMLElement;
-            BODY.innerHTML = '';
-            BODY.append(new GameStatictic(this.statictic).getNode());
+            this.endGame();
         }
     }
-    renderWordGame() {
-        const BODY = document.querySelector('body') as HTMLElement;
-        BODY.innerHTML = `<main class="audio__challenge__main">
-            <div class="audio__challenge__svg">${getAudioSvg()}</div>
+    renderWord() {
+        const MAIN = document.querySelector('.main') as HTMLElement;
+        MAIN.innerHTML = `<div class="audio__challenge__svg">${getAudioSvg()}</div>
             <div class="audio__challenge__answers"></div>
-            <div class="audio__challenge__button"></div>
-        </main>`;
-        (BODY.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () =>
+            <div class="audio__challenge__button"></div>`;
+        (MAIN.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () =>
             this.playCurrentWordMusic()
         );
-        (BODY.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
-            if (this.state !== GameState.Question) return;
+        (MAIN.querySelector('.audio__challenge__answers') as HTMLElement).addEventListener('click', (e: Event) => {
+            if (this.gameState !== GameState.Question) return;
             const target: HTMLElement = (e.target as HTMLElement).closest('.audio__challenge__answer') as HTMLElement;
             const answer = this.answers.find((el) => el.node === target);
             answer && this.checkAnswer(answer);
         });
-        (BODY.querySelector('.audio__challenge__button') as HTMLElement).addEventListener('click', () =>
+        (MAIN.querySelector('.audio__challenge__button') as HTMLElement).addEventListener('click', () =>
             this.handleGameButton()
         );
         this.addHotKeys();
     }
     addHotKeys() {
-        (document.querySelector('body') as HTMLElement).addEventListener('keypress', (e: KeyboardEvent) => {
-            if (this.state !== GameState.Question && this.state !== GameState.Answer) return;
+        (document.querySelector('.main') as HTMLElement).addEventListener('keypress', (e: KeyboardEvent) => {
+            if (this.gameState !== GameState.Question && this.gameState !== GameState.Answer) return;
             const HOT_KEYS: Record<string, () => void> = {
                 Numpad1: () => this.checkAnswer(this.answers[0]),
                 Numpad2: () => this.checkAnswer(this.answers[1]),
@@ -125,19 +82,19 @@ class AudioChallengePage extends BasePage {
         });
     }
     handleGameButton() {
-        return this.state === GameState.Question ? this.skipWord() : this.nextWord();
+        return this.gameState === GameState.Question ? this.skipWord() : this.nextWord();
     }
     skipWord() {
-        this.addWordStatictic(WordStatus.INCORRECT);
+        this.addWordstatistic(this.words[this.wordIndex], false);
         this.finishQuestion();
     }
     checkAnswer(answer: Answer): void {
         if (answer.text === this.words[this.wordIndex].wordTranslate) {
             answer.markAsCorrect();
-            this.addWordStatictic(WordStatus.CORRECT);
+            this.addWordstatistic(this.words[this.wordIndex], true);
         } else {
             answer.markAsIncorrect();
-            this.addWordStatictic(WordStatus.INCORRECT);
+            this.addWordstatistic(this.words[this.wordIndex], false);
         }
         this.finishQuestion();
     }
@@ -147,18 +104,7 @@ class AudioChallengePage extends BasePage {
         ) as Answer;
         correctAnswer.markAsCorrect();
         (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '&#10230;';
-        this.state = GameState.Answer;
-    }
-    addWordStatictic(status: WordStatus) {
-        const wordStat: WordStatictic = {
-            word: this.words[this.wordIndex],
-            status,
-        };
-        this.statictic = [...this.statictic, wordStat];
-    }
-    playCurrentWordMusic() {
-        const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);
-        audio.play();
+        this.gameState = GameState.Answer;
     }
 }
 

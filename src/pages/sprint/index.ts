@@ -1,13 +1,14 @@
 import API from '../../application/api';
-import BasePage from '../basePage';
+import BaseGamePage from '../baseGamePage';
 
-class SprintPage extends BasePage {
+class SprintPage extends BaseGamePage {
     constructor(api: API) {
         super(api);
     }
-    init() {
-        const BODY = document.querySelector('body') as HTMLElement;
-        BODY.innerHTML = 'SPRINT';
+    init(query: URLSearchParams) {
+        super.init(query);
+        const MAIN = document.querySelector('.main') as HTMLElement;
+        MAIN.innerHTML = 'SPRINT';
     }
 }
 

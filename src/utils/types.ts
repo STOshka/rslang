@@ -1,5 +1,6 @@
 export enum PAGES {
     HOME_PAGE = 'home',
+    AUTH_PAGE = 'auth',
     WORD_LIST = 'word_list',
     AUDIO_CHALLENGE_GAME = 'audio_challenge',
     SPRINT_GAME = 'sprint',
@@ -8,13 +9,14 @@ export enum PAGES {
 
 export enum ROUTES {
     HOME_PAGE = '',
+    AUTH_PAGE = '#auth',
     WORD_LIST = '#wordlist',
     AUDIO_CHALLENGE_GAME = '#audio',
     SPRINT_GAME = '#sprint',
     ERROR = '#error',
 }
 
-export interface IWordsInf {
+export interface IWord {
     id: string;
     group: number;
     page: number;
@@ -38,12 +40,7 @@ export enum GameState {
     GameOver,
 }
 
-export interface WordStatictic {
-    word: IWordsInf;
-    status: WordStatus;
-}
-
-export enum WordStatus {
-    INCORRECT = 'incorrect',
-    CORRECT = 'correct',
+export interface GameWordStatistic {
+    word: IWord;
+    isCorrect: boolean;
 }

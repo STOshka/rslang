@@ -7,6 +7,8 @@ import BasePage from '../basePage';
 import Answer from './answer';
 import './index.css';
 
+const I_DONT_KNOW = 'Я не знаю!';
+
 class AudioChallengePage extends BasePage {
     words: IWordsInf[] = [];
     answers: Answer[] = [];
@@ -72,7 +74,7 @@ class AudioChallengePage extends BasePage {
             const answersDiv = document.querySelector('.audio__challenge__answers') as HTMLElement;
             answersDiv.innerHTML = '';
             this.answers.forEach((answer) => answersDiv.append(answer.node));
-            (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = `I don't know`;
+            (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = I_DONT_KNOW;
             this.playCurrentWordMusic();
             this.state = GameState.Question;
         } else {
@@ -126,27 +128,25 @@ class AudioChallengePage extends BasePage {
         return this.state === GameState.Question ? this.skipWord() : this.nextWord();
     }
     skipWord() {
-        const correctAnswer = this.answers.find(
-            (answer) => answer.text === this.words[this.wordIndex].wordTranslate
-        ) as Answer;
-        correctAnswer.markAsCorrect();
         this.addWordStatictic(WordStatus.INCORRECT);
-        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
-        this.state = GameState.Answer;
+        this.finishQuestion();
     }
     checkAnswer(answer: Answer): void {
-        const correctAnswer = this.answers.find(
-            (answer) => answer.text === this.words[this.wordIndex].wordTranslate
-        ) as Answer;
-        if (answer === correctAnswer) {
+        if (answer.text === this.words[this.wordIndex].wordTranslate) {
             answer.markAsCorrect();
             this.addWordStatictic(WordStatus.CORRECT);
         } else {
             answer.markAsIncorrect();
-            correctAnswer.markAsCorrect();
             this.addWordStatictic(WordStatus.INCORRECT);
         }
-        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '-->';
+        this.finishQuestion();
+    }
+    finishQuestion() {
+        const correctAnswer = this.answers.find(
+            (answer) => answer.text === this.words[this.wordIndex].wordTranslate
+        ) as Answer;
+        correctAnswer.markAsCorrect();
+        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '&#10230;';
         this.state = GameState.Answer;
     }
     addWordStatictic(status: WordStatus) {

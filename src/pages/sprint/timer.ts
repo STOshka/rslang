@@ -5,8 +5,9 @@ export default class Timer {
     constructor() {
         this.time = 60;
         this.setIntervalId = setInterval(() => {
-            if (this.time >= 0) {
-                (document.querySelector('#sprint-time') as HTMLElement).innerText = ` Time: ${this.time}`;
+            const timeSprint = document.querySelector('#sprint-time');
+            if ((this.time >= 0) && timeSprint) {
+                (timeSprint as HTMLElement).innerText = ` Time: ${this.time}`;
                 this.time -= 1;
             } else {
                 clearInterval(this.setIntervalId);

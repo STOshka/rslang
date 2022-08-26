@@ -3,6 +3,7 @@ import BaseGamePage from '../baseGamePage';
 import { IWord, GameState } from '../../utils/types';
 import { shuffle, createHTMLElement, randomInt } from '../../utils/helpers';
 import { Constants } from '../../utils/constants';
+import './circles.css';
 
 class SprintPage extends BaseGamePage {
     answer: boolean;
@@ -61,6 +62,7 @@ class SprintPage extends BaseGamePage {
         MAIN.innerHTML = `<main class="sprint__main">
             <div class="sprint__timer" id="sprint-time">${this.timer()}</div>
             <div class="sprint__score">${this.score}</div>
+            <div class="sprint__score_points"><span class="circles" id="circle1"></span><span class="circles" id="circle2"></span><span class="circles" id="circle3"></span></div>
             <div class="sprint__word">${word.word}</div>
             <div class="sprint__translate">${randomWord.wordTranslate}</div>
             <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
@@ -87,9 +89,29 @@ class SprintPage extends BaseGamePage {
             case 7:
                 this.point = 40;
                 break;
-            case 11:
+            case 10:
                 this.point = 80;
                 break;
+        }
+    }
+
+    addStyle(truePoints: number) {
+        const bill = truePoints % 3;
+        const span1 = document.querySelector('#circle1') as HTMLElement;
+        const span2 = document.querySelector('#circle2') as HTMLElement;
+        const span3 = document.querySelector('#circle3') as HTMLElement;
+        if (truePoints === 0) {
+            span1.classList.remove('active');
+            span2.classList.remove('active');
+            span3.classList.remove('active');
+        } else if (bill === 1) {
+            span1.classList.add('active');
+            span2.classList.remove('active');
+            span3.classList.remove('active');
+        } else if (bill === 2) {
+            span2.classList.add('active');
+        } else {
+            span3.classList.add('active');
         }
     }
 
@@ -98,10 +120,12 @@ class SprintPage extends BaseGamePage {
             super.addWordstatistic(word, true);
             this.truePoints += 1;
             this.getSwitch(this.truePoints);
+            this.addStyle(this.truePoints);
             this.score += this.point;
         } else {
             super.addWordstatistic(word, false);
             this.truePoints = 0;
+            this.addStyle(this.truePoints);
         }
     }
 

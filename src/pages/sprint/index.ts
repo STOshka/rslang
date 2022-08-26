@@ -1,24 +1,23 @@
 import API from '../../application/api';
 import BaseGamePage from '../baseGamePage';
-import { IWord, GameState, GameWordStatistic } from '../../utils/types';
-import { shuffle, randomIntRange } from '../../utils/helpers';
+import { IWord, GameState } from '../../utils/types';
+import { shuffle, createHTMLElement, randomInt } from '../../utils/helpers';
+import { Constants } from '../../utils/constants';
 
 class SprintPage extends BaseGamePage {
-    words: IWord[] = [];
-    wordIndex = -1;
-    statistic: GameWordStatistic[] = [];
-    gameState = GameState.StartScreen;
-    group = -1;
-    page = -1;
     answer: boolean;
     time: number;
     score: number;
+    point: number;
+    truePoints: number;
 
     constructor(api: API) {
         super(api);
         this.answer = false;
         this.time = 60;
         this.score = 0;
+        this.point = 10;
+        this.truePoints = 0;
     }
 
     init(query: URLSearchParams) {
@@ -56,7 +55,7 @@ class SprintPage extends BaseGamePage {
     async renderSprintGame() {
         this.gameState = GameState.Question;
         const word = this.words[0];
-        const randomWord = this.words[randomIntRange(0, 19)];
+        const randomWord = this.words[randomInt(Constants.WORDS_PER_GROUP - 1)];
         if (word.id === randomWord.id) this.answer = true;
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<main class="sprint__main">
@@ -77,17 +76,40 @@ class SprintPage extends BaseGamePage {
         });
     }
 
+    getSwitch(truePoints: number) {
+        switch (truePoints) {
+            case 1:
+                this.point = 10;
+                break;
+            case 4:
+                this.point = 20;
+                break;
+            case 7:
+                this.point = 40;
+                break;
+            case 11:
+                this.point = 80;
+                break;
+        }
+    }
+
     answerCheck(bthAnswer: boolean, word: IWord) {
         if (bthAnswer === this.answer) {
             super.addWordstatistic(word, true);
-            this.score += 10;
+            this.truePoints += 1;
+            this.getSwitch(this.truePoints);
+            this.score += this.point;
         } else {
             super.addWordstatistic(word, false);
+            this.truePoints = 0;
         }
     }
 
     endGame(): void {
         super.endGame();
+        const scoreResult = createHTMLElement('div', 'root__statistics__label', `Набрано баллов: ${this.score}`);
+        const MAIN = document.querySelector('.main') as HTMLElement;
+        MAIN.prepend(scoreResult);
     }
 }
 

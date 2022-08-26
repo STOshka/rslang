@@ -62,7 +62,7 @@ class SprintPage extends BaseGamePage {
         MAIN.innerHTML = `<main class="sprint__main">
             <div class="sprint__timer" id="sprint-time">${this.timer()}</div>
             <div class="sprint__score">${this.score}</div>
-            <div class="sprint__score_points"><span class="circles" id="circle1"></span><span class="circles" id="circle2"></span><span class="circles" id="circle3"></span></div>
+            <div class="sprint__score_points">${this.addSpans()}</div>
             <div class="sprint__word">${word.word}</div>
             <div class="sprint__translate">${randomWord.wordTranslate}</div>
             <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
@@ -76,6 +76,13 @@ class SprintPage extends BaseGamePage {
             this.answerCheck(false, word);
             (MAIN.querySelector('.sprint__score') as HTMLElement).innerText = `${this.score}`;
         });
+    }
+
+    addSpans() {
+        return `<span class="circles" id="circle1"></span>
+        <span class="circles" id="circle2"></span>
+        <span class="circles" id="circle3"></span>
+        <span class="points">+${this.point}</span>`;
     }
 
     getSwitch(truePoints: number) {
@@ -116,16 +123,19 @@ class SprintPage extends BaseGamePage {
     }
 
     answerCheck(bthAnswer: boolean, word: IWord) {
+        const point = document.querySelector('.points') as HTMLElement;
         if (bthAnswer === this.answer) {
             super.addWordstatistic(word, true);
             this.truePoints += 1;
             this.getSwitch(this.truePoints);
             this.addStyle(this.truePoints);
             this.score += this.point;
+            point.innerText = `+${this.point}`;
         } else {
             super.addWordstatistic(word, false);
             this.truePoints = 0;
             this.addStyle(this.truePoints);
+            point.innerText = `+${(this.point = 10)}`;
         }
     }
 

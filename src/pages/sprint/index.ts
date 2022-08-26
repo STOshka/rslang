@@ -126,26 +126,49 @@ class SprintPage extends BaseGamePage {
             span3.classList.add('active');
         }
     }
+    answerRight(){
+        const point = document.querySelector('.points') as HTMLElement;
+        this.truePoints += 1;
+        this.getSwitch(this.truePoints);
+        this.addStyle(this.truePoints);
+        this.score += this.point;
+        point.innerText = `+${this.point}`;
+    }
+
+    answerWrong(){
+        const point = document.querySelector('.points') as HTMLElement;
+        this.truePoints = 0;
+        this.addStyle(this.truePoints);
+        point.innerText = `+${(this.point = 10)}`;
+    }
 
     answerCheck(bthAnswer: boolean, word: IWord) {
-        const score = document.querySelector('.sprint__score') as HTMLElement
-        
-        const point = document.querySelector('.points') as HTMLElement;
+        const score = document.querySelector('.sprint__score') as HTMLElement;
         if (bthAnswer === this.answer) {
             super.addWordstatistic(word, true);
-            this.truePoints += 1;
-            this.getSwitch(this.truePoints);
-            this.addStyle(this.truePoints);
-            this.score += this.point;
-            point.innerText = `+${this.point}`;
+            this.answerRight();
         } else {
             super.addWordstatistic(word, false);
-            this.truePoints = 0;
-            this.addStyle(this.truePoints);
-            point.innerText = `+${(this.point = 10)}`;
+            this.answerWrong();
         }
         score.innerText = `${this.score}`;
     }
+
+    /*answerKey(word:IWord){
+        (document.querySelector('main') as HTMLElement).addEventListener('keypress', (event) => {
+            const score = document.querySelector('.sprint__score') as HTMLElement;
+            if(event.key === 'ArrowLeft'){
+               return this.answerCheck(true, word);
+            }
+            if(event.key === 'ArrowRight'){
+                return this.answerCheck(false, word);
+            }
+            score.innerText = `${this.score}`;
+        });
+      
+    }
+*/
+
 
     endGame(): void {
         super.endGame();

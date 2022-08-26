@@ -76,6 +76,7 @@ class SprintPage extends BaseGamePage {
             this.answerCheck(false, word);
             this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
+        this.answerKey(word);
     }
 
     addStyleBtn(idAdd: string, idRemove: string, style: string){
@@ -154,20 +155,24 @@ class SprintPage extends BaseGamePage {
         score.innerText = `${this.score}`;
     }
 
-    /*answerKey(word:IWord){
-        (document.querySelector('main') as HTMLElement).addEventListener('keypress', (event) => {
+    answerKey(word:IWord){
+        (document.querySelector('body') as HTMLElement).addEventListener('keydown', (event) => {
             const score = document.querySelector('.sprint__score') as HTMLElement;
-            if(event.key === 'ArrowLeft'){
+            const keyName = event.key;
+            if(keyName === 'ArrowLeft'){
                return this.answerCheck(true, word);
             }
-            if(event.key === 'ArrowRight'){
+            if(keyName === 'ArrowRight'){
                 return this.answerCheck(false, word);
             }
             score.innerText = `${this.score}`;
         });
       
     }
-*/
+
+
+
+
 
 
     endGame(): void {

@@ -70,12 +70,17 @@ class SprintPage extends BaseGamePage {
         </main>`;
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
             this.answerCheck(true, word);
-            (MAIN.querySelector('.sprint__score') as HTMLElement).innerText = `${this.score}`;
+            this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
         });
         (MAIN.querySelector('#sprint-no') as HTMLElement).addEventListener('click', () => {
             this.answerCheck(false, word);
-            (MAIN.querySelector('.sprint__score') as HTMLElement).innerText = `${this.score}`;
+            this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
+    }
+
+    addStyleBtn(idAdd: string, idRemove: string, style: string){
+        (document.querySelector(idAdd)as HTMLElement).classList.add(style);
+        (document.querySelector(idRemove)as HTMLElement).classList.remove(style);
     }
 
     addSpans() {
@@ -123,6 +128,8 @@ class SprintPage extends BaseGamePage {
     }
 
     answerCheck(bthAnswer: boolean, word: IWord) {
+        const score = document.querySelector('.sprint__score') as HTMLElement
+        
         const point = document.querySelector('.points') as HTMLElement;
         if (bthAnswer === this.answer) {
             super.addWordstatistic(word, true);
@@ -137,6 +144,7 @@ class SprintPage extends BaseGamePage {
             this.addStyle(this.truePoints);
             point.innerText = `+${(this.point = 10)}`;
         }
+        score.innerText = `${this.score}`;
     }
 
     endGame(): void {

@@ -1,30 +1,31 @@
 import API from '../../application/api';
 import BaseGamePage from '../baseGamePage';
 import { IWord, GameState, GameWordStatistic, ROUTES } from '../../utils/types';
-import Timer from './timer';
-import {shuffle, createHTMLElement, getAudioSvg, inRange, randomInt} from '../../utils/helpers';
+import {shuffle, createHTMLElement, getAudioSvg, inRange, randomInt, randomIntRange} from '../../utils/helpers';
 import { Constants } from '../../utils/constants';
  
 class SprintPage extends BaseGamePage {
     
-   timer: Timer;
     words: IWord[] = [];
     wordIndex = -1;
     statistic: GameWordStatistic[] = [];
     gameState = GameState.StartScreen;
     group = -1;
     page = -1;
+    answer:boolean;
+    time: number;
    
     constructor(api: API) {
         super(api);
-        this.timer = new Timer();
+        this.answer = false;
+        this.time = 60;
     };
 
-    init(query: URLSearchParams) {
+    init(query: URLSearchParams): void {
         super.init(query);
     };
 
-    gameName() {
+    gameName(): string {
         return 'СПРИНТ'; 
     };
 
@@ -37,20 +38,37 @@ class SprintPage extends BaseGamePage {
         this.wordIndex = -1;
     }
 
-    renderSprintGame() {
+    timer(){
+        const setIntervalId = setInterval(() => {
+            const timeSprint = document.querySelector('#sprint-time');
+            if ((this.time >= 0) && timeSprint) {
+                (timeSprint as HTMLElement).innerText = ` Time: ${this.time}`;
+                this.time -= 1;
+            } else {
+                clearInterval(setIntervalId);
+            }
+            return this.time;
+        }, 1000);
+        return setIntervalId;
+    }
+
+    async renderSprintGame() {
         this.gameState = GameState.Question;
+        const word = this.words[0];
+        const randomWord = this.words[randomIntRange(0, 19)];
+        if(word.id === randomWord.id) this.answer = true; 
+        console.log(this.answer)
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<main class="sprint__main">
-            <div class="sprint__timer" id="sprint-time">${this.timer.setIntervalId}</div>
+            <div class="sprint__timer" id="sprint-time">${this.timer()}</div>
             <div class="sprint__score"></div>
-            <div class="sprint__word"></div>
-            <div class="sprint__translate"></div>
+            <div class="sprint__word">${word.word}</div>
+            <div class="sprint__translate">${randomWord.wordTranslate}</div>
             <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
             <button class="sprint__button" type="button"id="sprint-no">Неверно</button>
         </main>`;
-
-    }
-    
+        
+    }   
    
     endGame(): void {
         super.endGame();
@@ -59,21 +77,6 @@ class SprintPage extends BaseGamePage {
 
    /*
 
-   
-    async renderWord() {
-        const mixWord = this.mixWords(await this.clickButtonStart());
-        const random = Math.ceil(Math.random() * 19);
-        const elementWord = mixWord[0];
-        const wordRes = elementWord.word;
-        const elementTranslate = mixWord[random];
-        const elemTransRes = elementTranslate.wordTranslate;
-        if (elementWord.id === elementTranslate.id) this.answer = true;
-        this.answer = false;
-        return `
-        <div class="sprint__words_word" id="word">Word: ${wordRes} </div>
-        <div class="sprint__words_word" id="translate">Translate: ${elemTransRes}</div>
-        `;
-    }
 
     async addAnswerYes(right: IWordsInf[], info?: IWordsInf) {
         const baseBill = 10;

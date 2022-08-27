@@ -85,7 +85,6 @@ class SprintPage extends BaseGamePage {
             this.answer = false;
         }
         this.word = this.words[this.wordIndex] as IWord;
-            console.log(this.word);
         return this.word;
 
     }

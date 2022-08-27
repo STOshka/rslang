@@ -92,6 +92,7 @@ class SprintPage extends BaseGamePage {
             <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
             <button class="sprint__button" type="button"id="sprint-no">Неверно</button>
         </main>`;
+        this.nextWord();
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
             this.answerCheck(true, this.word as IWord);
             this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
@@ -101,7 +102,6 @@ class SprintPage extends BaseGamePage {
             this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
         this.answerKey(this.word as IWord);
-        this.nextWord();
     }
 
     addStyleBtn(idAdd: string, idRemove: string, style: string) {

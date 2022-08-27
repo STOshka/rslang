@@ -5,7 +5,7 @@ import { wordsPageHTML } from './templates-html';
 import {
     getWordsData, constructWordBlocks, getGroup, getPage, setStatusPartitionBtns,
     setStatusPaginationBtns, switchToPageNumber, sortWordsDataABC, shuffleWordsData, 
-    translateON, translateOFF
+    translateON, translateOFF, getPageLocalStorage
 } from './helpers';
 
 class WordListPage extends BasePage {
@@ -33,6 +33,8 @@ class WordListPage extends BasePage {
         translateOnBtn.addEventListener('click', translateON);
         translateOffBtn.addEventListener('click', translateOFF);
 
+        getPageLocalStorage();
+        
         this.api.getWordList(pageData.group, pageData.page)
             .then((response) => { getWordsData(response); })
             .then(() => { constructWordBlocks(); })

@@ -94,12 +94,13 @@ const wordContainerHTML = (`
             <p class="word-text word-meaning-translate"></p>
             <p class="word-text word-example-translate"></p>                                                 
         </div>
-        <div class="word-btns">
-        <button class="word-btn word-sound-btn" data-id="">
-            ${soundLogoSvg}
-        </button>
-        <button class="word-btn" id="word-btn1">Stud</button>
-        <button class="word-btn" id="word-btn2">Diff</button>
+        <div class="word-btns-container">
+            <div class="sound-btns-container">
+                <button class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</button>
+                <button class="word-btn word-stop-sound-btn" data-id="">STOP</button>
+            </div>
+        <button class="word-btn" id="word-btn1">Studied</button>
+        <button class="word-btn" id="word-btn2">Difficult</button>
     </div>
     </div>
 `).repeat(Constants.WORDS_PER_GROUP);

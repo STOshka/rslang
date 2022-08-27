@@ -8,7 +8,7 @@ export function getWordsData(response: IWord[]) {
     wordsData.splice(0, wordsData.length);
     response.forEach((el: IWord) => wordsData.push(el));
 
-    sortWordsDataABC();
+    getSortLocalStorage();
 
     console.log(wordsData);
 }
@@ -17,7 +17,6 @@ export function constructWordBlocks() {
     const wordsContainer = document.querySelector('.words-container') as HTMLElement;
 
     wordsContainer.innerHTML = '';
-    document.documentElement.scrollTop = 0;
 
     wordsData.forEach((el: IWord, i) => {
         wordsContainer.insertAdjacentHTML('beforeend', `
@@ -35,28 +34,30 @@ export function constructWordBlocks() {
                 <p class="word-text word-example-translate">${el.textExampleTranslate}</p>                                                
             </div>
         </div>
-        <div class="word-audio-container"> 
-            <audio class="word-audio" src="${Constants.URL}${el.audio}"></audio>
-            <audio class="word-audio-meaning" src="${Constants.URL}${el.audioMeaning}"></audio>
-            <audio class="word-audio-example" src="${Constants.URL}${el.audioExample}"></audio>                                               
-        </div>
-        <div class="word-btns">
-            <button class="word-btn word-sound-btn" data-id="${i}">
-                ${soundLogoSvg}
-            </button>
-            <button class="word-btn word-btn-studied" data-id="${i}">Stud</button>
-            <button class="word-btn word-btn-difficult" data-id="${i}">Diff</button>
+        <div class="word-btns-container">
+            <div class="sound-btns-container">
+                <button class="word-btn word-sound-btn" data-id="${i}">${soundLogoSvg}</button>
+                <button class="word-btn word-stop-sound-btn" data-id="${i}">STOP</button>
+            </div>
+            <button class="word-btn word-btn-studied" data-id="${i}">Studied</button>
+            <button class="word-btn word-btn-difficult" data-id="${i}">Difficult</button>
         </div>
     </div>     
     `);
     });
-    const soundIcon = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
+    const soundBtn = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
+    const stopSoundBtn = document.querySelectorAll('.word-stop-sound-btn') as NodeListOf<HTMLButtonElement>;
     const studiedBtn = document.querySelectorAll('.word-btn-studied') as NodeListOf<HTMLButtonElement>;
     const difficultBtn = document.querySelectorAll('.word-btn-difficult') as NodeListOf<HTMLButtonElement>;
 
-    soundIcon.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
+    soundBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
+    stopSoundBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
     studiedBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', markStudiedWord));
     difficultBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', markDifficultWord));
+
+    getTranslateLocalStorage();
+    setPageLocalStorage();
+    document.documentElement.scrollTop = 0;
 }
 
 export function getGroup(event: MouseEvent) {
@@ -66,6 +67,7 @@ export function getGroup(event: MouseEvent) {
     pageData.group = partiton;
     pageData.page = 0;
 
+    setPageLocalStorage();
     switchPage.init();
     setStatusPartitionBtns();
 }
@@ -84,6 +86,7 @@ export function getPage(event: MouseEvent) {
         pageData.page = (pageData.page + 1);
     }
 
+    setPageLocalStorage();
     switchPage.init();
 }
 
@@ -112,43 +115,91 @@ export function switchToPageNumber() {
 
     pageData.page = Number(inputPageNumber.value) - 1;
 
+    setPageLocalStorage();
     switchPage.init();
 }
 
 export function sortWordsDataABC() {
+    const sortBtn = document.querySelector('.sort-btn') as HTMLButtonElement;
+    const shuffleBtn = document.querySelector('.shuffle-btn') as HTMLButtonElement;
+
+    sortBtn.classList.add('active-btn');
+    shuffleBtn.classList.remove('active-btn');
+
     wordsData.sort((a, b) => (a.word).toLowerCase() > (b.word).toLowerCase() ? 1 : -1);
+    localStorage.setItem('sortWords', 'sortABC');
+
     constructWordBlocks();
 }
 
 export function shuffleWordsData() {
+    const sortBtn = document.querySelector('.sort-btn') as HTMLButtonElement;
+    const shuffleBtn = document.querySelector('.shuffle-btn') as HTMLButtonElement;
+
+    shuffleBtn.classList.add('active-btn');
+    sortBtn.classList.remove('active-btn');
+
     wordsData.sort(() => Math.random() - 0.5);
+    localStorage.setItem('sortWords', 'shuffle');
+
     constructWordBlocks();
 }
 
 export function translateON() {
     const textTranslate = document.querySelectorAll('.translate-text-container') as NodeListOf<HTMLElement>;
+    const translateOnBtn = document.querySelector('.translate-on-btn') as HTMLButtonElement;
+    const translateOffBtn = document.querySelector('.translate-off-btn') as HTMLButtonElement;
 
+    translateOnBtn.classList.add('active-btn');
+    translateOffBtn.classList.remove('active-btn');
+
+    localStorage.setItem('translate', 'on');
     textTranslate.forEach(el => el.classList.remove('translate-text-none'));
 }
 
 export function translateOFF() {
     const textTranslate = document.querySelectorAll('.translate-text-container') as NodeListOf<HTMLElement>;
+    const translateOnBtn = document.querySelector('.translate-on-btn') as HTMLButtonElement;
+    const translateOffBtn = document.querySelector('.translate-off-btn') as HTMLButtonElement;
 
+    translateOffBtn.classList.add('active-btn');
+    translateOnBtn.classList.remove('active-btn');
+
+    localStorage.setItem('translate', 'off');
     textTranslate.forEach(el => el.classList.add('translate-text-none'));
 }
 
 function playWordAudio(event: MouseEvent) {
-
     if (!(event.target instanceof HTMLButtonElement)) { return; }
 
+    const soundBtn = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
     const soundIconId = Number(event.target?.dataset.id);
-    const soundWord = new Audio(`${Constants.URL}${wordsData[soundIconId].audio}`);
-    const soundMeaning = new Audio(`${Constants.URL}${wordsData[soundIconId].audioMeaning}`);
-    const soundExample = new Audio(`${Constants.URL}${wordsData[soundIconId].audioExample}`);
+    const soundWord = new Audio(`${Constants.URL}${wordsData[soundIconId].audio}`) as HTMLAudioElement;
+    const soundMeaning = new Audio(`${Constants.URL}${wordsData[soundIconId].audioMeaning}`) as HTMLAudioElement;
+    const soundExample = new Audio(`${Constants.URL}${wordsData[soundIconId].audioExample}`) as HTMLAudioElement;
+    const currentBtn = event.target;
 
-    soundWord.play();
-    soundWord.onended = () => soundMeaning.play();
-    soundMeaning.onended = () => soundExample.play();
+    if (event.target.classList.contains('word-sound-btn')) {
+        event.target.classList.add('no-click-btn', 'active-btn');
+
+        soundWord.play();
+        soundWord.onended = () => soundMeaning.play();
+        soundMeaning.onended = () => soundExample.play();
+        soundExample.onended = () => currentBtn.classList.remove('active-btn');
+    }
+
+    if (event.target.classList.contains('word-stop-sound-btn')) {
+        soundBtn.forEach(el => el.classList.remove('no-click-btn', 'active-btn'));
+
+        if (soundWord.played || soundMeaning.played || soundExample.played) {
+            soundWord.pause();
+            soundWord.currentTime = 0;
+            soundMeaning.pause();
+            soundMeaning.currentTime = 0;
+            soundExample.pause();
+            soundExample.currentTime = 0;
+        }
+    }
 }
 
 function markStudiedWord(event: MouseEvent) {
@@ -166,4 +217,25 @@ function markDifficultWord(event: MouseEvent) {
 
     console.log(`Difficult word: ${wordsData[difficultBtnId].word}`);
 }
+
+function setPageLocalStorage() {
+    localStorage.setItem('group', String(pageData.group));
+    localStorage.setItem('page', String(pageData.page));
+}
+
+export function getPageLocalStorage() {
+    pageData.group = Number(localStorage.getItem('group'));
+    pageData.page = Number(localStorage.getItem('page'));
+}
+
+export function getSortLocalStorage() {
+    if (localStorage.getItem('sortWords') === 'shuffle') { shuffleWordsData(); }
+    if (localStorage.getItem('sortWords') !== 'shuffle') { sortWordsDataABC(); }
+}
+
+export function getTranslateLocalStorage() {
+    if (localStorage.getItem('translate') === 'on') { translateON(); }
+    if (localStorage.getItem('translate') === 'off') { translateOFF(); }
+}
+
 

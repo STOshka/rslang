@@ -12,14 +12,15 @@ class SprintPage extends BaseGamePage {
     point: number;
     truePoints: number;
     word: IWord | undefined;
+    wordRandom: IWord | undefined;
 
     constructor(api: API) {
         super(api);
-        this.answer = false;
+        this.answer = true;
         this.time = 60;
         this.score = 0;
         this.point = 10;
-        this.truePoints = 0;        
+        this.truePoints = 0;      
     }
 
     init(query: URLSearchParams) {
@@ -34,7 +35,6 @@ class SprintPage extends BaseGamePage {
         const words = await this.api.getWordList(this.group, this.page);
         this.words = shuffle(words);
         this.statistic = [];
-        //this.gameState = GameState.Question;
         this.renderSprintGame();
         this.wordIndex = -1;
     }
@@ -54,27 +54,42 @@ class SprintPage extends BaseGamePage {
         return setIntervalId;
     }
 
+    shuffle(array:IWord[]) {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
     nextWord() {
-        if (this.wordIndex < this.words.length - 1) {
+        if (this.wordIndex < this.words.length - 2) {
             this.wordIndex += 1;
         } else {
-            this.wordIndex = 0;
+            this.wordIndex = -1;
         }
         const answerTranslate = document.querySelector('.sprint__translate') as HTMLElement;
-        answerTranslate.innerText = `${this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].wordTranslate}`;
+        const random = randomInt(2);
+        
+        if(random === 1){
+            this.wordRandom = this.words[this.wordIndex];
+        } else{
+            this.wordRandom = this.words[randomInt(Constants.WORDS_PER_GROUP - 1)];
+        }  
+        answerTranslate.innerText = `${this.wordRandom.wordTranslate}`;      
         const answerWord = document.querySelector('.sprint__word') as HTMLElement;
         answerWord.innerText = `${this.words[this.wordIndex].word}`;
-        if (this.words[this.wordIndex].id === this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].id)
+        if (this.words[this.wordIndex].id === this.wordRandom.id){
             this.answer = true;
-        if (this.words[this.wordIndex].id !== this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].id)
+        }            
+        if (this.words[this.wordIndex].id !== this.wordRandom.id){
             this.answer = false;
-            this.word = this.words[this.wordIndex] as IWord;
+        }
+        this.word = this.words[this.wordIndex] as IWord;
+            console.log(this.word);
         return this.word;
-    }
-    getWord(){
 
     }
-
+    
     async renderSprintGame() {
         this.gameState = GameState.Question;
         const MAIN = document.querySelector('.main') as HTMLElement;
@@ -87,7 +102,6 @@ class SprintPage extends BaseGamePage {
             <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
             <button class="sprint__button" type="button"id="sprint-no">Неверно</button>
         </main>`;
-        this.nextWord();
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
             this.answerCheck(true, this.word as IWord);
             this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
@@ -97,6 +111,9 @@ class SprintPage extends BaseGamePage {
             this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
         this.answerKey(this.word as IWord);
+        
+        this.nextWord();
+        
     }
 
     addStyleBtn(idAdd: string, idRemove: string, style: string) {
@@ -163,8 +180,7 @@ class SprintPage extends BaseGamePage {
         point.innerText = `+${(this.point = 10)}`;
     }
 
-    answerCheck(bthAnswer: boolean, word: IWord) {
-        this.nextWord();
+    answerCheck(bthAnswer: boolean, word: IWord) {       
         const score = document.querySelector('.sprint__score') as HTMLElement;
         if (bthAnswer === this.answer) {
             super.addWordstatistic(word, true);
@@ -174,6 +190,7 @@ class SprintPage extends BaseGamePage {
             this.answerWrong();
         }
         score.innerText = `${this.score}`;
+        this.nextWord();
     }
 
     answerKey(word: IWord) {
@@ -181,9 +198,11 @@ class SprintPage extends BaseGamePage {
             const score = document.querySelector('.sprint__score') as HTMLElement;
             const keyName = event.key;
             if (keyName === 'ArrowLeft') {
+                this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
                 return this.answerCheck(true, word);
             }
             if (keyName === 'ArrowRight') {
+                this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
                 return this.answerCheck(false, word);
             }
             score.innerText = `${this.score}`;

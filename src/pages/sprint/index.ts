@@ -53,35 +53,50 @@ class SprintPage extends BaseGamePage {
         return setIntervalId;
     }
 
+    nextWord() {
+        if (this.wordIndex < this.words.length - 1) {
+            this.wordIndex += 1;
+        } else {
+            this.wordIndex = 0;
+        }
+        const answerTranslate = document.querySelector('.sprint__translate') as HTMLElement;
+        answerTranslate.innerText = `${this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].wordTranslate}`;
+        const answerWord = document.querySelector('.sprint__word') as HTMLElement;
+        answerWord.innerText = `${this.words[this.wordIndex].word}`;
+        if (this.words[this.wordIndex].id === this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].id)
+            this.answer = true;
+        if (this.words[this.wordIndex].id !== this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].id)
+            this.answer = false;
+        return this.words[this.wordIndex];
+    }
+
     async renderSprintGame() {
         this.gameState = GameState.Question;
-        const word = this.words[0];
-        const randomWord = this.words[randomInt(Constants.WORDS_PER_GROUP - 1)];
-        if (word.id === randomWord.id) this.answer = true;
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<main class="sprint__main">
             <div class="sprint__timer" id="sprint-time">${this.timer()}</div>
             <div class="sprint__score">${this.score}</div>
             <div class="sprint__score_points">${this.addSpans()}</div>
-            <div class="sprint__word">${word.word}</div>
-            <div class="sprint__translate">${randomWord.wordTranslate}</div>
+            <div class="sprint__word"></div>
+            <div class="sprint__translate"></div>
             <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
             <button class="sprint__button" type="button"id="sprint-no">Неверно</button>
         </main>`;
+        this.nextWord();
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
-            this.answerCheck(true, word);
+            this.answerCheck(true, this.nextWord());
             this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
         });
         (MAIN.querySelector('#sprint-no') as HTMLElement).addEventListener('click', () => {
-            this.answerCheck(false, word);
+            this.answerCheck(false, this.nextWord());
             this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
-        this.answerKey(word);
+        this.answerKey(this.nextWord());
     }
 
-    addStyleBtn(idAdd: string, idRemove: string, style: string){
-        (document.querySelector(idAdd)as HTMLElement).classList.add(style);
-        (document.querySelector(idRemove)as HTMLElement).classList.remove(style);
+    addStyleBtn(idAdd: string, idRemove: string, style: string) {
+        (document.querySelector(idAdd) as HTMLElement).classList.add(style);
+        (document.querySelector(idRemove) as HTMLElement).classList.remove(style);
     }
 
     addSpans() {
@@ -127,7 +142,7 @@ class SprintPage extends BaseGamePage {
             span3.classList.add('active');
         }
     }
-    answerRight(){
+    answerRight() {
         const point = document.querySelector('.points') as HTMLElement;
         this.truePoints += 1;
         this.getSwitch(this.truePoints);
@@ -136,7 +151,7 @@ class SprintPage extends BaseGamePage {
         point.innerText = `+${this.point}`;
     }
 
-    answerWrong(){
+    answerWrong() {
         const point = document.querySelector('.points') as HTMLElement;
         this.truePoints = 0;
         this.addStyle(this.truePoints);
@@ -144,6 +159,7 @@ class SprintPage extends BaseGamePage {
     }
 
     answerCheck(bthAnswer: boolean, word: IWord) {
+        this.nextWord();
         const score = document.querySelector('.sprint__score') as HTMLElement;
         if (bthAnswer === this.answer) {
             super.addWordstatistic(word, true);
@@ -155,25 +171,19 @@ class SprintPage extends BaseGamePage {
         score.innerText = `${this.score}`;
     }
 
-    answerKey(word:IWord){
+    answerKey(word: IWord) {
         (document.querySelector('body') as HTMLElement).addEventListener('keydown', (event) => {
             const score = document.querySelector('.sprint__score') as HTMLElement;
             const keyName = event.key;
-            if(keyName === 'ArrowLeft'){
-               return this.answerCheck(true, word);
+            if (keyName === 'ArrowLeft') {
+                return this.answerCheck(true, word);
             }
-            if(keyName === 'ArrowRight'){
+            if (keyName === 'ArrowRight') {
                 return this.answerCheck(false, word);
             }
             score.innerText = `${this.score}`;
         });
-      
     }
-
-
-
-
-
 
     endGame(): void {
         super.endGame();

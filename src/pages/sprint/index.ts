@@ -11,6 +11,7 @@ class SprintPage extends BaseGamePage {
     score: number;
     point: number;
     truePoints: number;
+    word: IWord | undefined;
 
     constructor(api: API) {
         super(api);
@@ -18,7 +19,7 @@ class SprintPage extends BaseGamePage {
         this.time = 60;
         this.score = 0;
         this.point = 10;
-        this.truePoints = 0;
+        this.truePoints = 0;        
     }
 
     init(query: URLSearchParams) {
@@ -67,7 +68,11 @@ class SprintPage extends BaseGamePage {
             this.answer = true;
         if (this.words[this.wordIndex].id !== this.words[randomInt(Constants.WORDS_PER_GROUP - 1)].id)
             this.answer = false;
-        return this.words[this.wordIndex];
+            this.word = this.words[this.wordIndex] as IWord;
+        return this.word;
+    }
+    getWord(){
+
     }
 
     async renderSprintGame() {
@@ -84,14 +89,14 @@ class SprintPage extends BaseGamePage {
         </main>`;
         this.nextWord();
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
-            this.answerCheck(true, this.nextWord());
+            this.answerCheck(true, this.word as IWord);
             this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
         });
         (MAIN.querySelector('#sprint-no') as HTMLElement).addEventListener('click', () => {
-            this.answerCheck(false, this.nextWord());
+            this.answerCheck(false, this.word as IWord);
             this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
-        this.answerKey(this.nextWord());
+        this.answerKey(this.word as IWord);
     }
 
     addStyleBtn(idAdd: string, idRemove: string, style: string) {

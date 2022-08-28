@@ -104,34 +104,41 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: 90px;
     height: 20px;
     font-size: 18px;
 }
 
-.words-func-btns-container {
+.settings-func-btns-container {
     display: flex;
     align-items: center;
     gap: 5px;
     padding-right: 20px;
 }
 
-.words-func-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85px;
-    height: 20px;
-    font-size: 16px;
-}
-
-.translate-btns-title {
+.settings-btns-title {
     padding-left: 20px;
     font-size: 20px;
 }
 
-.translate-on-btn,
-.translate-off-btn {
+.settings-func-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 20px;
+    font-size: 16px;
+}
+
+.reset-btn {
+    margin-left: 25px;
+}
+
+
+.global-translate-on-btn,
+.global-translate-off-btn,
+.global-description-on-btn,
+.global-description-off-btn {
     width: 40px;
 }
 
@@ -169,15 +176,12 @@ p {
 .word-text-container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 5px;
-    padding: 0 20px;
+    padding: 5px 20px;
     width: 100%;
     border-left: 2px solid rgb(214, 213, 213);
     border-right: 2px solid rgb(214, 213, 213);
-}
-
-.translate-text-none {
-    display: none;
 }
 
 .word {
@@ -198,34 +202,40 @@ p {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 5px;
     width: 100px;
-    padding: 20px;
+    padding: 0 20px;
 }
 
-.sound-btns-container {
+.word-btns-title {
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.word-btns-subcontainer {
     display: flex;
     justify-content: center;
     gap: 5px;
+    padding-bottom: 7px;
 }
 
 .word-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 75px;
-    height: 35px;
+    width: 40px;
+    height: 25px;
     border: 1px solid #CDCDCD;
     border-radius: 3px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bolder;
     color: #545454;
 }
 
-.word-sound-btn,
-.word-stop-sound-btn {
-    width: 35px;
-    font-size: 12px;
+.word-btn-studied,
+.word-btn-difficult {
+    width: 85px;
+    font-size: 16px;
 }
 
 .word-sound-svg {
@@ -289,6 +299,10 @@ p {
     text-align: center;
 }
 
+.display-none {
+    display: none;
+}
+
 .active-btn,
 .active-nav {
     background-color: rgb(113, 113, 113);
@@ -307,18 +321,50 @@ p {
     pointer-events: none;
 }
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+ /* main page */
+
+.main {
+    height: calc(100vh - 25px);
+    background-color: beige;
+}
+
+.footer-container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 30px;
-    padding: 0 20px;
     background-color: rgb(231, 231, 231);
 }
 
-.footer-item {
-    font-size: 16px;
+.footer-items {
+    display: flex;
+    align-items: center;
 }
+
+.footer-item {
+    margin: 0;
+    padding-left: 5px;
+    font-family: natuve;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.gh-logo {
+    width: 75px;
+    height: 25px;
+    /* background-image: url('./assets/svg/GitHub_Logo.svg'); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 5px;
+    transition: 0.3s;
+}
+
+.rss-logo {
+    width: 75px;
+    height: 25px;
+    /* background-image: url("./assets/svg/rs_school_js.svg"); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: 0.3s;
+}
+

@@ -204,3 +204,5 @@ class SprintPage extends BaseGamePage {
         MAIN.prepend(scoreResult);
     }
 }
+
+export default SprintPage;

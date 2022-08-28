@@ -95,12 +95,23 @@ const wordContainerHTML = (`
             <p class="word-text word-example-translate"></p>                                                 
         </div>
         <div class="word-btns-container">
-            <div class="sound-btns-container">
+            <p class="word-btns-title">Voice:</p>
+            <div class="word-btns-subcontainer">
                 <button class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</button>
                 <button class="word-btn word-stop-sound-btn" data-id="">STOP</button>
             </div>
-        <button class="word-btn" id="word-btn1">Studied</button>
-        <button class="word-btn" id="word-btn2">Difficult</button>
+            <p class="word-btns-title">Translate:</p>
+            <div class="word-btns-subcontainer">
+                <button class="word-btn word-translate-btn-on" data-id="">ON</button>
+                <button class="word-btn word-translate-btn-off" data-id="">OFF</button>
+            </div>
+            <p class="word-btns-title">Description:</p>
+            <div class="word-btns-subcontainer">
+                <button class="word-btn word-description-on" data-id="">ON</button>
+                <button class="word-btn word-description-off" data-id="">OFF</button>
+            </div>
+        <button class="word-btn word-btn-studied">Studied</button>
+        <button class="word-btn word-btn-difficult">Difficult</button>
     </div>
     </div>
 `).repeat(Constants.WORDS_PER_GROUP);
@@ -129,12 +140,16 @@ export const wordsPageHTML = (`
             <button class="words-partition-btn" id="group4" data-group="4">Partition 5</button>
             <button class="words-partition-btn" id="group5" data-group="5">Partition 6</button>
         </div>
-        <div class="words-func-btns-container">
-            <button class="words-func-btn sort-btn">Sort ABC</button>
-            <button class="words-func-btn shuffle-btn">Shuffle</button>
-            <p class="translate-btns-title">Translate</p>
-            <button class="words-func-btn translate-on-btn">ON</button>
-            <button class="words-func-btn translate-off-btn">OFF</button>
+        <div class="settings-func-btns-container">
+            <button class="settings-func-btn sort-btn">Sort ABC</button>
+            <button class="settings-func-btn shuffle-btn">Shuffle</button>
+            <p class="settings-btns-title">Description</p>
+            <button class="settings-func-btn global-description-on-btn">ON</button>
+            <button class="settings-func-btn global-description-off-btn">OFF</button>
+            <p class="settings-btns-title">Translate</p>
+            <button class="settings-func-btn global-translate-on-btn">ON</button>
+            <button class="settings-func-btn global-translate-off-btn">OFF</button>
+            <button class="settings-func-btn reset-btn">Reset</button>
         </div>
     </div>
     </header>

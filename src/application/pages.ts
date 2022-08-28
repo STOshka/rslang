@@ -2,7 +2,7 @@ import MainPage from '../pages/home';
 import AuthPage from '../pages/auth';
 import WordListPage from '../pages/wordList';
 import AudioChallengePage from '../pages/audioChallenge';
-import SprintPage from '../pages/sprint';
+// import SprintPage from '../pages/sprint';
 import ErrorPage from '../pages/error';
 import { PAGES, ROUTES } from '../utils/types';
 
@@ -27,11 +27,11 @@ export const pages = [
         route: ROUTES.AUDIO_CHALLENGE_GAME,
         page: AudioChallengePage,
     },
-    {
-        name: PAGES.SPRINT_GAME,
-        route: ROUTES.SPRINT_GAME,
-        page: SprintPage,
-    },
+    // {
+    //     name: PAGES.SPRINT_GAME,
+    //     route: ROUTES.SPRINT_GAME,
+    //     // page: SprintPage,
+    // },
     {
         name: PAGES.ERROR,
         route: ROUTES.ERROR,

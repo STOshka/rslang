@@ -5,6 +5,7 @@ import AudioChallengePage from '../pages/audioChallenge';
 import SprintPage from '../pages/sprint';
 import ErrorPage from '../pages/error';
 import { PAGES, ROUTES } from '../utils/types';
+import AboutTheTeam from '../pages/aboutTheTeam';
 
 export const pages = [
     {
@@ -37,4 +38,9 @@ export const pages = [
         route: ROUTES.ERROR,
         page: ErrorPage,
     },
+    {
+        name: PAGES.ABOUT_THE_TEAM,
+        route: ROUTES.ABOUT_THE_TEAM,
+        page: AboutTheTeam,
+    }
 ];

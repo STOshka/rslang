@@ -20,6 +20,16 @@ class API {
         });
         return response;
     }
+    async loginUser(email: string, password: string): Promise<Response> {
+        const response = await this.getRequest(`signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+        return response;
+    }
     async getWordList(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(`words?group=${group}&page=${page}`, {
             method: 'GET',

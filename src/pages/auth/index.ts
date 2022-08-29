@@ -1,4 +1,6 @@
 import API from '../../application/api';
+import LocalStorage from '../../application/localStorage';
+import { ROUTES } from '../../utils/types';
 import BasePage from '../basePage';
 import './index.css';
 
@@ -7,6 +9,9 @@ class AuthPage extends BasePage {
         super(api);
     }
     init(query: URLSearchParams) {
+        if (LocalStorage.instance.isAuth()) {
+            window.location.hash = ROUTES.HOME_PAGE;
+        }
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<div class="root__auth">
@@ -17,6 +22,9 @@ class AuthPage extends BasePage {
             <div class="root__auth__form"></div>
         </div>`;
         this.renderLogin();
+        this.addButtonListener();
+    }
+    addButtonListener() {
         (document.querySelector('.root__auth') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             const target = (e.target as HTMLElement).closest('button') as HTMLButtonElement;
@@ -75,14 +83,24 @@ class AuthPage extends BasePage {
             this.showMessage(errorType[e]);
         }
     }
-    showMessage(message: string) {
-        console.log(message);
-    }
-    loginUser() {
-        console.log('trigger login');
+    async loginUser() {
         const email = (document.querySelector('.root__auth__email') as HTMLInputElement).value;
         const password = (document.querySelector('.root__auth__pass') as HTMLInputElement).value;
-        console.log(email, password);
+        try {
+            const response = await this.api.loginUser(email, password);
+            if (response.status === 403) {
+                throw new Error('user');
+            }
+            const answer = await response.json();
+            LocalStorage.instance.authUser(answer.userId, answer.token);
+            window.location.hash = ROUTES.HOME_PAGE;
+        } catch (error: unknown) {
+            console.log((error as Error).message);
+            this.showMessage('Неправильный e-mail или пароль');
+        }
+    }
+    showMessage(message: string) {
+        console.log(message);
     }
 }
 

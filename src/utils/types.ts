@@ -5,6 +5,7 @@ export enum PAGES {
     AUDIO_CHALLENGE_GAME = 'audio_challenge',
     SPRINT_GAME = 'sprint',
     ERROR = 'error',
+    ABOUT_THE_TEAM = 'about',
 }
 
 export enum ROUTES {
@@ -14,6 +15,7 @@ export enum ROUTES {
     AUDIO_CHALLENGE_GAME = '#audio',
     SPRINT_GAME = '#sprint',
     ERROR = '#error',
+    ABOUT_THE_TEAM = '#about',
 }
 
 export interface IWord {

@@ -2,6 +2,7 @@ import API from '../../application/api';
 import LocalStorage from '../../application/localStorage';
 import { ROUTES } from '../../utils/types';
 import BasePage from '../basePage';
+import { Constant } from './constants';
 import './index.css';
 
 class AuthPage extends BasePage {
@@ -64,21 +65,21 @@ class AuthPage extends BasePage {
         const password = (document.querySelector('.root__auth__pass') as HTMLInputElement).value;
         try {
             const response = await this.api.createUser(name, email, password);
-            if (response.status === 417) {
-                throw new Error('user');
+            if (response.status === Constant.EXPECTATION_FAILED) {
+                throw new Error(Constant.USER_FOUND);
             }
             const answer = await response.json();
             if (answer.error) {
                 throw new Error(answer.error.errors[0].path);
             }
             this.renderLogin();
-            this.showMessage('Вы успешно создали аккаунт');
+            this.showMessage(Constant.SUCCESS_REG);
         } catch (error: unknown) {
             const e = (error as Error).message;
             const errorType: Record<string, string> = {
-                email: 'Введите действительный e-mail',
-                password: 'Длина пароля меньше 8 символов',
-                user: 'Пользователь с таким e-mail существует',
+                email: Constant.email,
+                password: Constant.password,
+                user: Constant.userFound,
             };
             this.showMessage(errorType[e]);
         }
@@ -89,14 +90,13 @@ class AuthPage extends BasePage {
         try {
             const response = await this.api.loginUser(email, password);
             if (response.status === 403) {
-                throw new Error('user');
+                throw new Error(Constant.USER_NOT_FOUND);
             }
             const answer = await response.json();
             LocalStorage.instance.authUser(answer.userId, answer.token);
             window.location.hash = ROUTES.HOME_PAGE;
         } catch (error: unknown) {
-            console.log((error as Error).message);
-            this.showMessage('Неправильный e-mail или пароль');
+            this.showMessage(Constant.LOGIN_FAILURE);
         }
     }
     showMessage(message: string) {

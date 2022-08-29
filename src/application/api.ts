@@ -10,7 +10,16 @@ class API {
         const response = await fetch(`${this.url}${type}`, options);
         return response;
     }
-
+    async createUser(name: string, email: string, password: string): Promise<Response> {
+        const response = await this.getRequest(`users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password }),
+        });
+        return response;
+    }
     async getWordList(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(`words?group=${group}&page=${page}`, {
             method: 'GET',

@@ -21,6 +21,7 @@ class AuthPage extends BasePage {
                 <button class="root__auth__button root__auth__reg">Регистрация</button>
             </div>
             <div class="root__auth__form"></div>
+            <div class="root__auth__message"></div>
         </div>`;
         this.renderLogin();
         this.addButtonListener();
@@ -100,7 +101,7 @@ class AuthPage extends BasePage {
         }
     }
     showMessage(message: string) {
-        console.log(message);
+        (document.querySelector('.root__auth__message') as HTMLElement).innerHTML = message;
     }
 }
 

@@ -26,18 +26,31 @@ export function constructWordBlocks() {
         </div>
         <div class="word-text-container"> 
             <h4 class="word">${el.word}</h4>
-            <p class="word-text word-meaning">${el.textMeaning}</p>
-            <p class="word-text word-example">${el.textExample}</p>
-            <div class="translate-text-container">
+            <div class="word-description-container" id="word-description-container${i}">
+                <p class="word-text word-meaning">${el.textMeaning}</p>
+                <p class="word-text word-example">${el.textExample}</p>
+            </div>
+            <div class="translate-text-container" id="translate-text-container${i}">
                 <h4 class="word-translate">${el.wordTranslate}</h4>
                 <p class="word-text word-meaning-translate">${el.textMeaningTranslate}</p>
                 <p class="word-text word-example-translate">${el.textExampleTranslate}</p>                                                
             </div>
         </div>
         <div class="word-btns-container">
-            <div class="sound-btns-container">
+            <p class="word-btns-title">Voice:</p>
+            <div class="word-btns-subcontainer">
                 <button class="word-btn word-sound-btn" data-id="${i}">${soundLogoSvg}</button>
-                <button class="word-btn word-stop-sound-btn" data-id="${i}">STOP</button>
+                <button class="word-btn word-stop-sound-btn no-click-btn" id="stop-sound-btn${i}" data-id="${i}">STOP</button>
+            </div>
+            <p class="word-btns-title">Translate:</p>
+            <div class="word-btns-subcontainer">
+                <button class="word-btn word-translate-btn-on" data-id="${i}">ON</button>
+                <button class="word-btn word-translate-btn-off" data-id="${i}">OFF</button>
+            </div>
+            <p class="word-btns-title">Description:</p>
+            <div class="word-btns-subcontainer">
+                <button class="word-btn word-description-on" data-id="${i}">ON</button>
+                <button class="word-btn word-description-off" data-id="${i}">OFF</button>
             </div>
             <button class="word-btn word-btn-studied" data-id="${i}">Studied</button>
             <button class="word-btn word-btn-difficult" data-id="${i}">Difficult</button>
@@ -47,14 +60,23 @@ export function constructWordBlocks() {
     });
     const soundBtn = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
     const stopSoundBtn = document.querySelectorAll('.word-stop-sound-btn') as NodeListOf<HTMLButtonElement>;
+    const translateOnBtns = document.querySelectorAll('.word-translate-btn-on') as NodeListOf<HTMLButtonElement>;
+    const translateOffBtns = document.querySelectorAll('.word-translate-btn-off') as NodeListOf<HTMLButtonElement>;
+    const descriptionOnBtns = document.querySelectorAll('.word-description-on') as NodeListOf<HTMLButtonElement>;
+    const descriptionOffBtns = document.querySelectorAll('.word-description-off') as NodeListOf<HTMLButtonElement>;
     const studiedBtn = document.querySelectorAll('.word-btn-studied') as NodeListOf<HTMLButtonElement>;
     const difficultBtn = document.querySelectorAll('.word-btn-difficult') as NodeListOf<HTMLButtonElement>;
 
     soundBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
     stopSoundBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
+    translateOnBtns.forEach((el: HTMLButtonElement) => el.addEventListener('click', toggleWordTranslate));
+    translateOffBtns.forEach((el: HTMLButtonElement) => el.addEventListener('click', toggleWordTranslate));
+    descriptionOnBtns.forEach((el: HTMLButtonElement) => el.addEventListener('click', toggleDescription));
+    descriptionOffBtns.forEach((el: HTMLButtonElement) => el.addEventListener('click', toggleDescription));
     studiedBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', markStudiedWord));
     difficultBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', markDifficultWord));
 
+    getDescriptionLocalStorage();
     getTranslateLocalStorage();
     setPageLocalStorage();
     document.documentElement.scrollTop = 0;
@@ -119,6 +141,13 @@ export function switchToPageNumber() {
     switchPage.init();
 }
 
+export function pressEnterKey(event: KeyboardEvent)  {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        switchToPageNumber();
+    }
+}
+
 export function sortWordsDataABC() {
     const sortBtn = document.querySelector('.sort-btn') as HTMLButtonElement;
     const shuffleBtn = document.querySelector('.shuffle-btn') as HTMLButtonElement;
@@ -145,60 +174,117 @@ export function shuffleWordsData() {
     constructWordBlocks();
 }
 
-export function translateON() {
+export function descriptionAllON() {
+    const textDescription = document.querySelectorAll('.word-description-container') as NodeListOf<HTMLElement>;
+    const descriptionOnBtn = document.querySelector('.global-description-on-btn') as HTMLButtonElement;
+    const descriptionOffBtn = document.querySelector('.global-description-off-btn') as HTMLButtonElement;
+
+    descriptionOnBtn.classList.add('active-btn');
+    descriptionOffBtn.classList.remove('active-btn');
+    textDescription.forEach(el => el.classList.remove('display-none'));
+
+    localStorage.setItem('description', 'on');
+}
+
+export function descriptionAllOFF() {
+    const textDescription = document.querySelectorAll('.word-description-container') as NodeListOf<HTMLElement>;
+    const descriptionOnBtn = document.querySelector('.global-description-on-btn') as HTMLButtonElement;
+    const descriptionOffBtn = document.querySelector('.global-description-off-btn') as HTMLButtonElement;
+
+    descriptionOffBtn.classList.add('active-btn');
+    descriptionOnBtn.classList.remove('active-btn');
+    textDescription.forEach(el => el.classList.add('display-none'));
+
+    localStorage.setItem('description', 'off');
+}
+
+export function translateAllON() {
     const textTranslate = document.querySelectorAll('.translate-text-container') as NodeListOf<HTMLElement>;
-    const translateOnBtn = document.querySelector('.translate-on-btn') as HTMLButtonElement;
-    const translateOffBtn = document.querySelector('.translate-off-btn') as HTMLButtonElement;
+    const translateOnBtn = document.querySelector('.global-translate-on-btn') as HTMLButtonElement;
+    const translateOffBtn = document.querySelector('.global-translate-off-btn') as HTMLButtonElement;
 
     translateOnBtn.classList.add('active-btn');
     translateOffBtn.classList.remove('active-btn');
+    textTranslate.forEach(el => el.classList.remove('display-none'));
 
     localStorage.setItem('translate', 'on');
-    textTranslate.forEach(el => el.classList.remove('translate-text-none'));
 }
 
-export function translateOFF() {
+export function translateAllOFF() {
     const textTranslate = document.querySelectorAll('.translate-text-container') as NodeListOf<HTMLElement>;
-    const translateOnBtn = document.querySelector('.translate-on-btn') as HTMLButtonElement;
-    const translateOffBtn = document.querySelector('.translate-off-btn') as HTMLButtonElement;
+    const translateOnBtn = document.querySelector('.global-translate-on-btn') as HTMLButtonElement;
+    const translateOffBtn = document.querySelector('.global-translate-off-btn') as HTMLButtonElement;
 
     translateOffBtn.classList.add('active-btn');
     translateOnBtn.classList.remove('active-btn');
-
+    textTranslate.forEach(el => el.classList.add('display-none'));
+    
     localStorage.setItem('translate', 'off');
-    textTranslate.forEach(el => el.classList.add('translate-text-none'));
+}
+
+function toggleWordTranslate(event: MouseEvent) {
+    if (!(event.target instanceof HTMLButtonElement)) { return; }
+
+    const currentBtnId = (event.target?.dataset.id);
+    const wordTranslate = document.getElementById(`translate-text-container${currentBtnId}`) as HTMLElement;
+
+    if (event.target.classList.contains('word-translate-btn-on')) {
+        wordTranslate.classList.remove('display-none');
+    }
+    if (event.target.classList.contains('word-translate-btn-off')) {
+        wordTranslate.classList.add('display-none');
+    }
+}
+
+function toggleDescription(event: MouseEvent) {
+    if (!(event.target instanceof HTMLButtonElement)) { return; }
+
+    const currentBtnId = (event.target?.dataset.id);
+    const wordDescription = document.getElementById(`word-description-container${currentBtnId}`) as HTMLElement;
+
+    if (event.target.classList.contains('word-description-on')) {
+        wordDescription.classList.remove('display-none');
+    }
+    if (event.target.classList.contains('word-description-off')) {
+        wordDescription.classList.add('display-none');
+    }
 }
 
 function playWordAudio(event: MouseEvent) {
     if (!(event.target instanceof HTMLButtonElement)) { return; }
 
     const soundBtn = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
-    const soundIconId = Number(event.target?.dataset.id);
-    const soundWord = new Audio(`${Constants.URL}${wordsData[soundIconId].audio}`) as HTMLAudioElement;
-    const soundMeaning = new Audio(`${Constants.URL}${wordsData[soundIconId].audioMeaning}`) as HTMLAudioElement;
-    const soundExample = new Audio(`${Constants.URL}${wordsData[soundIconId].audioExample}`) as HTMLAudioElement;
-    const currentBtn = event.target;
+    const currentBtnId = Number(event.target?.dataset.id);
+    const soundWord = new Audio(`${Constants.URL}${wordsData[currentBtnId].audio}`) as HTMLAudioElement;
+    const soundMeaning = new Audio(`${Constants.URL}${wordsData[currentBtnId].audioMeaning}`) as HTMLAudioElement;
+    const soundExample = new Audio(`${Constants.URL}${wordsData[currentBtnId].audioExample}`) as HTMLAudioElement;
+    const stopCurrentBtn = document.getElementById(`stop-sound-btn${String(currentBtnId)}`) as HTMLButtonElement;
 
     if (event.target.classList.contains('word-sound-btn')) {
-        event.target.classList.add('no-click-btn', 'active-btn');
+        soundBtn.forEach(el => el.classList.add('no-click-btn'));
+        event.target.classList.add('active-btn');
+        stopCurrentBtn.classList.remove('no-click-btn');
 
         soundWord.play();
         soundWord.onended = () => soundMeaning.play();
         soundMeaning.onended = () => soundExample.play();
-        soundExample.onended = () => currentBtn.classList.remove('active-btn');
+        soundExample.onended = () => {
+            soundBtn.forEach(el => el.classList.remove('no-click-btn', 'active-btn'));
+            stopCurrentBtn.classList.add('no-click-btn');
+        }
     }
 
     if (event.target.classList.contains('word-stop-sound-btn')) {
         soundBtn.forEach(el => el.classList.remove('no-click-btn', 'active-btn'));
 
-        if (soundWord.played || soundMeaning.played || soundExample.played) {
-            soundWord.pause();
-            soundWord.currentTime = 0;
-            soundMeaning.pause();
-            soundMeaning.currentTime = 0;
-            soundExample.pause();
-            soundExample.currentTime = 0;
-        }
+        // soundWord.pause();
+        // soundWord.currentTime = 0;
+        // soundMeaning.pause();
+        // soundMeaning.currentTime = 0;
+        // soundExample.pause();
+        // soundExample.currentTime = 0;
+
+        console.log('stop');
     }
 }
 
@@ -218,6 +304,12 @@ function markDifficultWord(event: MouseEvent) {
     console.log(`Difficult word: ${wordsData[difficultBtnId].word}`);
 }
 
+export function resetSettings() {
+    sortWordsDataABC();
+    descriptionAllON();
+    translateAllON();
+}
+
 function setPageLocalStorage() {
     localStorage.setItem('group', String(pageData.group));
     localStorage.setItem('page', String(pageData.page));
@@ -233,9 +325,14 @@ export function getSortLocalStorage() {
     if (localStorage.getItem('sortWords') !== 'shuffle') { sortWordsDataABC(); }
 }
 
+export function getDescriptionLocalStorage() {
+    if (localStorage.getItem('description') === 'on') { descriptionAllON(); }
+    if (localStorage.getItem('description') === 'off') { descriptionAllOFF(); }
+}
+
 export function getTranslateLocalStorage() {
-    if (localStorage.getItem('translate') === 'on') { translateON(); }
-    if (localStorage.getItem('translate') === 'off') { translateOFF(); }
+    if (localStorage.getItem('translate') === 'on') { translateAllON(); }
+    if (localStorage.getItem('translate') === 'off') { translateAllOFF(); }
 }
 
 

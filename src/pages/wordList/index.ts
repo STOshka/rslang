@@ -4,8 +4,9 @@ import { pageData, api } from './constans';
 import { wordsPageHTML } from './templates-html';
 import {
     getWordsData, constructWordBlocks, getGroup, getPage, setStatusPartitionBtns,
-    setStatusPaginationBtns, switchToPageNumber, sortWordsDataABC, shuffleWordsData, 
-    translateON, translateOFF, getPageLocalStorage
+    setStatusPaginationBtns, pressEnterKey, switchToPageNumber, sortWordsDataABC, 
+    shuffleWordsData, descriptionAllON, descriptionAllOFF, translateAllON, translateAllOFF, 
+    resetSettings, getPageLocalStorage
 } from './helpers';
 
 class WordListPage extends BasePage {
@@ -22,16 +23,23 @@ class WordListPage extends BasePage {
         const inputPageNumber = document.querySelector('.input-page-number') as HTMLInputElement;
         const sortBtn = document.querySelector('.sort-btn') as HTMLButtonElement;
         const shuffleBtn = document.querySelector('.shuffle-btn') as HTMLButtonElement;
-        const translateOnBtn = document.querySelector('.translate-on-btn') as HTMLButtonElement;
-        const translateOffBtn = document.querySelector('.translate-off-btn') as HTMLButtonElement;
+        const descriptionOnBtn = document.querySelector('.global-description-on-btn') as HTMLButtonElement;
+        const descriptionOffBtn = document.querySelector('.global-description-off-btn') as HTMLButtonElement;
+        const translateOnBtn = document.querySelector('.global-translate-on-btn') as HTMLButtonElement;
+        const translateOffBtn = document.querySelector('.global-translate-off-btn') as HTMLButtonElement;
+        const resetBtn = document.querySelector('.reset-btn') as HTMLButtonElement;
 
         partitionBtns.forEach((el: HTMLButtonElement) => el.addEventListener('click', getGroup));
         paginationBtns.forEach((el: HTMLButtonElement) => el.addEventListener('click', getPage));
+        inputPageNumber.addEventListener('keypress', pressEnterKey);
         submitPageNumber.addEventListener('click', switchToPageNumber);
         sortBtn.addEventListener('click', sortWordsDataABC);
         shuffleBtn.addEventListener('click', shuffleWordsData);
-        translateOnBtn.addEventListener('click', translateON);
-        translateOffBtn.addEventListener('click', translateOFF);
+        descriptionOnBtn.addEventListener('click', descriptionAllON);
+        descriptionOffBtn.addEventListener('click', descriptionAllOFF);
+        translateOnBtn.addEventListener('click', translateAllON);
+        translateOffBtn.addEventListener('click', translateAllOFF);
+        resetBtn.addEventListener('click', resetSettings);
 
         getPageLocalStorage();
         

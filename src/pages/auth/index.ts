@@ -94,7 +94,7 @@ class AuthPage extends BasePage {
                 throw new Error(Constant.USER_NOT_FOUND);
             }
             const answer = await response.json();
-            LocalStorage.instance.authUser(answer.userId, answer.token);
+            LocalStorage.instance.authUser(answer.userId, answer.name, answer.token);
             window.location.hash = ROUTES.HOME_PAGE;
         } catch (error: unknown) {
             this.showMessage(Constant.LOGIN_FAILURE);

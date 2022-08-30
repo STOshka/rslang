@@ -49,9 +49,16 @@ export interface GameWordStatistic {
 }
 
 export interface UserWord {
-    difficulty?: string;
+    difficulty?: WordDifficulty;
     optional?: {
         correct: number;
+        correctRow: number;
         found: number;
     };
+}
+
+export enum WordDifficulty {
+    normal = 'normal',
+    learning = 'learning',
+    hard = 'hard',
 }

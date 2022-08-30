@@ -2,7 +2,7 @@ import API from '../application/api';
 import LocalStorage from '../application/localStorage';
 import { Constants } from '../utils/constants';
 import { createHTMLElement, getAudioSvg, inRange, randomInt, shuffle } from '../utils/helpers';
-import { GameState, IWord, GameWordStatistic, ROUTES } from '../utils/types';
+import { GameState, IWord, GameWordStatistic, ROUTES, WordDifficulty } from '../utils/types';
 import BasePage from './basePage';
 import './statistics.css';
 
@@ -71,19 +71,31 @@ class BaseGamePage extends BasePage {
         const response = await this.api.getWordById(word._id);
         if (response.status === 404) {
             await this.api.createWordById(word._id, {
-                difficulty: 'normal',
-                optional: { correct: Number(isCorrect), found: 1 },
+                difficulty: WordDifficulty.normal,
+                optional: { correct: Number(isCorrect), correctRow: Number(isCorrect), found: 1 },
             });
         } else {
             const data = await response.json();
             if (!data.optional) {
                 data.optional = {
                     correct: 0,
+                    correctRow: 0,
                     found: 0,
                 };
             }
-            data.optional.correct += 1;
             data.optional.found += 1;
+            if (isCorrect) {
+                data.optional.correct += 1;
+                data.optional.correctRow += 1;
+                if (data.optional.correctRow === 3) {
+                    data.difficulty = WordDifficulty.learning;
+                }
+            } else {
+                data.optional.correctRow = 0;
+                if (data.difficulty === WordDifficulty.learning) {
+                    data.difficulty = WordDifficulty.normal;
+                }
+            }
             await this.api.updateWordById(word._id, {
                 difficulty: data.difficulty,
                 optional: data.optional,

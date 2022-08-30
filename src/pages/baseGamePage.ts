@@ -1,4 +1,5 @@
 import API from '../application/api';
+import LocalStorage from '../application/localStorage';
 import { Constants } from '../utils/constants';
 import { createHTMLElement, getAudioSvg, inRange, randomInt, shuffle } from '../utils/helpers';
 import { GameState, IWord, GameWordStatistic, ROUTES } from '../utils/types';
@@ -60,7 +61,13 @@ class BaseGamePage extends BasePage {
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
     }
-    async addWordstatistic(word: IWord, isCorrect: boolean) {
+    async addWordStatistic(word: IWord, isCorrect: boolean) {
+        if (LocalStorage.instance.isAuth()) {
+            await this.addWordforUser(word, isCorrect);
+        }
+        this.statistic = [...this.statistic, { word, isCorrect }];
+    }
+    async addWordforUser(word: IWord, isCorrect: boolean) {
         const response = await this.api.getWordById(word._id);
         if (response.status === 404) {
             await this.api.createWordById(word._id, {
@@ -82,7 +89,6 @@ class BaseGamePage extends BasePage {
                 optional: data.optional,
             });
         }
-        this.statistic = [...this.statistic, { word, isCorrect }];
     }
     playCurrentWordMusic() {
         const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);

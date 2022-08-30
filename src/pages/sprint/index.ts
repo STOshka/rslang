@@ -166,10 +166,10 @@ class SprintPage extends BaseGamePage {
     answerCheck(bthAnswer: boolean, word: IWord) {
         const score = document.querySelector('.sprint__score') as HTMLElement;
         if (bthAnswer === this.answer) {
-            super.addWordstatistic(word, true);
+            super.addWordStatistic(word, true);
             this.answerRight();
         } else {
-            super.addWordstatistic(word, false);
+            super.addWordStatistic(word, false);
             this.answerWrong();
         }
         score.innerText = `${this.score}`;

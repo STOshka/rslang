@@ -1,5 +1,6 @@
 import { Constants } from '../utils/constants';
 import { IWord } from '../utils/types';
+import LocalStorage from './localStorage';
 
 class API {
     url: string;
@@ -31,11 +32,28 @@ class API {
         return response;
     }
     async getWordList(group: number, page: number): Promise<IWord[]> {
+        const result: IWord[] = await (LocalStorage.instance.isAuth()
+            ? this.getAggregatedWords(group, page)
+            : await this.getWords(group, page));
+        return result;
+    }
+    async getWords(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(`words?group=${group}&page=${page}`, {
             method: 'GET',
         });
-        const result: IWord[] = await response.json();
-        return result;
+        return await response.json();
+    }
+    async getAggregatedWords(group: number, page: number): Promise<IWord[]> {
+        const response = await this.getRequest(
+            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                },
+            }
+        );
+        return (await response.json())[0].paginatedResults;
     }
 }
 

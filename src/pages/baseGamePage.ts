@@ -63,13 +63,17 @@ class BaseGamePage extends BasePage {
     async addWordstatistic(word: IWord, isCorrect: boolean) {
         const response = await this.api.getWordById(word._id);
         if (response.status === 404) {
-            await this.api.createWordById(word._id);
+            await this.api.createWordById(word._id, {
+                difficulty: 'normal',
+                optional: { found: 1 },
+            });
         } else {
             const data = await response.json();
-            if (data.optional) {
-                data.optional.found += 1;
-            }
-            await this.api.updateWordById(word._id, data);
+            data.optional.found = (data.optional || { found: 0 }).found + 1;
+            await this.api.updateWordById(word._id, {
+                difficulty: data.difficulty,
+                optional: data.optional,
+            });
         }
         this.statistic = [...this.statistic, { word, isCorrect }];
     }

@@ -1,5 +1,5 @@
 import { Constants } from '../utils/constants';
-import { IWord } from '../utils/types';
+import { IWord, UserWord } from '../utils/types';
 import LocalStorage from './localStorage';
 
 class API {
@@ -64,33 +64,22 @@ class API {
         });
         return response;
     }
-    async createWordById(wordId: string): Promise<Response> {
+    async changeWordById(wordId: string, method: string, data: UserWord): Promise<Response> {
         const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
-            method: 'POST',
+            method: method,
             headers: {
                 Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                difficulty: 'normal',
-                optional: { found: 1 },
-            }),
+            body: JSON.stringify(data),
         });
         return response;
     }
-    async updateWordById(wordId: string, body: any): Promise<Response> {
-        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                difficulty: body.difficulty,
-                optional: body.optional,
-            }),
-        });
-        return response;
+    async createWordById(wordId: string, data: UserWord): Promise<Response> {
+        return this.changeWordById(wordId, 'POST', data);
+    }
+    async updateWordById(wordId: string, data: UserWord): Promise<Response> {
+        return this.changeWordById(wordId, 'PUT', data);
     }
 }
 

@@ -33,7 +33,7 @@ export interface IWord {
     textExampleTranslate: string;
     textMeaningTranslate: string;
     wordTranslate: string;
-    userWord?: any;
+    userWord: UserWord;
 }
 
 export enum GameState {
@@ -46,4 +46,11 @@ export enum GameState {
 export interface GameWordStatistic {
     word: IWord;
     isCorrect: boolean;
+}
+
+export interface UserWord {
+    difficulty?: string;
+    optional?: {
+        found: number
+    };
 }

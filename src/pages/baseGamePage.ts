@@ -60,7 +60,17 @@ class BaseGamePage extends BasePage {
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
     }
-    addWordstatistic(word: IWord, isCorrect: boolean) {
+    async addWordstatistic(word: IWord, isCorrect: boolean) {
+        const response = await this.api.getWordById(word._id);
+        if (response.status === 404) {
+            await this.api.createWordById(word._id);
+        } else {
+            const data = await response.json();
+            if (data.optional) {
+                data.optional.found += 1;
+            }
+            await this.api.updateWordById(word._id, data);
+        }
         this.statistic = [...this.statistic, { word, isCorrect }];
     }
     playCurrentWordMusic() {

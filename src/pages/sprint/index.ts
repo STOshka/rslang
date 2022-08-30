@@ -70,12 +70,7 @@ class SprintPage extends BaseGamePage {
         answerTranslate.innerText = `${this.wordRandom.wordTranslate}`;
         const answerWord = document.querySelector('.sprint__word') as HTMLElement;
         answerWord.innerText = `${this.words[this.wordIndex].word}`;
-        if (this.words[this.wordIndex].id === this.wordRandom.id) {
-            this.answer = true;
-        }
-        if (this.words[this.wordIndex].id !== this.wordRandom.id) {
-            this.answer = false;
-        }
+        this.answer = Boolean(this.words[this.wordIndex]._id === this.wordRandom._id);
         this.word = this.words[this.wordIndex] as IWord;
         return this.word;
     }

@@ -19,7 +19,7 @@ export enum ROUTES {
 }
 
 export interface IWord {
-    id: string;
+    _id: string;
     group: number;
     page: number;
     word: string;
@@ -33,6 +33,7 @@ export interface IWord {
     textExampleTranslate: string;
     textMeaningTranslate: string;
     wordTranslate: string;
+    userWord?: any;
 }
 
 export enum GameState {

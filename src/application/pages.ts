@@ -42,5 +42,5 @@ export const pages = [
         name: PAGES.ABOUT_THE_TEAM,
         route: ROUTES.ABOUT_THE_TEAM,
         page: AboutTheTeam,
-    }
+    },
 ];

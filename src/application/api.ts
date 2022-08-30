@@ -55,6 +55,43 @@ class API {
         );
         return (await response.json())[0].paginatedResults;
     }
+    async getWordById(wordId: string): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+            },
+        });
+        return response;
+    }
+    async createWordById(wordId: string): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                difficulty: 'normal',
+                optional: { found: 1 },
+            }),
+        });
+        return response;
+    }
+    async updateWordById(wordId: string, body: any): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                difficulty: body.difficulty,
+                optional: body.optional,
+            }),
+        });
+        return response;
+    }
 }
 
 export default API;

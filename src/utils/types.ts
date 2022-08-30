@@ -51,6 +51,7 @@ export interface GameWordStatistic {
 export interface UserWord {
     difficulty?: string;
     optional?: {
-        found: number
+        correct: number;
+        found: number;
     };
 }

@@ -65,11 +65,18 @@ class BaseGamePage extends BasePage {
         if (response.status === 404) {
             await this.api.createWordById(word._id, {
                 difficulty: 'normal',
-                optional: { found: 1 },
+                optional: { correct: Number(isCorrect), found: 1 },
             });
         } else {
             const data = await response.json();
-            data.optional.found = (data.optional || { found: 0 }).found + 1;
+            if (!data.optional) {
+                data.optional = {
+                    correct: 0,
+                    found: 0,
+                };
+            }
+            data.optional.correct += 1;
+            data.optional.found += 1;
             await this.api.updateWordById(word._id, {
                 difficulty: data.difficulty,
                 optional: data.optional,

@@ -1,5 +1,6 @@
 import API from '../../application/api';
 import BasePage from '../basePage';
+import { addMainHTML } from './helpers';
 
 class MainPage extends BasePage {
     constructor(api: API) {
@@ -8,7 +9,7 @@ class MainPage extends BasePage {
     init(query: URLSearchParams) {
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = 'MAIN PAGE';
+        MAIN.innerHTML = addMainHTML();
     }
 }
 

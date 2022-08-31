@@ -25,7 +25,7 @@ class BasePage {
                             <a href="#sprint" class="header-nav-link header-nav-link-game">Sprint</a>
                         </div>
                     </li>
-                    <li class="header-nav-item"><a href="" class="header-nav-link">Statistics</a></li>
+                    <li class="header-nav-item"><a href="#statistics" class="header-nav-link">Statistics</a></li>
                 </ul>
             </nav>
         </header>

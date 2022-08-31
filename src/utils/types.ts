@@ -6,6 +6,7 @@ export enum PAGES {
     SPRINT_GAME = 'sprint',
     ERROR = 'error',
     ABOUT_THE_TEAM = 'about',
+    STATISTICS = 'statistics',
 }
 
 export enum ROUTES {
@@ -16,6 +17,7 @@ export enum ROUTES {
     SPRINT_GAME = '#sprint',
     ERROR = '#error',
     ABOUT_THE_TEAM = '#about',
+    STATISTICS = '#statistics',
 }
 
 export interface IWord {

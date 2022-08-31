@@ -13,6 +13,9 @@ class BaseGamePage extends BasePage {
     gameState = GameState.StartScreen;
     group = -1;
     page = -1;
+    correctStreak = 0;
+    longestStreak = 0;
+    score = 0;
     constructor(api: API) {
         super(api);
     }
@@ -61,11 +64,18 @@ class BaseGamePage extends BasePage {
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
     }
-    async addWordStatistic(word: IWord, isCorrect: boolean) {
+    async addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
         if (LocalStorage.instance.isAuth()) {
             await this.addWordforUser(word, isCorrect);
         }
+        if (isCorrect) {
+            this.score += potPoints;
+        }
         this.statistic = [...this.statistic, { word, isCorrect }];
+        this.correctStreak = isCorrect ? this.correctStreak + 1 : 0;
+        if (this.correctStreak > this.longestStreak) {
+            this.longestStreak = this.correctStreak;
+        }
     }
     async addWordforUser(word: IWord, isCorrect: boolean) {
         const response = await this.api.getWordById(word._id);
@@ -109,7 +119,10 @@ class BaseGamePage extends BasePage {
     endGame() {
         this.gameState = GameState.GameOver;
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = `<div>
+        MAIN.innerHTML = `
+        <div class="root__statistics">
+            <div class="root__statistics__label">Набрано баллов: ${this.score}</div>
+            <div class="root__statistics__label">Длинная серия правильных ответов: ${this.longestStreak}</div>
             <div class="root__statistics__correct">
                 <div class="root__statistics__span">
                     <span class="root__statistics__label">Ответили правильно:</span>
@@ -124,8 +137,8 @@ class BaseGamePage extends BasePage {
                 </div>
                 <div class="root__statistics__incorrect__words"></div>
             </div>
-            </div>
-            <button class="root__statistics__return">Вернуться к учебнику</button>`;
+            <button class="root__statistics__return">Вернуться к учебнику</button>
+        </div>`;
         (MAIN.querySelector('.root__statistics__return') as HTMLElement).addEventListener('click', () => {
             window.location.hash = ROUTES.WORD_LIST + `?group=${this.group}`;
         });

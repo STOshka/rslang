@@ -6,18 +6,14 @@
 }
 
 /* body {
+    position: fixed;
     background-image: url('../../assets/png/a.png');
+    overflow: auto;
 } */
-
-.btn {
-    width: 100px;
-    height: 30px;
-    background-color: #7d7d7d;
-}
 
 .words-partitions-btns-container {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     margin-right: auto;
 }
 
@@ -25,25 +21,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90px;
-    height: 30px;
+    width: 75px;
+    height: 25px;
+    border: none;
+    border-radius: 3px;
     font-size: 18px;
 }
 
-.settings-func-btns-container {
+.words-page-btns-container {
     position: fixed;
     top: 40px;
     left: 0;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
-    gap: 20px;
     width: 100%;
     height: 40px;
+    padding: 0 20px;
+}
+
+.settings-func-btns-container {
+    display: flex;
     align-items: center;
     gap: 5px;
-    padding: 0 20px;
 }
 
 .settings-func-btns-subcontainer {
@@ -54,22 +53,27 @@
 }
 
 .settings-btns-title {
-    padding-left: 20px;
+    padding-left: 5px;
     font-size: 20px;
+    color: var(--color1);
 }
 
 .settings-func-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 130px;
-    height: 30px;
+    width: 105px;
+    height: 25px;
+    background-color: var(--color1);
+    border: none;
+    border-radius: 3px;
     font-size: 16px;
-    line-height: 1;
 }
 
 .reset-btn {
-    margin-left: 25px;
+    width: 75px;
+    margin-left: 30px;
+
 }
 
 .global-translate-on-btn,
@@ -85,6 +89,7 @@
     gap: 5px;
     margin: 100px 40px 70px;
     background-color: #fdfef0;
+    overflow-y: auto;
 }
 
 .words-border-top {
@@ -237,6 +242,7 @@
     background-color: var(--color1);
     border-radius: 3px;
     color: var(--color4);
+    font-size: 26px;
 }
 
 .page-number-title {
@@ -294,10 +300,12 @@
 
 .active-btn,
 .active-nav {
-    background-color: rgb(113, 113, 113);
-    color: rgb(241, 241, 241);
-    border: 1px solid #7d7d7d;
+    pointer-events: none;
+    background-color: var(--color4);
+    color: var(--color1);
+    border: none;
     border-radius: 3px;
+
 }
 
 .inactive-btn {

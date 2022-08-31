@@ -86,7 +86,8 @@ export function constructWordBlocks() {
 export function getColorForGroup() {
     const body = document.querySelector('body') as HTMLElement;
     const headerNav = document.querySelector('.header-nav') as HTMLElement;
-    const settingsBtnsContainer = document.querySelector('.settings-func-btns-container') as HTMLElement;
+    const wordsPageBtnsContainer = document.querySelector('.words-page-btns-container') as HTMLElement;
+    const wordsPartitionBtn = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
     const wordsPagination = document.querySelector('.words-pagination') as HTMLElement;
     const wordsContainer = document.querySelector('.words-container') as HTMLElement;
     const wordsBorderTop = document.querySelector('.words-border-top') as HTMLElement;
@@ -96,7 +97,8 @@ export function getColorForGroup() {
 
     body.style.backgroundColor = `${colorsArray1[pageData.group]}`;
     headerNav.style.backgroundColor = `${colorsArray1[pageData.group]}`;
-    settingsBtnsContainer.style.backgroundColor = `${colorsArray1[pageData.group]}`;
+    wordsPageBtnsContainer.style.backgroundColor = `${colorsArray1[pageData.group]}`;
+    wordsPartitionBtn.forEach((el, i) => el.style.backgroundColor = `${colorsArray1[i]}`)
     wordsPagination.style.backgroundColor = `${colorsArray1[pageData.group]}`;
     wordsContainer.style.backgroundColor = `${colorsArray2[pageData.group]}`;
     wordsBorderTop.style.backgroundColor = `${colorsArray2[pageData.group]}`;

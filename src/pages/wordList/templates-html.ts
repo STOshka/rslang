@@ -119,14 +119,6 @@ const wordContainerHTML = (`
 export const wordsPageHTML = (`
     <header class="header">
     <nav class="header-nav">
-        <div class="words-partitions-btns-container">
-            <button class="words-partition-btn" id="group0" data-group="0">Раздел 1</button>
-            <button class="words-partition-btn" id="group1" data-group="1">Раздел 2</button>
-            <button class="words-partition-btn" id="group2" data-group="2">Раздел 3</button>
-            <button class="words-partition-btn" id="group3" data-group="3">Раздел 4</button>
-            <button class="words-partition-btn" id="group4" data-group="4">Раздел 5</button>
-            <button class="words-partition-btn" id="group5" data-group="5">Раздел 6</button>
-        </div>
         <ul class="header-nav-list">
             <li class="header-nav-item"><a href="" class="header-nav-link">Главная</a></li>
             <li class="header-nav-item"><a href="#wordlist" class="header-nav-link active-nav">Учебник</a></li>
@@ -137,24 +129,37 @@ export const wordsPageHTML = (`
                 </div>
             </li>
             <li class="header-nav-item"><a href="" class="header-nav-link">Статистика</a></li>
+            <li class="header-nav-item"><a href="#auth" class="header-nav-link">Авторизация</a></li>
         </ul>
     </nav> 
-    <div class="settings-func-btns-container">
-        <button class="settings-func-btn sort-btn">Сортировка А-Я</button>
-        <button class="settings-func-btn shuffle-btn">Перемешать</button>
-        <div class="settings-func-btns-subcontainer">
-            <p class="settings-btns-title">Значение</p>
-            <button class="settings-func-btn global-description-on-btn">Вкл</button>
-            <button class="settings-func-btn global-description-off-btn">Выкл</button>
-        </div>
-        <div class="settings-func-btns-subcontainer">
-            <p class="settings-btns-title">Перевод</p>
-            <button class="settings-func-btn global-translate-on-btn">Вкл</button>
-            <button class="settings-func-btn global-translate-off-btn">Выкл</button>
-        </div>
-        <button class="settings-func-btn reset-btn">Сброс настроек</button>
-    </div>
     </header>
+
+    <div class="words-page-btns-container">
+        <div class="words-partitions-btns-container">
+            <button class="words-partition-btn" id="group0" data-group="0">Часть 1</button>
+            <button class="words-partition-btn" id="group1" data-group="1">Часть 2</button>
+            <button class="words-partition-btn" id="group2" data-group="2">Часть 3</button>
+            <button class="words-partition-btn" id="group3" data-group="3">Часть 4</button>
+            <button class="words-partition-btn" id="group4" data-group="4">Часть 5</button>
+            <button class="words-partition-btn" id="group5" data-group="5">Часть 6</button>
+        </div>
+        <div class="settings-func-btns-container">
+            <div class="settings-func-btns-subcontainer">
+                <p class="settings-btns-title">Значение</p>
+                <button class="settings-func-btn global-description-on-btn">Вкл</button>
+                <button class="settings-func-btn global-description-off-btn">Выкл</button>
+            </div>
+            <div class="settings-func-btns-subcontainer">
+                <p class="settings-btns-title">Перевод</p>
+                <button class="settings-func-btn global-translate-on-btn">Вкл</button>
+                <button class="settings-func-btn global-translate-off-btn">Выкл</button>
+            </div>
+            <button class="settings-func-btn sort-btn">По алфавиту</button>
+            <button class="settings-func-btn shuffle-btn">Перемешать</button>
+            <button class="settings-func-btn reset-btn">Сбросить</button>
+        </div>
+    </div>
+    
     <div class="words-border-top"></div>
     <div class="words-border-right"></div>
     <div class="words-border-bottom"></div>
@@ -164,12 +169,12 @@ export const wordsPageHTML = (`
     </div>
     <div class="words-pagination">
         <button class="pagination-page-btn pagination-page-previos" data-page="previos"> ❰❰❰ </button>
-        <h3 class="page-number-title">Page</h3>
+        <h3 class="page-number-title">Стр.:</h3>
         <div class="input-container">
             <input class="input-page-number" type="text">
             <input class="submit-page-number" placeholder="⎆" readonly="readonly">
         </div>
-        <h3 class="page-number-title">from 30</h3>
+        <h3 class="page-number-title">из 30</h3>
         <button class="pagination-page-btn pagination-page-next" data-page="next"> ❱❱❱ </button>
     </div>
 `);

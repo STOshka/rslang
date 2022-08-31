@@ -102,9 +102,9 @@ p {
 
 .active-btn,
 .active-nav {
-    background-color: rgb(113, 113, 113);
+    background-color: var(--color4);
     color: rgb(241, 241, 241);
-    border: 1px solid #7d7d7d;
+    border: none;
     border-radius: 3px;
 }
 

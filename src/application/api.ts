@@ -1,5 +1,5 @@
 import { Constants } from '../utils/constants';
-import { IWord } from '../utils/types';
+import { IWord, UserWord } from '../utils/types';
 import LocalStorage from './localStorage';
 
 class API {
@@ -54,6 +54,32 @@ class API {
             }
         );
         return (await response.json())[0].paginatedResults;
+    }
+    async getWordById(wordId: string): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+            },
+        });
+        return response;
+    }
+    async changeWordById(wordId: string, method: string, data: UserWord): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+            method: method,
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        return response;
+    }
+    async createWordById(wordId: string, data: UserWord): Promise<Response> {
+        return this.changeWordById(wordId, 'POST', data);
+    }
+    async updateWordById(wordId: string, data: UserWord): Promise<Response> {
+        return this.changeWordById(wordId, 'PUT', data);
     }
 }
 

@@ -21,7 +21,7 @@ export enum ROUTES {
 }
 
 export interface IWord {
-    id: string;
+    _id: string;
     group: number;
     page: number;
     word: string;
@@ -35,6 +35,7 @@ export interface IWord {
     textExampleTranslate: string;
     textMeaningTranslate: string;
     wordTranslate: string;
+    userWord: UserWord;
 }
 
 export enum GameState {
@@ -47,4 +48,19 @@ export enum GameState {
 export interface GameWordStatistic {
     word: IWord;
     isCorrect: boolean;
+}
+
+export interface UserWord {
+    difficulty?: WordDifficulty;
+    optional?: {
+        correct: number;
+        correctRow: number;
+        found: number;
+    };
+}
+
+export enum WordDifficulty {
+    normal = 'normal',
+    learning = 'learning',
+    hard = 'hard',
 }

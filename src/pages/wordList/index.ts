@@ -3,11 +3,12 @@ import BasePage from '../basePage';
 import { pageData, api } from './constans';
 import { wordsPageHTML } from './templates-html';
 import {
-    getWordsData, constructWordBlocks, getGroup, getPage, setStatusPartitionBtns,
+    getWordsData, constructWordBlocks, getGroup, getColorForGroup, getPage, setStatusPartitionBtns,
     setStatusPaginationBtns, pressEnterKey, switchToPageNumber, sortWordsDataABC, 
     shuffleWordsData, descriptionAllON, descriptionAllOFF, translateAllON, translateAllOFF, 
     resetSettings, getPageLocalStorage
 } from './helpers';
+import './words-list.css';
 
 class WordListPage extends BasePage {
     constructor(api: API) {
@@ -49,6 +50,7 @@ class WordListPage extends BasePage {
 
         inputPageNumber.value = String((pageData.page + 1));
 
+        getColorForGroup();
         setStatusPartitionBtns();
         setStatusPaginationBtns();
     }

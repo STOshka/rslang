@@ -3,6 +3,7 @@ import { IWord } from "../../utils/types";
 import { pageData, wordsData } from "./constans";
 import { soundLogoSvg } from "./templates-html";
 import { switchPage } from ".";
+import { colorsArray1, colorsArray2 } from "./data";
 
 export function getWordsData(response: IWord[]) {
     wordsData.splice(0, wordsData.length);
@@ -82,13 +83,38 @@ export function constructWordBlocks() {
     document.documentElement.scrollTop = 0;
 }
 
+export function getColorForGroup() {
+    const body = document.querySelector('body') as HTMLElement;
+    const headerNav = document.querySelector('.header-nav') as HTMLElement;
+    const wordsPageBtnsContainer = document.querySelector('.words-page-btns-container') as HTMLElement;
+    const wordsPartitionBtn = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
+    const wordsPagination = document.querySelector('.words-pagination') as HTMLElement;
+    const wordsContainer = document.querySelector('.words-container') as HTMLElement;
+    const wordsBorderTop = document.querySelector('.words-border-top') as HTMLElement;
+    const wordsBorderRight = document.querySelector('.words-border-right') as HTMLElement;
+    const wordsBorderBottom = document.querySelector('.words-border-bottom') as HTMLElement;
+    const wordsBorderLeft = document.querySelector('.words-border-left') as HTMLElement;
+
+    body.style.backgroundColor = `${colorsArray1[pageData.group]}`;
+    headerNav.style.backgroundColor = `${colorsArray1[pageData.group]}`;
+    wordsPageBtnsContainer.style.backgroundColor = `${colorsArray1[pageData.group]}`;
+    wordsPartitionBtn.forEach((el, i) => el.style.backgroundColor = `${colorsArray1[i]}`)
+    wordsPagination.style.backgroundColor = `${colorsArray1[pageData.group]}`;
+    wordsContainer.style.backgroundColor = `${colorsArray2[pageData.group]}`;
+    wordsBorderTop.style.backgroundColor = `${colorsArray2[pageData.group]}`;
+    wordsBorderRight.style.backgroundColor = `${colorsArray2[pageData.group]}`;
+    wordsBorderBottom.style.backgroundColor = `${colorsArray2[pageData.group]}`;
+    wordsBorderLeft.style.backgroundColor = `${colorsArray2[pageData.group]}`;
+}
+
 export function getGroup(event: MouseEvent) {
     if (!(event.target instanceof HTMLButtonElement)) { return; }
 
     const partiton = Number(event.target?.dataset.group);
+
     pageData.group = partiton;
     pageData.page = 0;
-
+    
     setPageLocalStorage();
     switchPage.init();
     setStatusPartitionBtns();

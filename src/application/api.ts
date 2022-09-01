@@ -1,5 +1,5 @@
 import { Constants } from '../utils/constants';
-import { IWord, UserWord } from '../utils/types';
+import { GameStats, IWord, UserWord } from '../utils/types';
 import LocalStorage from './localStorage';
 
 class API {
@@ -91,7 +91,7 @@ class API {
         });
         return response;
     }
-    async updateStatistic(data: any): Promise<Response> {
+    async updateStatistic(data: { optional: { games: Record<string, Record<string, GameStats>> } }): Promise<Response> {
         const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/statistics`, {
             method: 'PUT',
             headers: {

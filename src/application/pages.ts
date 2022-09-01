@@ -48,5 +48,5 @@ export const pages = [
         name: PAGES.STATISTICS,
         route: ROUTES.STATISTICS,
         page: Statistics,
-    }
+    },
 ];

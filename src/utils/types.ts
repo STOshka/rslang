@@ -54,7 +54,7 @@ export interface UserWord {
     difficulty?: WordDifficulty;
     optional?: {
         correct: number;
-        correctRow: number;
+        repeat: number;
         found: number;
     };
 }
@@ -66,7 +66,6 @@ export enum WordDifficulty {
 }
 
 export interface GameStats {
-    date: string;
     newWords: number;
     learningWords: number;
     correct: number;
@@ -78,6 +77,6 @@ export interface FullGameStats {
     id?: string;
     learnedWords?: number;
     optional: {
-        games: Record<string, GameStats[]>;
+        games: Record<string, Record<string, GameStats>>;
     };
 }

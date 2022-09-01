@@ -86,7 +86,7 @@ class BaseGamePage extends BasePage {
         if (response.status === 404) {
             await this.api.createWordById(word._id, {
                 difficulty: WordDifficulty.normal,
-                optional: { correct: Number(isCorrect), correctRow: Number(isCorrect), found: 1 },
+                optional: { correct: Number(isCorrect), repeat: Number(isCorrect), found: 1 },
             });
             this.newWords += 1;
         } else {
@@ -94,20 +94,20 @@ class BaseGamePage extends BasePage {
             if (!data.optional) {
                 data.optional = {
                     correct: 0,
-                    correctRow: 0,
+                    repeat: 0,
                     found: 0,
                 };
             }
             data.optional.found += 1;
             if (isCorrect) {
                 data.optional.correct += 1;
-                data.optional.correctRow += 1;
-                if (data.optional.correctRow === 3) {
+                data.optional.repeat += 1;
+                if (data.optional.repeat === 3) {
                     data.difficulty = WordDifficulty.learning;
                     this.learningWords += 1;
                 }
             } else {
-                data.optional.correctRow = 0;
+                data.optional.repeat = 0;
                 if (data.difficulty === WordDifficulty.learning) {
                     data.difficulty = WordDifficulty.normal;
                 }
@@ -179,48 +179,36 @@ class BaseGamePage extends BasePage {
             response.status === 404
                 ? {
                       optional: {
-                          games: {},
+                          games: {
+                              audiochallenge: {},
+                              sprint: {},
+                              common: {},
+                          },
                       },
                   }
                 : await response.json();
-        data.optional.games[this.game_name] = this.updateUserStatistic(data.optional.games[this.game_name]);
-        data.optional.games['common'] = this.updateUserStatistic(data.optional.games['common']);
+        const date = new Date().toLocaleDateString();
+        data.optional.games[this.game_name][date] = this.updateUserStatistic(data.optional.games[this.game_name][date]);
+        data.optional.games['common'][date] = this.updateUserStatistic(data.optional.games['common'][date]);
         await this.api.updateStatistic({ optional: data.optional });
     }
-    updateUserStatistic(data: GameStats[]) {
-        const date = new Date().toLocaleDateString();
+    updateUserStatistic(data: GameStats): GameStats {
         if (!data) {
-            return [
-                {
-                    date: date,
-                    newWords: this.newWords,
-                    learningWords: this.learningWords,
-                    correct: this.statistic.filter((el) => el.isCorrect).length,
-                    answers: this.statistic.length,
-                    streak: this.longestStreak,
-                },
-            ];
-        }
-        const findDate = data.find((el) => el.date === date);
-        if (findDate) {
-            findDate.newWords += this.newWords;
-            findDate.learningWords += this.learningWords;
-            findDate.correct += this.statistic.filter((el) => el.isCorrect).length;
-            findDate.answers += this.statistic.length;
-            findDate.streak = findDate.streak > this.longestStreak ? findDate.streak : this.longestStreak;
-            return data;
-        }
-        return [
-            ...data,
-            {
-                date: date,
+            return {
                 newWords: this.newWords,
                 learningWords: this.learningWords,
                 correct: this.statistic.filter((el) => el.isCorrect).length,
                 answers: this.statistic.length,
                 streak: this.longestStreak,
-            },
-        ];
+            };
+        }
+        return {
+            newWords: data.newWords + this.newWords,
+            learningWords: data.newWords + this.learningWords,
+            correct: data.newWords + this.statistic.filter((el) => el.isCorrect).length,
+            answers: data.newWords + this.statistic.length,
+            streak: data.streak > this.longestStreak ? data.streak : this.longestStreak,
+        };
     }
 }
 

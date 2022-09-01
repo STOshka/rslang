@@ -1,10 +1,11 @@
 import API from '../../application/api';
 import BaseGamePage from '../baseGamePage';
 import { IWord, GameState } from '../../utils/types';
-import { shuffle, createHTMLElement, randomInt } from '../../utils/helpers';
+import { shuffle, randomInt } from '../../utils/helpers';
 import './circles.css';
 
 class SprintPage extends BaseGamePage {
+    game_name = 'sprint';
     isCorrect = false;
     time = 60;
     constructor(api: API) {

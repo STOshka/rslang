@@ -64,3 +64,20 @@ export enum WordDifficulty {
     learning = 'learning',
     hard = 'hard',
 }
+
+export interface GameStats {
+    date: string;
+    newWords: number;
+    learningWords: number;
+    correct: number;
+    answers: number;
+    streak: number;
+}
+
+export interface FullGameStats {
+    id?: string;
+    learnedWords?: number;
+    optional: {
+        games: Record<string, GameStats[]>;
+    };
+}

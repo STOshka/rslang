@@ -2,11 +2,12 @@ import API from '../application/api';
 import LocalStorage from '../application/localStorage';
 import { Constants } from '../utils/constants';
 import { createHTMLElement, getAudioSvg, inRange, randomInt, shuffle } from '../utils/helpers';
-import { GameState, IWord, GameWordStatistic, ROUTES, WordDifficulty } from '../utils/types';
+import { GameState, IWord, GameWordStatistic, ROUTES, WordDifficulty, FullGameStats, GameStats } from '../utils/types';
 import BasePage from './basePage';
 import './statistics.css';
 
 class BaseGamePage extends BasePage {
+    game_name = '';
     words: IWord[] = [];
     wordIndex = -1;
     statistic: GameWordStatistic[] = [];
@@ -16,6 +17,9 @@ class BaseGamePage extends BasePage {
     correctStreak = 0;
     longestStreak = 0;
     score = 0;
+
+    newWords = 0;
+    learningWords = 0;
     constructor(api: API) {
         super(api);
     }
@@ -64,9 +68,9 @@ class BaseGamePage extends BasePage {
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
     }
-    async addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
+    addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
         if (LocalStorage.instance.isAuth()) {
-            await this.addWordforUser(word, isCorrect);
+            this.addWordforUser(word, isCorrect);
         }
         if (isCorrect) {
             this.score += potPoints;
@@ -84,6 +88,7 @@ class BaseGamePage extends BasePage {
                 difficulty: WordDifficulty.normal,
                 optional: { correct: Number(isCorrect), correctRow: Number(isCorrect), found: 1 },
             });
+            this.newWords += 1;
         } else {
             const data = await response.json();
             if (!data.optional) {
@@ -99,6 +104,7 @@ class BaseGamePage extends BasePage {
                 data.optional.correctRow += 1;
                 if (data.optional.correctRow === 3) {
                     data.difficulty = WordDifficulty.learning;
+                    this.learningWords += 1;
                 }
             } else {
                 data.optional.correctRow = 0;
@@ -143,6 +149,7 @@ class BaseGamePage extends BasePage {
             window.location.hash = ROUTES.WORD_LIST + `?group=${this.group}`;
         });
         this.generateStatistic();
+        this.updateStatistic();
     }
     generateStatistic() {
         const CORRECT_WORDS = document.querySelector('.root__statistics__correct__words') as HTMLElement;
@@ -162,6 +169,58 @@ class BaseGamePage extends BasePage {
                 audio.play();
             });
         });
+    }
+    async updateStatistic() {
+        if (!LocalStorage.instance.isAuth() || this.game_name === '') {
+            return null;
+        }
+        const response = await this.api.getStatistic();
+        const data: FullGameStats =
+            response.status === 404
+                ? {
+                      optional: {
+                          games: {},
+                      },
+                  }
+                : await response.json();
+        data.optional.games[this.game_name] = this.updateUserStatistic(data.optional.games[this.game_name]);
+        data.optional.games['common'] = this.updateUserStatistic(data.optional.games['common']);
+        await this.api.updateStatistic({ optional: data.optional });
+    }
+    updateUserStatistic(data: GameStats[]) {
+        const date = new Date().toLocaleDateString();
+        if (!data) {
+            return [
+                {
+                    date: date,
+                    newWords: this.newWords,
+                    learningWords: this.learningWords,
+                    correct: this.statistic.filter((el) => el.isCorrect).length,
+                    answers: this.statistic.length,
+                    streak: this.longestStreak,
+                },
+            ];
+        }
+        const findDate = data.find((el) => el.date === date);
+        if (findDate) {
+            findDate.newWords += this.newWords;
+            findDate.learningWords += this.learningWords;
+            findDate.correct += this.statistic.filter((el) => el.isCorrect).length;
+            findDate.answers += this.statistic.length;
+            findDate.streak = findDate.streak > this.longestStreak ? findDate.streak : this.longestStreak;
+            return data;
+        }
+        return [
+            ...data,
+            {
+                date: date,
+                newWords: this.newWords,
+                learningWords: this.learningWords,
+                correct: this.statistic.filter((el) => el.isCorrect).length,
+                answers: this.statistic.length,
+                streak: this.longestStreak,
+            },
+        ];
     }
 }
 

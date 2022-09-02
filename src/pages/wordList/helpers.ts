@@ -1,9 +1,9 @@
-import { Constants } from "../../utils/constants";
-import { IWord } from "../../utils/types";
-import { pageData, wordsData } from "./constans";
-import { soundLogoSvg } from "./templates-html";
-import { switchPage } from ".";
-import { colorsArray1, colorsArray2 } from "./data";
+import { Constants } from '../../utils/constants';
+import { IWord } from '../../utils/types';
+import { pageData, wordsData } from './constans';
+import { soundLogoSvg } from './templates-html';
+import { switchPage } from '.';
+import { colorsArray1, colorsArray2 } from './data';
 
 export function getWordsData(response: IWord[]) {
     wordsData.splice(0, wordsData.length);
@@ -20,7 +20,9 @@ export function constructWordBlocks() {
     wordsContainer.innerHTML = '';
 
     wordsData.forEach((el: IWord, i) => {
-        wordsContainer.insertAdjacentHTML('beforeend', `
+        wordsContainer.insertAdjacentHTML(
+            'beforeend',
+            `
     <div class="word-container" id="block${i}" data-block="${i}">
         <div class="word-img-container">
             <img src="${Constants.URL}${el.image}" class="word-img">
@@ -57,7 +59,8 @@ export function constructWordBlocks() {
             <button class="word-btn word-btn-difficult" data-id="${i}">Difficult</button>
         </div>
     </div>     
-    `);
+    `
+        );
     });
     const soundBtn = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
     const stopSoundBtn = document.querySelectorAll('.word-stop-sound-btn') as NodeListOf<HTMLButtonElement>;
@@ -98,7 +101,7 @@ export function getColorForGroup() {
     body.style.backgroundColor = `${colorsArray1[pageData.group]}`;
     headerNav.style.backgroundColor = `${colorsArray1[pageData.group]}`;
     wordsPageBtnsContainer.style.backgroundColor = `${colorsArray1[pageData.group]}`;
-    wordsPartitionBtn.forEach((el, i) => el.style.backgroundColor = `${colorsArray1[i]}`)
+    wordsPartitionBtn.forEach((el, i) => (el.style.backgroundColor = `${colorsArray1[i]}`));
     wordsPagination.style.backgroundColor = `${colorsArray1[pageData.group]}`;
     wordsContainer.style.backgroundColor = `${colorsArray2[pageData.group]}`;
     wordsBorderTop.style.backgroundColor = `${colorsArray2[pageData.group]}`;
@@ -108,30 +111,34 @@ export function getColorForGroup() {
 }
 
 export function getGroup(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
     const partiton = Number(event.target?.dataset.group);
 
     pageData.group = partiton;
     pageData.page = 0;
-    
+
     setPageLocalStorage();
     switchPage.init();
     setStatusPartitionBtns();
 }
 
 export function getPage(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
-    const pagination = (event.target?.dataset.page);
+    const pagination = event.target?.dataset.page;
 
     if (pagination === 'previos') {
         setStatusPaginationBtns();
-        pageData.page = (pageData.page - 1);
+        pageData.page = pageData.page - 1;
     }
     if (pagination === 'next') {
         setStatusPaginationBtns();
-        pageData.page = (pageData.page + 1);
+        pageData.page = pageData.page + 1;
     }
 
     setPageLocalStorage();
@@ -152,10 +159,18 @@ export function setStatusPaginationBtns() {
     const paginationPreviosBtn = document.querySelector('.pagination-page-previos') as HTMLButtonElement;
     const paginationNextBtn = document.querySelector('.pagination-page-next') as HTMLElement;
 
-    if (pageData.page <= 0) { paginationPreviosBtn.classList.add('inactive-btn'); }
-    if (pageData.page > 0) { paginationPreviosBtn.classList.remove('inactive-btn'); }
-    if (pageData.page >= Constants.PAGE_PER_GROUP - 1) { paginationNextBtn.classList.add('inactive-btn'); }
-    if (pageData.page < Constants.PAGE_PER_GROUP - 1) { paginationNextBtn.classList.remove('inactive-btn'); }
+    if (pageData.page <= 0) {
+        paginationPreviosBtn.classList.add('inactive-btn');
+    }
+    if (pageData.page > 0) {
+        paginationPreviosBtn.classList.remove('inactive-btn');
+    }
+    if (pageData.page >= Constants.PAGE_PER_GROUP - 1) {
+        paginationNextBtn.classList.add('inactive-btn');
+    }
+    if (pageData.page < Constants.PAGE_PER_GROUP - 1) {
+        paginationNextBtn.classList.remove('inactive-btn');
+    }
 }
 
 export function switchToPageNumber() {
@@ -167,7 +182,7 @@ export function switchToPageNumber() {
     switchPage.init();
 }
 
-export function pressEnterKey(event: KeyboardEvent)  {
+export function pressEnterKey(event: KeyboardEvent) {
     if (event.key === 'Enter') {
         event.preventDefault();
         switchToPageNumber();
@@ -181,7 +196,7 @@ export function sortWordsDataABC() {
     sortBtn.classList.add('active-btn');
     shuffleBtn.classList.remove('active-btn');
 
-    wordsData.sort((a, b) => (a.word).toLowerCase() > (b.word).toLowerCase() ? 1 : -1);
+    wordsData.sort((a, b) => (a.word.toLowerCase() > b.word.toLowerCase() ? 1 : -1));
     localStorage.setItem('sortWords', 'sortABC');
 
     constructWordBlocks();
@@ -207,7 +222,7 @@ export function descriptionAllON() {
 
     descriptionOnBtn.classList.add('active-btn');
     descriptionOffBtn.classList.remove('active-btn');
-    textDescription.forEach(el => el.classList.remove('display-none'));
+    textDescription.forEach((el) => el.classList.remove('display-none'));
 
     localStorage.setItem('description', 'on');
 }
@@ -219,7 +234,7 @@ export function descriptionAllOFF() {
 
     descriptionOffBtn.classList.add('active-btn');
     descriptionOnBtn.classList.remove('active-btn');
-    textDescription.forEach(el => el.classList.add('display-none'));
+    textDescription.forEach((el) => el.classList.add('display-none'));
 
     localStorage.setItem('description', 'off');
 }
@@ -231,7 +246,7 @@ export function translateAllON() {
 
     translateOnBtn.classList.add('active-btn');
     translateOffBtn.classList.remove('active-btn');
-    textTranslate.forEach(el => el.classList.remove('display-none'));
+    textTranslate.forEach((el) => el.classList.remove('display-none'));
 
     localStorage.setItem('translate', 'on');
 }
@@ -243,15 +258,17 @@ export function translateAllOFF() {
 
     translateOffBtn.classList.add('active-btn');
     translateOnBtn.classList.remove('active-btn');
-    textTranslate.forEach(el => el.classList.add('display-none'));
-    
+    textTranslate.forEach((el) => el.classList.add('display-none'));
+
     localStorage.setItem('translate', 'off');
 }
 
 function toggleWordTranslate(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
-    const currentBtnId = (event.target?.dataset.id);
+    const currentBtnId = event.target?.dataset.id;
     const wordTranslate = document.getElementById(`translate-text-container${currentBtnId}`) as HTMLElement;
 
     if (event.target.classList.contains('word-translate-btn-on')) {
@@ -263,9 +280,11 @@ function toggleWordTranslate(event: MouseEvent) {
 }
 
 function toggleDescription(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
-    const currentBtnId = (event.target?.dataset.id);
+    const currentBtnId = event.target?.dataset.id;
     const wordDescription = document.getElementById(`word-description-container${currentBtnId}`) as HTMLElement;
 
     if (event.target.classList.contains('word-description-on')) {
@@ -277,7 +296,9 @@ function toggleDescription(event: MouseEvent) {
 }
 
 function playWordAudio(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
     const soundBtn = document.querySelectorAll('.word-sound-btn') as NodeListOf<HTMLButtonElement>;
     const currentBtnId = Number(event.target?.dataset.id);
@@ -287,7 +308,7 @@ function playWordAudio(event: MouseEvent) {
     const stopCurrentBtn = document.getElementById(`stop-sound-btn${String(currentBtnId)}`) as HTMLButtonElement;
 
     if (event.target.classList.contains('word-sound-btn')) {
-        soundBtn.forEach(el => el.classList.add('no-click-btn'));
+        soundBtn.forEach((el) => el.classList.add('no-click-btn'));
         event.target.classList.add('active-btn');
         stopCurrentBtn.classList.remove('no-click-btn');
 
@@ -295,13 +316,13 @@ function playWordAudio(event: MouseEvent) {
         soundWord.onended = () => soundMeaning.play();
         soundMeaning.onended = () => soundExample.play();
         soundExample.onended = () => {
-            soundBtn.forEach(el => el.classList.remove('no-click-btn', 'active-btn'));
+            soundBtn.forEach((el) => el.classList.remove('no-click-btn', 'active-btn'));
             stopCurrentBtn.classList.add('no-click-btn');
-        }
+        };
     }
 
     if (event.target.classList.contains('word-stop-sound-btn')) {
-        soundBtn.forEach(el => el.classList.remove('no-click-btn', 'active-btn'));
+        soundBtn.forEach((el) => el.classList.remove('no-click-btn', 'active-btn'));
 
         // soundWord.pause();
         // soundWord.currentTime = 0;
@@ -315,7 +336,9 @@ function playWordAudio(event: MouseEvent) {
 }
 
 function markStudiedWord(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
     const studiedBtnId = Number(event.target?.dataset.id);
 
@@ -323,7 +346,9 @@ function markStudiedWord(event: MouseEvent) {
 }
 
 function markDifficultWord(event: MouseEvent) {
-    if (!(event.target instanceof HTMLButtonElement)) { return; }
+    if (!(event.target instanceof HTMLButtonElement)) {
+        return;
+    }
 
     const difficultBtnId = Number(event.target?.dataset.id);
 
@@ -347,18 +372,28 @@ export function getPageLocalStorage() {
 }
 
 export function getSortLocalStorage() {
-    if (localStorage.getItem('sortWords') === 'shuffle') { shuffleWordsData(); }
-    if (localStorage.getItem('sortWords') !== 'shuffle') { sortWordsDataABC(); }
+    if (localStorage.getItem('sortWords') === 'shuffle') {
+        shuffleWordsData();
+    }
+    if (localStorage.getItem('sortWords') !== 'shuffle') {
+        sortWordsDataABC();
+    }
 }
 
 export function getDescriptionLocalStorage() {
-    if (localStorage.getItem('description') === 'on') { descriptionAllON(); }
-    if (localStorage.getItem('description') === 'off') { descriptionAllOFF(); }
+    if (localStorage.getItem('description') === 'on') {
+        descriptionAllON();
+    }
+    if (localStorage.getItem('description') === 'off') {
+        descriptionAllOFF();
+    }
 }
 
 export function getTranslateLocalStorage() {
-    if (localStorage.getItem('translate') === 'on') { translateAllON(); }
-    if (localStorage.getItem('translate') === 'off') { translateAllOFF(); }
+    if (localStorage.getItem('translate') === 'on') {
+        translateAllON();
+    }
+    if (localStorage.getItem('translate') === 'off') {
+        translateAllOFF();
+    }
 }
-
-

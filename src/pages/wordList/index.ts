@@ -3,10 +3,23 @@ import BasePage from '../basePage';
 import { pageData, api } from './constans';
 import { wordsPageHTML } from './templates-html';
 import {
-    getWordsData, constructWordBlocks, getGroup, getColorForGroup, getPage, setStatusPartitionBtns,
-    setStatusPaginationBtns, pressEnterKey, switchToPageNumber, sortWordsDataABC, 
-    shuffleWordsData, descriptionAllON, descriptionAllOFF, translateAllON, translateAllOFF, 
-    resetSettings, getPageLocalStorage
+    getWordsData,
+    constructWordBlocks,
+    getGroup,
+    getColorForGroup,
+    getPage,
+    setStatusPartitionBtns,
+    setStatusPaginationBtns,
+    pressEnterKey,
+    switchToPageNumber,
+    sortWordsDataABC,
+    shuffleWordsData,
+    descriptionAllON,
+    descriptionAllOFF,
+    translateAllON,
+    translateAllOFF,
+    resetSettings,
+    getPageLocalStorage,
 } from './helpers';
 import './words-list.css';
 
@@ -43,12 +56,17 @@ class WordListPage extends BasePage {
         resetBtn.addEventListener('click', resetSettings);
 
         getPageLocalStorage();
-        
-        this.api.getWordList(pageData.group, pageData.page)
-            .then((response) => { getWordsData(response); })
-            .then(() => { constructWordBlocks(); })
 
-        inputPageNumber.value = String((pageData.page + 1));
+        this.api
+            .getWordList(pageData.group, pageData.page)
+            .then((response) => {
+                getWordsData(response);
+            })
+            .then(() => {
+                constructWordBlocks();
+            });
+
+        inputPageNumber.value = String(pageData.page + 1);
 
         getColorForGroup();
         setStatusPartitionBtns();

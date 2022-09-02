@@ -23,7 +23,7 @@
         "no-console": "off",
         "class-methods-use-this": "off",
         "no-explicit-any": "off",
-        "complexity": ["error", 5],
+        "complexity": ["error", 7],
         "max-lines-per-function": ["error", {"max": 25, "skipBlankLines": true}],
         "max-depth": ["error", 3],
         "max-nested-callbacks": ["error", 2],

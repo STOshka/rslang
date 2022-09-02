@@ -9,6 +9,7 @@ import './index.css';
 const I_DONT_KNOW = 'Я не знаю!';
 
 class AudioChallengePage extends BaseGamePage {
+    game_name = 'audiochallenge';
     answers: Answer[] = [];
     constructor(api: API) {
         super(api);

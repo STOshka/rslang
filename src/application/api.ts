@@ -1,5 +1,5 @@
 import { Constants } from '../utils/constants';
-import { IWord, UserWord } from '../utils/types';
+import { IWord, UserWord, FullGameStats } from '../utils/types';
 import LocalStorage from './localStorage';
 
 class API {
@@ -80,6 +80,26 @@ class API {
     }
     async updateWordById(wordId: string, data: UserWord): Promise<Response> {
         return this.changeWordById(wordId, 'PUT', data);
+    }
+    async getStatistic(): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/statistics`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+            },
+        });
+        return response;
+    }
+    async updateStatistic(data: FullGameStats): Promise<Response> {
+        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/statistics`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        return response;
     }
 }
 

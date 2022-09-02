@@ -1,26 +1,24 @@
 export const INFORMATION = [
     {
+        img: './assets/img/Sasha.jpg',
         name: 'Alexandr Stoyanov',
-        img: './assets/Sasha.jpg',
-        gitHubLink: 'https://github.com/stoshka',
-        gitHub: 'STOshka',
         role: 'Team Lead',
-        work: 'Координировал команду. Разработал архитектуру приложения. Настроил backend. Разработал игру "Аудиовызов". Реализовал авторизацию и статистику приложения.',
+        gitHubLink: 'https://github.com/stoshka',
+        work: `Координировал команду. Разработал архитектуру приложения. Настроил backend. 
+              Разработал игру "Аудиовызов". Реализовал авторизацию и статистику приложения.`,
     },
     {
-        name: 'Dzianis Valkovich',
-        img: './assets/Denis.jpg',
-        gitHubLink: 'https://github.com/DenisWilk',
-        gitHub: 'DenisWilk',
-        role: 'Developer',
-        work: 'Разработал дизайн приложения. Создал страницы учебника и словаря, а так же главную страницу.',
-    },
-    {
+        img: './assets/img/Yuliya.jpg',
         name: 'Yuliya Narkevich',
-        img: './assets/Yuliya.jpg',
-        gitHubLink: 'https://github.com/yuliya0503',
-        gitHub: 'Yuliya0503',
         role: 'Developer',
-        work: 'Разработала игру "Спринт". Создала страницы "О команде", "Статистика" и "Страницу ошибки".',
+        gitHubLink: 'https://github.com/yuliya0503',
+        work: `Разработала игру "Спринт". Создала страницы "О команде", "Статистика" и "Страницу ошибки".`,
+    },
+    {
+        img: './assets/img/Denis.jpg',
+        name: 'Dzianis Valkovich',
+        role: 'Developer',
+        gitHubLink: 'https://github.com/DenisWilk',
+        work: `Разработал дизайн приложения. Создал страницы учебника и словаря, а так же главную страницу.`,
     },
 ];

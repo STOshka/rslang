@@ -101,6 +101,7 @@ class BaseGamePage extends BasePage {
             data.optional.found += 1;
             if (isCorrect) {
                 data.optional.correct += 1;
+                data.optional.repeat = data.optional.repeat || 0;
                 data.optional.repeat += 1;
                 if (data.optional.repeat === 3) {
                     data.difficulty = WordDifficulty.learning;

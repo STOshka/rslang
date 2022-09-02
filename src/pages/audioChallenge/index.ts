@@ -9,6 +9,7 @@ import './index.css';
 const I_DONT_KNOW = 'Я не знаю!';
 
 class AudioChallengePage extends BaseGamePage {
+    game_name = 'audiochallenge';
     answers: Answer[] = [];
     constructor(api: API) {
         super(api);
@@ -85,16 +86,16 @@ class AudioChallengePage extends BaseGamePage {
         return this.gameState === GameState.Question ? this.skipWord() : this.nextWord();
     }
     skipWord() {
-        this.addWordstatistic(this.words[this.wordIndex], false);
+        this.addWordStatistic(this.words[this.wordIndex], false);
         this.finishQuestion();
     }
     checkAnswer(answer: Answer): void {
         if (answer.text === this.words[this.wordIndex].wordTranslate) {
             answer.markAsCorrect();
-            this.addWordstatistic(this.words[this.wordIndex], true);
+            this.addWordStatistic(this.words[this.wordIndex], true);
         } else {
             answer.markAsIncorrect();
-            this.addWordstatistic(this.words[this.wordIndex], false);
+            this.addWordStatistic(this.words[this.wordIndex], false);
         }
         this.finishQuestion();
     }

@@ -6,6 +6,7 @@ import SprintPage from '../pages/sprint';
 import ErrorPage from '../pages/error';
 import { PAGES, ROUTES } from '../utils/types';
 import AboutTheTeam from '../pages/aboutTheTeam';
+import Statistics from '../pages/statistics';
 
 export const pages = [
     {
@@ -42,5 +43,10 @@ export const pages = [
         name: PAGES.ABOUT_THE_TEAM,
         route: ROUTES.ABOUT_THE_TEAM,
         page: AboutTheTeam,
-    }
+    },
+    {
+        name: PAGES.STATISTICS,
+        route: ROUTES.STATISTICS,
+        page: Statistics,
+    },
 ];

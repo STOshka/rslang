@@ -6,6 +6,7 @@ export enum PAGES {
     SPRINT_GAME = 'sprint',
     ERROR = 'error',
     ABOUT_THE_TEAM = 'about',
+    STATISTICS = 'statistics',
 }
 
 export enum ROUTES {
@@ -16,10 +17,11 @@ export enum ROUTES {
     SPRINT_GAME = '#sprint',
     ERROR = '#error',
     ABOUT_THE_TEAM = '#about',
+    STATISTICS = '#statistics',
 }
 
 export interface IWord {
-    id: string;
+    _id: string;
     group: number;
     page: number;
     word: string;
@@ -33,6 +35,7 @@ export interface IWord {
     textExampleTranslate: string;
     textMeaningTranslate: string;
     wordTranslate: string;
+    userWord: UserWord;
 }
 
 export enum GameState {
@@ -45,4 +48,35 @@ export enum GameState {
 export interface GameWordStatistic {
     word: IWord;
     isCorrect: boolean;
+}
+
+export interface UserWord {
+    difficulty?: WordDifficulty;
+    optional?: {
+        correct: number;
+        repeat: number;
+        found: number;
+    };
+}
+
+export enum WordDifficulty {
+    normal = 'normal',
+    learning = 'learning',
+    hard = 'hard',
+}
+
+export interface GameStats {
+    newWords: number;
+    learningWords: number;
+    correct: number;
+    answers: number;
+    streak: number;
+}
+
+export interface FullGameStats {
+    id?: string;
+    learnedWords?: number;
+    optional: {
+        games: Record<string, Record<string, GameStats>>;
+    };
 }

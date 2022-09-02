@@ -34,6 +34,7 @@ class BasePage {
                     <li class="header-nav-item auth-bnt display-none">Выход
                         <div class="auth-out-logo"></div>
                     </li>
+                    <li class="header-nav-item"><a href="#statistics" class="header-nav-link">Statistics</a></li>
                 </ul>
             </nav>
         </header>

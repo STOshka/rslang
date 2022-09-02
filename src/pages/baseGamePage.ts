@@ -2,7 +2,16 @@ import API from '../application/api';
 import LocalStorage from '../application/localStorage';
 import { Constants } from '../utils/constants';
 import { createHTMLElement, getAudioSvg, inRange, randomInt, shuffle } from '../utils/helpers';
-import { GameState, IWord, GameWordStatistic, ROUTES, WordDifficulty, FullGameStats, GameStats } from '../utils/types';
+import {
+    GameState,
+    IWord,
+    GameWordStatistic,
+    ROUTES,
+    WordDifficulty,
+    FullGameStats,
+    GameStats,
+    UserWord,
+} from '../utils/types';
 import BasePage from './basePage';
 import './statistics.css';
 
@@ -103,18 +112,21 @@ class BaseGamePage extends BasePage {
             await this.api.updateWordById(word._id, data);
         }
     }
-    checkUserWordDifficulty(data: UserWord): string {
+    checkUserWord(data: UserWord): string {
         const needRepeat = {
             [WordDifficulty.normal]: 3,
             [WordDifficulty.learning]: -1,
             [WordDifficulty.hard]: 5,
         };
-        if (data.optional.repeat === needRepeat[data.difficulty]) {
-            this.learningWords += 1;
-            return WordDifficulty.learning;
+        if (!data.difficulty || !data.optional) {
+            return WordDifficulty.normal;
         }
         if (!Boolean(data.optional.repeat) && data.difficulty === WordDifficulty.learning) {
             return WordDifficulty.normal;
+        }
+        if (data.optional.repeat === needRepeat[data.difficulty]) {
+            this.learningWords += 1;
+            return WordDifficulty.learning;
         }
         return data.difficulty;
     }

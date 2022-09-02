@@ -13,8 +13,7 @@ class BasePage {
         console.log(query);
     }
     createHeader(): string {
-        return `
-        <header class="header">
+        return `<header class="header">
             <nav class="header-nav">
                 <ul class="header-nav-list">
                     <li class="header-nav-item"><a href="" class="header-nav-link">Главная</a></li>
@@ -31,18 +30,13 @@ class BasePage {
                             <div class="auth-in-logo"></div>
                         </a>
                     </li>
-                    <li class="header-nav-item auth-bnt display-none">Выход
-                        <div class="auth-out-logo"></div>
-                    </li>
-                    <li class="header-nav-item"><a href="#statistics" class="header-nav-link">Statistics</a></li>
+                    <li class="header-nav-item auth-bnt display-none">Выход<div class="auth-out-logo"></div></li>
                 </ul>
             </nav>
-        </header>
-        `;
+        </header>`;
     }
     createFooter(): string {
-        return `
-        <footer class="footer">
+        return `<footer class="footer">
                 <div class="footer-items">
                     <p class="footer-item">©</p>
                     <p class="footer-item">2022</p>
@@ -63,8 +57,7 @@ class BasePage {
                 </div>
                 </div>
                 <a class="rss-logo" href="https://rs.school/js/"></a>  
-       </footer>
-        `;
+       </footer>`;
     }
 }
 

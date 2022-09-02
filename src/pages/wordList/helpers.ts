@@ -1,9 +1,8 @@
-import { Constants } from '../../utils/constants';
+/*import { Constants } from '../../utils/constants';
 import { IWord } from '../../utils/types';
 import { pageData, wordsData } from './constans';
 import { soundLogoSvg } from './templates-html';
 import { switchPage } from '.';
-import { colorsArray1, colorsArray2 } from './data';
 
 export function getWordsData(response: IWord[]) {
     wordsData.splice(0, wordsData.length);
@@ -55,8 +54,8 @@ export function constructWordBlocks() {
                 <button class="word-btn word-description-on" data-id="${i}">ON</button>
                 <button class="word-btn word-description-off" data-id="${i}">OFF</button>
             </div>
-            <button class="word-btn word-btn-studied" data-id="${i}">Studied</button>
-            <button class="word-btn word-btn-difficult" data-id="${i}">Difficult</button>
+            <button class="word-btn word-btn-learned" data-id="${i}">Studied</button>
+            <button class="word-btn word-btn-hard" data-id="${i}">Difficult</button>
         </div>
     </div>     
     `
@@ -68,8 +67,8 @@ export function constructWordBlocks() {
     const translateOffBtns = document.querySelectorAll('.word-translate-btn-off') as NodeListOf<HTMLButtonElement>;
     const descriptionOnBtns = document.querySelectorAll('.word-description-on') as NodeListOf<HTMLButtonElement>;
     const descriptionOffBtns = document.querySelectorAll('.word-description-off') as NodeListOf<HTMLButtonElement>;
-    const studiedBtn = document.querySelectorAll('.word-btn-studied') as NodeListOf<HTMLButtonElement>;
-    const difficultBtn = document.querySelectorAll('.word-btn-difficult') as NodeListOf<HTMLButtonElement>;
+    const studiedBtn = document.querySelectorAll('.word-btn-learned') as NodeListOf<HTMLButtonElement>;
+    const difficultBtn = document.querySelectorAll('.word-btn-hard') as NodeListOf<HTMLButtonElement>;
 
     soundBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
     stopSoundBtn.forEach((el: HTMLButtonElement) => el.addEventListener('click', playWordAudio));
@@ -84,30 +83,6 @@ export function constructWordBlocks() {
     getTranslateLocalStorage();
     setPageLocalStorage();
     document.documentElement.scrollTop = 0;
-}
-
-export function getColorForGroup() {
-    const body = document.querySelector('body') as HTMLElement;
-    const headerNav = document.querySelector('.header-nav') as HTMLElement;
-    const wordsPageBtnsContainer = document.querySelector('.words-page-btns-container') as HTMLElement;
-    const wordsPartitionBtn = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
-    const wordsPagination = document.querySelector('.words-pagination') as HTMLElement;
-    const wordsContainer = document.querySelector('.words-container') as HTMLElement;
-    const wordsBorderTop = document.querySelector('.words-border-top') as HTMLElement;
-    const wordsBorderRight = document.querySelector('.words-border-right') as HTMLElement;
-    const wordsBorderBottom = document.querySelector('.words-border-bottom') as HTMLElement;
-    const wordsBorderLeft = document.querySelector('.words-border-left') as HTMLElement;
-
-    body.style.backgroundColor = `${colorsArray1[pageData.group]}`;
-    headerNav.style.backgroundColor = `${colorsArray1[pageData.group]}`;
-    wordsPageBtnsContainer.style.backgroundColor = `${colorsArray1[pageData.group]}`;
-    wordsPartitionBtn.forEach((el, i) => (el.style.backgroundColor = `${colorsArray1[i]}`));
-    wordsPagination.style.backgroundColor = `${colorsArray1[pageData.group]}`;
-    wordsContainer.style.backgroundColor = `${colorsArray2[pageData.group]}`;
-    wordsBorderTop.style.backgroundColor = `${colorsArray2[pageData.group]}`;
-    wordsBorderRight.style.backgroundColor = `${colorsArray2[pageData.group]}`;
-    wordsBorderBottom.style.backgroundColor = `${colorsArray2[pageData.group]}`;
-    wordsBorderLeft.style.backgroundColor = `${colorsArray2[pageData.group]}`;
 }
 
 export function getGroup(event: MouseEvent) {
@@ -156,7 +131,7 @@ export function setStatusPartitionBtns() {
 }
 
 export function setStatusPaginationBtns() {
-    const paginationPreviosBtn = document.querySelector('.pagination-page-previos') as HTMLButtonElement;
+    const paginationPreviosBtn = document.querySelector('.pagination-page-previous') as HTMLButtonElement;
     const paginationNextBtn = document.querySelector('.pagination-page-next') as HTMLElement;
 
     if (pageData.page <= 0) {
@@ -217,8 +192,8 @@ export function shuffleWordsData() {
 
 export function descriptionAllON() {
     const textDescription = document.querySelectorAll('.word-description-container') as NodeListOf<HTMLElement>;
-    const descriptionOnBtn = document.querySelector('.global-description-on-btn') as HTMLButtonElement;
-    const descriptionOffBtn = document.querySelector('.global-description-off-btn') as HTMLButtonElement;
+    const descriptionOnBtn = document.querySelector('.global-description') as HTMLButtonElement;
+    const descriptionOffBtn = document.querySelector('.global-description') as HTMLButtonElement;
 
     descriptionOnBtn.classList.add('active-btn');
     descriptionOffBtn.classList.remove('active-btn');
@@ -229,8 +204,8 @@ export function descriptionAllON() {
 
 export function descriptionAllOFF() {
     const textDescription = document.querySelectorAll('.word-description-container') as NodeListOf<HTMLElement>;
-    const descriptionOnBtn = document.querySelector('.global-description-on-btn') as HTMLButtonElement;
-    const descriptionOffBtn = document.querySelector('.global-description-off-btn') as HTMLButtonElement;
+    const descriptionOnBtn = document.querySelector('.global-description') as HTMLButtonElement;
+    const descriptionOffBtn = document.querySelector('.global-description') as HTMLButtonElement;
 
     descriptionOffBtn.classList.add('active-btn');
     descriptionOnBtn.classList.remove('active-btn');
@@ -397,3 +372,4 @@ export function getTranslateLocalStorage() {
         translateAllOFF();
     }
 }
+*/

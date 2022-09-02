@@ -1,8 +1,7 @@
 export interface ICard {
-    name: string;
     img: string;
-    gitHubLink: string;
-    gitHub: string;
+    name: string;
     role: string;
+    gitHubLink: string;
     work: string;
 }

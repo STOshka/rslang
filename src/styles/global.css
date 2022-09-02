@@ -3,7 +3,8 @@
     --color2: #424242;
     --color3: #7897AB;
     --color4: #50666B;
-  }
+    --color5: #d1d1d1;
+}
 
 * {
     box-sizing: border-box;
@@ -15,13 +16,9 @@ html {
 
 h3,
 h4,
+h5,
 p {
     margin: 0;
-}
-
-.btn {
-    width: 100px;
-    height: 30px;
 }
 
 .header-nav {
@@ -32,29 +29,65 @@ p {
     justify-content: end;
     align-items: center;
     width: 100%;
-    min-height: 40px;
+    height: 40px;
     padding: 0 20px;
-    background-color: rgb(231, 231, 231);
+    background-color: var(--color5);
+    opacity: 0.9;
 }
 
 .header-nav-list {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     margin: 0;
 }
 
 .header-nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 135px;
     height: 30px;
     list-style: none;
     font-size: 24px;
     border: 2px solid var(--color1);
     border-radius: 3px;
+    text-align: center;
+    background-color: var(--color1);
+}
+
+.header-nav-item:hover {
+    background-color: rgb(113, 113, 113);
+    color: rgb(241, 241, 241);
+    border: 1px solid #7d7d7d;
+    border-radius: 3px;
 }
 
 .header-nav-link {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
     text-decoration: none;
     font-size: 24px;
     color: rgb(65, 64, 64);
+}
+
+.auth-bnt {
+    width: 105px;
+    margin-left: 30px;
+}
+
+.auth-in-logo {
+    width: 30px;
+    height: 30px;
+    background-image: url('../assets/svg/user.svg');
+}
+
+.auth-out-logo {
+    width: 25px;
+    height: 25px;
+    background-image: url('../assets/svg/logout.svg');
 }
 
 .header-nav-games {
@@ -89,13 +122,6 @@ p {
     cursor: default;
 }
 
-.header-nav-link:hover {
-    background-color: rgb(113, 113, 113);
-    color: rgb(241, 241, 241);
-    border: 1px solid #7d7d7d;
-    border-radius: 3px;
-}
-
 .display-none {
     display: none;
 }
@@ -118,49 +144,70 @@ p {
     pointer-events: none;
 }
 
-.main {
+/* .main {
     height: calc(100vh - 65px);
     margin-top: 40px;
     background-color: beige;
-}
+} */
 
-.footer-container {
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: rgb(231, 231, 231);
+    padding-left: 5px;
+    background-color: var(--color5);
+    opacity: 0.9;
 }
 
 .footer-items {
     display: flex;
+    justify-content: center;
     align-items: center;
+    gap: 5px;
 }
 
 .footer-item {
     margin: 0;
-    padding-left: 5px;
     font-family: natuve;
     font-size: 16px;
     font-weight: 700;
+    color: var(--color2);
+}
+
+.gh-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
 }
 
 .gh-logo {
-    width: 75px;
+    width: 25px;
     height: 25px;
-    /* background-image: url('./assets/svg/GitHub_Logo.svg'); */
+    margin-left: 15px;
+    background-image: url('../assets/svg/github.svg');
     background-size: contain;
     background-repeat: no-repeat;
-    margin-left: 5px;
     transition: 0.3s;
+}
+
+.gh-title {
+    font-size: 20px;
+    font-weight: bolder;
+    color: var(--color2);
 }
 
 .rss-logo {
-    width: 75px;
+    width: 70px;
     height: 25px;
-    /* background-image: url("./assets/svg/rs_school_js.svg"); */
+    margin-left: 15px;
+    background-image: url("../assets/svg/rs_school_js.svg");
     background-size: contain;
     background-repeat: no-repeat;
     transition: 0.3s;
+    color: var(--color2);
 }
-

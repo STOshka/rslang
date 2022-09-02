@@ -83,41 +83,40 @@ class BaseGamePage extends BasePage {
     }
     async addWordforUser(word: IWord, isCorrect: boolean) {
         const response = await this.api.getWordById(word._id);
+        const data =
+            response.status === 404
+                ? {
+                      difficulty: WordDifficulty.normal,
+                      optional: { found: 0, correct: 0, repeat: 0 },
+                  }
+                : await response.json();
+        data.optional = {
+            found: data.optional.found + 1,
+            correct: isCorrect ? data.optional.correct + 1 : 0,
+            repeat: isCorrect ? data.optional.repeat + 1 : 0,
+        };
+        data.difficulty = this.checkUserWord(data);
         if (response.status === 404) {
-            await this.api.createWordById(word._id, {
-                difficulty: WordDifficulty.normal,
-                optional: { correct: Number(isCorrect), repeat: Number(isCorrect), found: 1 },
-            });
+            await this.api.createWordById(word._id, data);
             this.newWords += 1;
         } else {
-            const data = await response.json();
-            if (!data.optional) {
-                data.optional = {
-                    correct: 0,
-                    repeat: 0,
-                    found: 0,
-                };
-            }
-            data.optional.found += 1;
-            if (isCorrect) {
-                data.optional.correct += 1;
-                data.optional.repeat = data.optional.repeat || 0;
-                data.optional.repeat += 1;
-                if (data.optional.repeat === 3) {
-                    data.difficulty = WordDifficulty.learning;
-                    this.learningWords += 1;
-                }
-            } else {
-                data.optional.repeat = 0;
-                if (data.difficulty === WordDifficulty.learning) {
-                    data.difficulty = WordDifficulty.normal;
-                }
-            }
-            await this.api.updateWordById(word._id, {
-                difficulty: data.difficulty,
-                optional: data.optional,
-            });
+            await this.api.updateWordById(word._id, data);
         }
+    }
+    checkUserWordDifficulty(data: UserWord): string {
+        const needRepeat = {
+            [WordDifficulty.normal]: 3,
+            [WordDifficulty.learning]: -1,
+            [WordDifficulty.hard]: 5,
+        };
+        if (data.optional.repeat === needRepeat[data.difficulty]) {
+            this.learningWords += 1;
+            return WordDifficulty.learning;
+        }
+        if (!Boolean(data.optional.repeat) && data.difficulty === WordDifficulty.learning) {
+            return WordDifficulty.normal;
+        }
+        return data.difficulty;
     }
     playCurrentWordMusic() {
         const audio = new Audio(`${Constants.URL}${this.words[this.wordIndex].audio}`);
@@ -130,20 +129,8 @@ class BaseGamePage extends BasePage {
         <div class="root__statistics">
             <div class="root__statistics__label">Набрано баллов: ${this.score}</div>
             <div class="root__statistics__label">Длинная серия правильных ответов: ${this.longestStreak}</div>
-            <div class="root__statistics__correct">
-                <div class="root__statistics__span">
-                    <span class="root__statistics__label">Ответили правильно:</span>
-                    <span class="root__statistics__count">${this.statistic.filter((el) => el.isCorrect).length}</span>
-                </div>
-                <div class="root__statistics__correct__words"></div>
-            </div>
-            <div class="root__statistics__incorrect">
-                <div class="root__statistics__span">
-                    <span class="root__statistics__label">Ответили неправильно:</span>
-                    <span class="root__statistics__count">${this.statistic.filter((el) => !el.isCorrect).length}</span>
-                </div>
-                <div class="root__statistics__incorrect__words"></div>
-            </div>
+            <div class="root__statistics__correct">${this.generateSpanWords(true)}</div>
+            <div class="root__statistics__incorrect">${this.generateSpanWords(false)}</div>
             <button class="root__statistics__return">Вернуться к учебнику</button>
         </div>`;
         (MAIN.querySelector('.root__statistics__return') as HTMLElement).addEventListener('click', () => {
@@ -151,6 +138,15 @@ class BaseGamePage extends BasePage {
         });
         this.generateStatistic();
         this.updateStatistic();
+    }
+    generateSpanWords(isCorrect: boolean): string {
+        return `<div class="root__statistics__span">
+            <span class="root__statistics__label">Ответили ${isCorrect ? '' : 'не'}правильно:</span>
+            <span class="root__statistics__count">${
+                this.statistic.filter((el) => el.isCorrect === isCorrect).length
+            }</span>
+            </div>
+        <div class="root__statistics__correct__words"></div>`;
     }
     generateStatistic() {
         const CORRECT_WORDS = document.querySelector('.root__statistics__correct__words') as HTMLElement;

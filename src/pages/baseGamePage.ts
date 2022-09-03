@@ -109,7 +109,7 @@ class BaseGamePage extends BasePage {
             await this.api.createWordById(word._id, data);
             this.newWords += 1;
         } else {
-            await this.api.updateWordById(word._id, data);
+            await this.api.updateWordById(word._id, { difficulty: data.difficulty, optional: data.optional });
         }
     }
     checkUserWord(data: UserWord): string {
@@ -158,7 +158,7 @@ class BaseGamePage extends BasePage {
                 this.statistic.filter((el) => el.isCorrect === isCorrect).length
             }</span>
             </div>
-        <div class="root__statistics__correct__words"></div>`;
+        <div class="root__statistics__${isCorrect ? '' : 'in'}correct__words"></div>`;
     }
     generateStatistic() {
         const CORRECT_WORDS = document.querySelector('.root__statistics__correct__words') as HTMLElement;

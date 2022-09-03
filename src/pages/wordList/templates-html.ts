@@ -126,18 +126,23 @@ export const wordsPageHTML = `
             <div class="words-partition-btn">Часть 5</div>
             <div class="words-partition-btn">Часть 6</div>
         </div>
-        <div class="settings-func-btns-container">
-            <div class="settings-func-btns-subcontainer">
-                <p class="settings-btns-title">Значение</p>
-                <div class="settings-func-btn global-description">ON</div>
+        <div class="func-btns-container">
+            <div class="func-btns-subcontainer">
+                <p class="btns-title">Значение</p>
+                <div class="func-btn global-description">ON</div>
             </div>
-            <div class="settings-func-btns-subcontainer">
-                <p class="settings-btns-title">Перевод</p>
-                <div class="settings-func-btn global-translate-on-btn">ON</div>
+            <div class="func-btns-subcontainer">
+                <p class="btns-title">Перевод</p>
+                <div class="func-btn global-translate-on-btn">ON</div>
             </div>
-            <div class="settings-func-btn sort-btn">По алфавиту</div>
-            <div class="settings-func-btn shuffle-btn">Перемешать</div>
-            <div class="settings-func-btn reset-btn">Сбросить</div>
+            <div class="func-btn sort-btn">По алфавиту</div>
+            <div class="func-btn shuffle-btn">Перемешать</div>
+            <div class="func-btn reset-btn">Сбросить</div>
+        </div>
+        <div class="games-btn-container">    
+            <p class="btns-title">Игры: </p>
+            <div class="func-btn game-audiochallenge">Аудиовызов</div>
+            <div class="func-btn game-sprint">Спринт</div>
         </div>
     </div>
     <div class="words-container">${wordContainerHTML}</div>

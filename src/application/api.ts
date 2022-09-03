@@ -1,5 +1,5 @@
 import { Constants } from '../utils/constants';
-import { IWord, UserWord, FullGameStats } from '../utils/types';
+import { IWord, UserWord, FullGameStats, WordDifficulty } from '../utils/types';
 import LocalStorage from './localStorage';
 
 class API {
@@ -46,6 +46,20 @@ class API {
     async getAggregatedWords(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(
             `users/${LocalStorage.instance.getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                },
+            }
+        );
+        return (await response.json())[0].paginatedResults;
+    }
+    async getAggregatedHardWords(): Promise<IWord[]> {
+        const response = await this.getRequest(
+            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?filter={"$and":[{"userWord.difficulty":"${
+                WordDifficulty.hard
+            }"}]}`,
             {
                 method: 'GET',
                 headers: {

@@ -5,5 +5,5 @@ export const Constants = {
     PAGE_PER_GROUP: 30,
     WORDS_PER_GROUP: 20,
     AUDIO_CHALLENGE_COUNT_ANSWERS: 5,
-    groupColor: ['#CD5555', '#FF7F5B', '#E2BF81', '#59886B', '#A4D1C8', '#1F6F8B'],
+    groupColor: ['#CD5555', '#FF7F5B', '#E2BF81', '#59886B', '#A4D1C8', '#1F6F8B', '#6900C6'],
 };

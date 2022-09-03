@@ -55,3 +55,8 @@
     font-weight: bolder;
     color: var(--color4);
 }
+
+.text {
+    margin: 5px;
+    text-indent: 20px; 
+}

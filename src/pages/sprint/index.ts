@@ -3,6 +3,7 @@ import BaseGamePage from '../baseGamePage';
 import { IWord, GameState } from '../../utils/types';
 import { shuffle, randomInt } from '../../utils/helpers';
 import './circles.css';
+import './sprint.css';
 
 class SprintPage extends BaseGamePage {
     game_name = 'sprint';

@@ -46,9 +46,13 @@ class AudioChallengePage extends BaseGamePage {
     }
     renderWord() {
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = `<div class="audio__challenge__svg">${getAudioSvg()}</div>
+        MAIN.innerHTML = `
+        <div class="audio__challenge_background">
+            <div class="audio__challenge__svg">${getAudioSvg()}</div>
             <div class="audio__challenge__answers"></div>
-            <div class="audio__challenge__button"></div>`;
+            <div class="audio__challenge__button"></div>
+        </div>
+        `;
         (MAIN.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () =>
             this.playCurrentWordMusic()
         );

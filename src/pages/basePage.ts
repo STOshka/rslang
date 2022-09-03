@@ -64,7 +64,6 @@ class BasePage {
                         <p class="gh-title">Dzianis Valkovich</p>
                     </a>
                 </div>
-                </div>
                 <a class="rss-logo" href="https://rs.school/js/"></a>`;
     }
 }

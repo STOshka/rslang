@@ -33,7 +33,25 @@ class BaseGamePage extends BasePage {
         super(api);
     }
     createFooter(): string {
-        return ``;
+        return `<div class="footer-items">
+                    <p class="footer-item">©</p>
+                    <p class="footer-item">2022</p>
+                </div>
+                <div class="footer-items">
+                    <a class="gh-link" href="https://github.com/STOshka/">
+                        <div class="gh-logo"></div>
+                        <p class="gh-title">Alexandr Stoyanov</p>
+                    </a>
+                    <a class="gh-link" href="https://github.com/Yuliya0503/">
+                        <div class="gh-logo"></div>
+                        <p class="gh-title">Yuliya Narkevich</p>
+                    </a>
+                    <a class="gh-link" href="https://github.com/DenisWilk">
+                        <div class="gh-logo"></div>
+                        <p class="gh-title">Dzianis Valkovich</p>
+                    </a>
+                </div>
+                <a class="rss-logo" href="https://rs.school/js/"></a>`;
     }
     init(query: URLSearchParams) {
         super.init(query);
@@ -52,11 +70,13 @@ class BaseGamePage extends BasePage {
     chooseLevel() {
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<main class="game__main">
+        <div class="game__interface__container">
             <div class="game__name">${this.gameName()}</div>
             <div class="game__groups__list">
-                <div>Выберите уровень сложности слов</div>
+                <div class="game__groups_title">Выберите уровень сложности слов:</div>
                 <div class="game__groups"></div>
             </div>
+        </div>    
         </main>`;
         const GROUPS = MAIN.querySelector('.game__groups') as HTMLElement;
         new Array(Constants.COUNT_GROUPS).fill(null).forEach((el, ind) => {

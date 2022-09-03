@@ -101,7 +101,7 @@ class BaseGamePage extends BasePage {
                 : await response.json();
         data.optional = {
             found: data.optional.found + 1,
-            correct: isCorrect ? data.optional.correct + 1 : 0,
+            correct: isCorrect ? data.optional.correct + 1 : data.optional.correct,
             repeat: isCorrect ? data.optional.repeat + 1 : 0,
         };
         data.difficulty = this.checkUserWord(data);

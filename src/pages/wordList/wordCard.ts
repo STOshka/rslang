@@ -1,7 +1,7 @@
 import LocalStorage from '../../application/localStorage';
 import { Constants } from '../../utils/constants';
 import { createHTMLElement } from '../../utils/helpers';
-import { IWord } from '../../utils/types';
+import { IWord, WordDifficulty } from '../../utils/types';
 import { soundLogoSvg } from './templates-html';
 
 export class WordCard {
@@ -14,6 +14,7 @@ export class WordCard {
         this.node = this.generateNode();
         this.updateVisibleTranslate(true);
         this.updateVisibleDescription(true);
+        this.generateDifficulty();
     }
     generateNode() {
         const node = createHTMLElement('div', 'word-container');
@@ -21,26 +22,39 @@ export class WordCard {
                 <img src="${Constants.URL}${this.word.image}" class="word-img">
             </div>
             <div class="word-text-container"> 
-                <h4 class="word">${this.word.word}</h4>
+                <div>
+                    <h4 class="word">${this.word.word}</h4>
+                    <div class="word-transcription">${this.word.transcription}</div>
+                </div>
                 <div class="word-description-container"></div>
                 <div class="translate-text-container"></div>
+                ${this.generateUserStat()}
             </div>
             <div class="word-btns-container">${this.generateBtn()}
             </div>`;
         return node;
     }
+    generateUserStat() {
+        if (
+            !LocalStorage.instance.isAuth() ||
+            !this.word.userWord?.optional ||
+            !Boolean(this.word.userWord.optional.found)
+        ) {
+            return ``;
+        }
+        return `Количество правильных ответов: ${this.word.userWord.optional.correct} из ${this.word.userWord.optional.found}.`;
+    }
     generateBtn() {
-        return `
-        <p class="word-btns-title">Voice:</p>
+        return `<p class="word-btns-title">Звук:</p>
         <div class="word-btns-subcontainer">
             <div class="word-btn word-sound-btn">${soundLogoSvg}</div>
             <div class="word-btn word-stop-sound-btn">STOP</div>
         </div>
-        <p class="word-btns-title">Translate:</p>
+        <p class="word-btns-title">Перевод:</p>
         <div class="word-btns-subcontainer">
             <div class="word-btn word-translate">ON</div>
         </div>
-        <p class="word-btns-title">Description:</p>
+        <p class="word-btns-title">Значение:</p>
         <div class="word-btns-subcontainer">
             <div class="word-btn word-description">ON</div>
         </div>
@@ -48,10 +62,19 @@ export class WordCard {
     }
     generateBtnAuth() {
         return LocalStorage.instance.isAuth()
-            ? `
-        <div class="word-btn word-btn-learned">Learned</div>
-        <div class="word-btn word-btn-hard">Hard</div>`
+            ? `<div class="word-btn word-btn-learned">Изученое</div>
+        <div class="word-btn word-btn-hard">Сложное</div>`
             : ``;
+    }
+    generateDifficulty(difficulty: string = this.word.userWord?.difficulty as string) {
+        this.node.classList.remove(`word-container-${WordDifficulty.learning}`);
+        this.node.classList.remove(`word-container-${WordDifficulty.hard}`);
+        if (difficulty === WordDifficulty.learning) {
+            this.node.classList.add(`word-container-${WordDifficulty.learning}`);
+        }
+        if (difficulty === WordDifficulty.hard) {
+            this.node.classList.add(`word-container-${WordDifficulty.hard}`);
+        }
     }
     updateVisibleDescription(visible = false) {
         this.descriptionVisible = visible;

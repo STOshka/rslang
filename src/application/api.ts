@@ -55,6 +55,18 @@ class API {
         );
         return (await response.json())[0].paginatedResults;
     }
+    async getAggregatedHardWords(): Promise<IWord[]> {
+        const response = await this.getRequest(
+            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?filter={"$and":[{"userWord.difficulty":"hard"}]}`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                },
+            }
+        );
+        return (await response.json())[0].paginatedResults;
+    }
     async getWordById(wordId: string): Promise<Response> {
         const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
             method: 'GET',

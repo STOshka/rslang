@@ -45,7 +45,7 @@ class API {
     }
     async getAggregatedWords(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(
-            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20`,
+            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?wordsPerPage=20&filter={"$and":[{"page":${page}}, {"group":${group}}]}`,
             {
                 method: 'GET',
                 headers: {

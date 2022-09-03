@@ -101,7 +101,7 @@ class BaseGamePage extends BasePage {
                 : await response.json();
         data.optional = {
             found: data.optional.found + 1,
-            correct: isCorrect ? data.optional.correct + 1 : 0,
+            correct: isCorrect ? data.optional.correct + 1 : data.optional.correct,
             repeat: isCorrect ? data.optional.repeat + 1 : 0,
         };
         data.difficulty = this.checkUserWord(data);
@@ -197,6 +197,9 @@ class BaseGamePage extends BasePage {
                   }
                 : await response.json();
         const date = new Date().toLocaleDateString();
+        if (!data.optional.games[this.game_name]) {
+            data.optional.games[this.game_name] = {};
+        }
         data.optional.games[this.game_name][date] = this.updateUserStatistic(data.optional.games[this.game_name][date]);
         data.optional.games['common'][date] = this.updateUserStatistic(data.optional.games['common'][date]);
         await this.api.updateStatistic({ optional: data.optional });

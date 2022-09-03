@@ -1,6 +1,6 @@
-import { Constants } from "../../utils/constants";
+import { Constants } from '../../utils/constants';
 
-const imgLogoSvg = (`
+const imgLogoSvg = `
 <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="120px" height="150px" viewBox="0 0 835.000000 835.000000"
  preserveAspectRatio="xMidYMid meet">
@@ -70,18 +70,18 @@ c105 -103 357 -353 562 -556 204 -202 473 -468 597 -590 124 -122 226 -227
 </svg>
 
                 
-`);
+`;
 
-export const soundLogoSvg = (`
+export const soundLogoSvg = `
     <svg class="word-sound-svg" focusable="false" viewBox="0 0 24 24" aria-hidden="true" fill="#545454">
         <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 
         2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 
         7-4.49 7-8.77s-2.99-7.86-7-8.77z">
         </path>
     </svg> 
-`);
+`;
 
-const wordContainerHTML = (`
+const wordContainerHTML = `
     <div class="word-container">
         <div class="word-img-container">
             ${imgLogoSvg}
@@ -97,84 +97,58 @@ const wordContainerHTML = (`
         <div class="word-btns-container">
             <p class="word-btns-title">Voice:</p>
             <div class="word-btns-subcontainer">
-                <button class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</button>
-                <button class="word-btn word-stop-sound-btn" data-id="">STOP</button>
+                <div class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</div>
+                <div class="word-btn word-stop-sound-btn" data-id="">STOP</div>
             </div>
             <p class="word-btns-title">Translate:</p>
             <div class="word-btns-subcontainer">
-                <button class="word-btn word-translate-btn-on" data-id="">ON</button>
-                <button class="word-btn word-translate-btn-off" data-id="">OFF</button>
+                <div class="word-btn word-translate-btn-on" data-id="">ON</div>
+                <div class="word-btn word-translate-btn-off" data-id="">OFF</div>
             </div>
             <p class="word-btns-title">Description:</p>
             <div class="word-btns-subcontainer">
-                <button class="word-btn word-description-on" data-id="">ON</button>
-                <button class="word-btn word-description-off" data-id="">OFF</button>
+                <div class="word-btn word-description-on" data-id="">ON</div>
+                <div class="word-btn word-description-off" data-id="">OFF</div>
             </div>
-        <button class="word-btn word-btn-studied">Studied</button>
-        <button class="word-btn word-btn-difficult">Difficult</button>
+        <div class="word-btn word-btn-learned">Studied</div>
+        <div class="word-btn word-btn-hard">Difficult</div>
     </div>
     </div>
-`).repeat(Constants.WORDS_PER_GROUP);
+`.repeat(Constants.WORDS_PER_GROUP);
 
-export const wordsPageHTML = (`
-    <header class="header">
-    <nav class="header-nav">
-        <ul class="header-nav-list">
-            <li class="header-nav-item"><a href="" class="header-nav-link">Главная</a></li>
-            <li class="header-nav-item"><a href="#wordlist" class="header-nav-link active-nav">Учебник</a></li>
-            <li class="header-nav-item header-nav-games">Игры
-                <div class="header-nav-games-container">
-                    <a href="#audio" class="header-nav-link header-nav-link-game">Аудио</a>
-                    <a href="#sprint" class="header-nav-link header-nav-link-game">Спринт</a>
-                </div>
-            </li>
-            <li class="header-nav-item"><a href="" class="header-nav-link">Статистика</a></li>
-            <li class="header-nav-item"><a href="#auth" class="header-nav-link">Авторизация</a></li>
-        </ul>
-    </nav> 
-    </header>
-
+export const wordsPageHTML = `
     <div class="words-page-btns-container">
         <div class="words-partitions-btns-container">
-            <button class="words-partition-btn" id="group0" data-group="0">Часть 1</button>
-            <button class="words-partition-btn" id="group1" data-group="1">Часть 2</button>
-            <button class="words-partition-btn" id="group2" data-group="2">Часть 3</button>
-            <button class="words-partition-btn" id="group3" data-group="3">Часть 4</button>
-            <button class="words-partition-btn" id="group4" data-group="4">Часть 5</button>
-            <button class="words-partition-btn" id="group5" data-group="5">Часть 6</button>
+            <div class="words-partition-btn" >Часть 1</div>
+            <div class="words-partition-btn">Часть 2</div>
+            <div class="words-partition-btn">Часть 3</div>
+            <div class="words-partition-btn">Часть 4</div>
+            <div class="words-partition-btn">Часть 5</div>
+            <div class="words-partition-btn">Часть 6</div>
         </div>
         <div class="settings-func-btns-container">
             <div class="settings-func-btns-subcontainer">
                 <p class="settings-btns-title">Значение</p>
-                <button class="settings-func-btn global-description-on-btn">Вкл</button>
-                <button class="settings-func-btn global-description-off-btn">Выкл</button>
+                <div class="settings-func-btn global-description">ON</div>
             </div>
             <div class="settings-func-btns-subcontainer">
                 <p class="settings-btns-title">Перевод</p>
-                <button class="settings-func-btn global-translate-on-btn">Вкл</button>
-                <button class="settings-func-btn global-translate-off-btn">Выкл</button>
+                <div class="settings-func-btn global-translate-on-btn">ON</div>
             </div>
-            <button class="settings-func-btn sort-btn">По алфавиту</button>
-            <button class="settings-func-btn shuffle-btn">Перемешать</button>
-            <button class="settings-func-btn reset-btn">Сбросить</button>
+            <div class="settings-func-btn sort-btn">По алфавиту</div>
+            <div class="settings-func-btn shuffle-btn">Перемешать</div>
+            <div class="settings-func-btn reset-btn">Сбросить</div>
         </div>
     </div>
-    
-    <div class="words-border-top"></div>
-    <div class="words-border-right"></div>
-    <div class="words-border-bottom"></div>
-    <div class="words-border-left"></div>
-    <div class="words-container">
-        ${wordContainerHTML}
-    </div>
+    <div class="words-container">${wordContainerHTML}</div>
     <div class="words-pagination">
-        <button class="pagination-page-btn pagination-page-previos" data-page="previos"> ❰❰❰ </button>
+        <div class="pagination-page-btn pagination-page-previous" data-page="previos"> ❰❰❰ </div>
         <h3 class="page-number-title">Стр.:</h3>
         <div class="input-container">
             <input class="input-page-number" type="text">
             <input class="submit-page-number" placeholder="⎆" readonly="readonly">
         </div>
         <h3 class="page-number-title">из 30</h3>
-        <button class="pagination-page-btn pagination-page-next" data-page="next"> ❱❱❱ </button>
+        <div class="pagination-page-btn pagination-page-next" data-page="next"> ❱❱❱ </div>
     </div>
-`);
+`;

@@ -13,7 +13,7 @@ class MainPage extends BasePage {
     }
 }
 
-function addMainHTML(){
+function addMainHTML() {
     return `
     <div class="home-background1">
     <div class="home-background2">

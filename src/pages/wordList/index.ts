@@ -1,6 +1,6 @@
 import API from '../../application/api';
 import { Constants } from '../../utils/constants';
-import { createHTMLElement, shuffle } from '../../utils/helpers';
+import { createHTMLElement, inRange, shuffle } from '../../utils/helpers';
 import BasePage from '../basePage';
 import { wordsPageHTML } from './templates-html';
 import { WordCard } from './wordCard';
@@ -17,6 +17,11 @@ class WordListPage extends BasePage {
     }
     async init(query: URLSearchParams) {
         super.init(query);
+        const _group: unknown = query.get('group') || localStorage.getItem('wordListPage');
+        this.group = inRange(Number(_group as string), Constants.PAGE_PER_GROUP - 1, 1);
+        const _page: unknown = query.get('page') || localStorage.getItem('wordListPage');
+        this.page = inRange(Number(_page as string), Constants.PAGE_PER_GROUP, 1);
+        console.log(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = wordsPageHTML;
         (document.querySelector('.words-partitions-btns-container') as HTMLElement).innerHTML = '';
@@ -48,6 +53,10 @@ class WordListPage extends BasePage {
         const inputPageNumber = document.querySelector('.input-page-number') as HTMLElement;
         const globalDesc = document.querySelector('.global-description') as HTMLElement;
         const globalTranslate = document.querySelector('.global-translate-on-btn') as HTMLElement;
+        const sortBtn = document.querySelector('.sort-btn') as HTMLElement;
+        const shuffleBtn = document.querySelector('.shuffle-btn') as HTMLElement;
+        const resetBtn = document.querySelector('.reset-btn') as HTMLElement;
+
         wordContainer.addEventListener('click', (e) => this.wordContainerEvents(e));
         paginationPreviousBtn.addEventListener('click', () => this.previousPage());
         paginationNextBtn.addEventListener('click', () => this.nextPage());
@@ -55,15 +64,9 @@ class WordListPage extends BasePage {
         inputPageNumber.addEventListener('keypress', (e) => this.pressEnterKey(e));
         globalDesc.addEventListener('click', () => this.switchGlobalDesc());
         globalTranslate.addEventListener('click', () => this.switchGlobalTranslate());
-        (document.querySelector('.sort-btn') as HTMLElement).addEventListener('click', () => {
-            this.sortWords(true);
-        });
-        (document.querySelector('.shuffle-btn') as HTMLElement).addEventListener('click', () => {
-            this.shuffleWords(true);
-        });
-        (document.querySelector('.reset-btn') as HTMLElement).addEventListener('click', () => {
-            this.resetSettings(true);
-        });
+        sortBtn.addEventListener('click', () => this.sortWords(true));
+        shuffleBtn.addEventListener('click', () => this.shuffleWords(true));
+        resetBtn.addEventListener('click', () => this.resetSettings(true));
     }
     wordContainerEvents(e: MouseEvent) {
         const target: HTMLElement = (e.target as HTMLElement).closest('.word-container') as HTMLElement;

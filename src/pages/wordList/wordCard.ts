@@ -1,3 +1,4 @@
+import LocalStorage from '../../application/localStorage';
 import { Constants } from '../../utils/constants';
 import { createHTMLElement } from '../../utils/helpers';
 import { IWord } from '../../utils/types';
@@ -24,26 +25,34 @@ export class WordCard {
                 <div class="word-description-container"></div>
                 <div class="translate-text-container"></div>
             </div>
-            <div class="word-btns-container">
-                <p class="word-btns-title">Voice:</p>
-                <div class="word-btns-subcontainer">
-                    <div class="word-btn word-sound-btn">${soundLogoSvg}</div>
-                    <div class="word-btn word-stop-sound-btn">STOP</div>
-                </div>
-                <p class="word-btns-title">Translate:</p>
-                <div class="word-btns-subcontainer">
-                    <div class="word-btn word-translate">ON</div>
-                </div>
-                <p class="word-btns-title">Description:</p>
-                <div class="word-btns-subcontainer">
-                    <div class="word-btn word-description">ON</div>
-                </div>
-                <div class="word-btn word-btn-learned">Learned</div>
-                <div class="word-btn word-btn-hard">Hard</div>
+            <div class="word-btns-container">${this.generateBtn()}
             </div>`;
         return node;
     }
-
+    generateBtn() {
+        return `
+        <p class="word-btns-title">Voice:</p>
+        <div class="word-btns-subcontainer">
+            <div class="word-btn word-sound-btn">${soundLogoSvg}</div>
+            <div class="word-btn word-stop-sound-btn">STOP</div>
+        </div>
+        <p class="word-btns-title">Translate:</p>
+        <div class="word-btns-subcontainer">
+            <div class="word-btn word-translate">ON</div>
+        </div>
+        <p class="word-btns-title">Description:</p>
+        <div class="word-btns-subcontainer">
+            <div class="word-btn word-description">ON</div>
+        </div>
+        ${this.generateBtnAuth()}`;
+    }
+    generateBtnAuth() {
+        return LocalStorage.instance.isAuth()
+            ? `
+        <div class="word-btn word-btn-learned">Learned</div>
+        <div class="word-btn word-btn-hard">Hard</div>`
+            : ``;
+    }
     updateVisibleDescription(visible = false) {
         this.descriptionVisible = visible;
         (this.node.querySelector('.word-description-container') as HTMLElement).innerHTML = this.descriptionVisible

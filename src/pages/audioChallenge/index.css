@@ -1,4 +1,7 @@
-.audio__challenge_background {
+.audio__challenge__background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
     background-image: url('../../assets/png/1.png');
     background-size: 100vw 100vh;
@@ -6,9 +9,14 @@
     padding: 60px 20px 50px;
 }
 
-.game__name {
-    font-size: 40px;
-    font-weight: bold;
+.audio__challenge__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 80%;
+    margin-top: 20%;
 }
 
 .audio__challenge__main {
@@ -42,33 +50,54 @@
     gap: 10px;
 }
 
-.audio__challenge__svg {
-    width: 5em;
-    height: 5em;
-    padding: 1em;
-    border-radius: 50%;
-    background-color: rgba(255,255,255,.2);
-    border: 0.25em solid #ffffff;
+.audio__challenge__svg__container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, .2);
+    border: 2px solid var(--color2);
+    border-radius: 5px;
     transition-duration: 0.3s;
     cursor: pointer;
 }
 
-.audio__challenge__svg:hover {
+.audio__challenge__svg {
+    width: 40px;
+    height: 40px;
+}
+
+.audio__challenge__svg__text {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--color2);
+    margin: 0 auto;
+}
+
+.audio__challenge__svg__container:hover {
     background-color: #ffffff;
 }
 
 .audio__challenge__answers {
     display: flex;
-    gap: 10px;
-    min-height: 3.6em;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 40px;
 }
 
 .audio__challenge__answer,
 .audio__challenge__group {
+    width: 19%;
     cursor: pointer;
-    padding: 1em;
     transition: 0.3s;
-    border: 0.25em solid #ffffff;
+    padding: 5px;
+    border: 2px solid var(--color2);
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color2);
     text-align: center;
 }
 
@@ -87,16 +116,20 @@
 }
 
 .audio__challenge__button {
-    background-color: #0000ff;
-    color: #ffffff;
-    padding: 1em;
-    width: 8em;
-    text-align: center;
+    width: 100%;
+    padding: 10px;
     cursor: pointer;
+    background-color: #288c9b;
+    border: 2px solid var(--color2);
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
 }
 
 .audio__challenge__button:hover {
-    background-color:  #568cdc;
+    background-color: #568cdc;
 }
 
 .audio__challenge__answer.correct {

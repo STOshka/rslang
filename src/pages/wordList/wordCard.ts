@@ -48,15 +48,15 @@ export class WordCard {
         return `<p class="word-btns-title">Звук:</p>
         <div class="word-btns-subcontainer">
             <div class="word-btn word-sound-btn">${soundLogoSvg}</div>
-            <div class="word-btn word-stop-sound-btn">STOP</div>
+            <div class="word-btn word-stop-sound-btn">СТОП</div>
         </div>
         <p class="word-btns-title">Перевод:</p>
         <div class="word-btns-subcontainer">
-            <div class="word-btn word-translate">ON</div>
+            <div class="word-btn word-translate">ВЫКЛ</div>
         </div>
         <p class="word-btns-title">Значение:</p>
         <div class="word-btns-subcontainer">
-            <div class="word-btn word-description">ON</div>
+            <div class="word-btn word-description">ВЫКЛ</div>
         </div>
         ${this.generateBtnAuth()}`;
     }
@@ -84,8 +84,8 @@ export class WordCard {
         <p class="word-text word-example">${this.word.textExample}</p>`
             : ``;
         (this.node.querySelector('.word-description') as HTMLElement).innerHTML = this.descriptionVisible
-            ? 'ON'
-            : 'OFF';
+            ? 'ВЫКЛ'
+            : 'ВКЛ';
     }
 
     updateVisibleTranslate(visible = false) {
@@ -96,6 +96,6 @@ export class WordCard {
             <p class="word-text word-meaning-translate">${this.word.textMeaningTranslate}</p>
             <p class="word-text word-example-translate">${this.word.textExampleTranslate}</p>`
             : ``;
-        (this.node.querySelector('.word-translate') as HTMLElement).innerHTML = this.translateVisible ? 'ON' : 'OFF';
+        (this.node.querySelector('.word-translate') as HTMLElement).innerHTML = this.translateVisible ? 'ВЫКЛ' : 'ВКЛ';
     }
 }

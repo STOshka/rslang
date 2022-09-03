@@ -222,15 +222,15 @@ class WordListPage extends BasePage {
         this.isGlobalDescription = visible;
         this.wordsList.forEach((el) => el.updateVisibleDescription(this.isGlobalDescription));
         (document.querySelector('.global-description') as HTMLElement).innerHTML = this.isGlobalDescription
-            ? 'ON'
-            : 'OFF';
+            ? 'OFF'
+            : 'ON';
     }
     switchGlobalTranslate(visible = !this.isGlobalTranslate) {
         this.isGlobalTranslate = visible;
         this.wordsList.forEach((el) => el.updateVisibleTranslate(this.isGlobalTranslate));
         (document.querySelector('.global-translate-on-btn') as HTMLElement).innerHTML = this.isGlobalTranslate
-            ? 'ON'
-            : 'OFF';
+            ? 'OFF'
+            : 'ON';
     }
     sortWords(render = false) {
         this.wordsList = [...this.wordsList].sort((a, b) =>

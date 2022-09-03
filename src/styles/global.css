@@ -32,6 +32,7 @@ p {
     height: 40px;
     padding: 0 20px;
     background-color: var(--color5);
+    z-index: 15;
 }
 
 .header-nav-list {
@@ -96,7 +97,7 @@ p {
 .header-nav-games-container {
     display: none;
     position: absolute;
-    background-color: var(--color5);
+    background-color: rgba(128, 128, 128, 0.1);
     width: 150px;
     height: 90px;
     margin-top: 120px;

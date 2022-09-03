@@ -172,13 +172,17 @@ class BaseGamePage extends BasePage {
         this.updateStatistic();
     }
     generateSpanWords(isCorrect: boolean): string {
-        return `<div class="root__statistics__span">
-            <span class="root__statistics__label">Ответили ${isCorrect ? '' : 'не'}правильно:</span>
-            <span class="root__statistics__count">${
-                this.statistic.filter((el) => el.isCorrect === isCorrect).length
-            }</span>
+        return `
+        <div class="root__statistics__background">
+            <div class="root__statistics__span">
+                <span class="root__statistics__label">Ответили ${isCorrect ? '' : 'не'}правильно:</span>
+                <span class="root__statistics__count">
+                    ${this.statistic.filter((el) => el.isCorrect === isCorrect).length}
+                </span>
             </div>
-        <div class="root__statistics__correct__words"></div>`;
+            <div class="root__statistics__correct__words"></div>
+        </div>
+        `;
     }
     generateStatistic() {
         const CORRECT_WORDS = document.querySelector('.root__statistics__correct__words') as HTMLElement;

@@ -5,27 +5,27 @@ import { INFORMATION } from './constants';
 import './about-team.css';
 
 class AboutTheTeam extends BasePage {
-  template: string;
-  res: string;
-  constructor(api: API) {
-    super(api);
-    this.template = '';
-    this.res = '';
-  }
-  init(query: URLSearchParams) {
-    super.init(query);
-    const MAIN = document.querySelector('.main') as HTMLElement;
-    MAIN.innerHTML = `
+    template: string;
+    res: string;
+    constructor(api: API) {
+        super(api);
+        this.template = '';
+        this.res = '';
+    }
+    init(query: URLSearchParams) {
+        super.init(query);
+        const MAIN = document.querySelector('.main') as HTMLElement;
+        MAIN.innerHTML = `
         <div class="about__wrapper">
             <h2 class="about_title">О команде</h2>
             ${this.renderCard()}
         </div>
     `;
-  }
+    }
 
-  renderCard() {
-    INFORMATION.forEach((card: ICard) => {
-      this.template = `
+    renderCard() {
+        INFORMATION.forEach((card: ICard) => {
+            this.template = `
             <div class="about__card">
                 <div class="about__card_img">
                     <img class="img" src="${card.img}" alt="${card.name}">
@@ -40,11 +40,11 @@ class AboutTheTeam extends BasePage {
             </div>
             `;
 
-      this.res += this.template;
-    });
+            this.res += this.template;
+        });
 
-    return this.res;
-  }
+        return this.res;
+    }
 }
 
 export default AboutTheTeam;

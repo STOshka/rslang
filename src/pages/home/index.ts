@@ -32,7 +32,7 @@ class MainPage extends BasePage {
                     <a href="#about" class="team-link">О команде</a>
                 </div>
             </div>
-        </div>`
+        </div>`;
     }
 }
 

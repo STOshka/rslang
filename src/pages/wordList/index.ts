@@ -2,7 +2,7 @@ import API from '../../application/api';
 import LocalStorage from '../../application/localStorage';
 import { Constants } from '../../utils/constants';
 import { createHTMLElement, inRange, shuffle } from '../../utils/helpers';
-import { UserWord, WordDifficulty } from '../../utils/types';
+import { ROUTES, UserWord, WordDifficulty } from '../../utils/types';
 import BasePage from '../basePage';
 import { wordsPageHTML } from './templates-html';
 import { WordCard } from './wordCard';
@@ -59,7 +59,8 @@ class WordListPage extends BasePage {
         const sortBtn = document.querySelector('.sort-btn') as HTMLElement;
         const shuffleBtn = document.querySelector('.shuffle-btn') as HTMLElement;
         const resetBtn = document.querySelector('.reset-btn') as HTMLElement;
-
+        const audiochallengeGame = document.querySelector('.game-audiochallenge') as HTMLElement;
+        const sprintGame = document.querySelector('.game-sprint') as HTMLElement;
         wordContainer.addEventListener('click', (e) => this.wordContainerEvents(e));
         paginationPreviousBtn.addEventListener('click', () => this.previousPage());
         paginationNextBtn.addEventListener('click', () => this.nextPage());
@@ -70,6 +71,11 @@ class WordListPage extends BasePage {
         sortBtn.addEventListener('click', () => this.sortWords(true));
         shuffleBtn.addEventListener('click', () => this.shuffleWords(true));
         resetBtn.addEventListener('click', () => this.resetSettings(true));
+        audiochallengeGame.addEventListener('click', () => this.playGame(ROUTES.AUDIO_CHALLENGE_GAME));
+        sprintGame.addEventListener('click', () => this.playGame(ROUTES.SPRINT_GAME));
+    }
+    playGame(game: string) {
+        window.location.hash = `${game}?group=${this.group}&page=${this.page}`;
     }
     wordContainerEvents(e: MouseEvent) {
         const target: HTMLElement = (e.target as HTMLElement).closest('.word-container') as HTMLElement;

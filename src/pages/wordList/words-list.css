@@ -34,34 +34,36 @@
     top: 40px;
     left: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
-    height: 40px;
+    gap: 10px;
     padding: 0 20px;
     text-align: center;
     user-select: none;
+    flex-direction: column;
 }
 
-.settings-func-btns-container {
+.func-btns-container,
+.games-btn-container {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.settings-func-btns-subcontainer {
+.func-btns-subcontainer {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px;
 }
 
-.settings-btns-title {
+.btns-title {
     padding-left: 5px;
     font-size: 20px;
     color: var(--color1);
 }
 
-.settings-func-btn {
+.func-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,7 +93,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin: 100px 40px 70px;
+    margin: 150px 40px 70px;
     overflow-y: auto;
 }
 
@@ -215,6 +217,8 @@
     font-size: 14px;
     font-weight: bolder;
     color: #545454;
+    cursor: pointer;
+    user-select: none;
 }
 
 .word-btn-learned,

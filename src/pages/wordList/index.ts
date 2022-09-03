@@ -1,5 +1,6 @@
 import API from '../../application/api';
 import { Constants } from '../../utils/constants';
+import { createHTMLElement, shuffle } from '../../utils/helpers';
 import BasePage from '../basePage';
 import { wordsPageHTML } from './templates-html';
 import { WordCard } from './wordCard';
@@ -9,20 +10,28 @@ class WordListPage extends BasePage {
     group = 0;
     page = 0;
     wordsList: WordCard[] = [];
+    isGlobalDescription = true;
+    isGlobalTranslate = true;
     constructor(api: API) {
         super(api);
     }
-    init(query: URLSearchParams) {
+    async init(query: URLSearchParams) {
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = wordsPageHTML;
+        (document.querySelector('.words-partitions-btns-container') as HTMLElement).innerHTML = '';
+        new Array(6).fill(null).map((el, i) => {
+            const div = createHTMLElement('div', 'words-partition-btn', `Часть ${i + 1}`);
+            div.style.backgroundColor = `${Constants.groupColor[i]}`;
+            div.addEventListener('click', () => this.switchGroup(i));
+            (document.querySelector('.words-partitions-btns-container') as HTMLElement).append(div);
+        });
         this.addListeners();
+        await this.generateWordList();
         this.render();
         /*getPageLocalStorage();*/
     }
-    async render() {
-        const words = await this.api.getWordList(this.group, this.page);
-        this.wordsList = words.map((word) => new WordCard(word));
+    render() {
         const wordsContainer = document.querySelector('.words-container') as HTMLElement;
         wordsContainer.innerHTML = '';
         this.wordsList.map((word) => wordsContainer.append(word.node));
@@ -32,21 +41,29 @@ class WordListPage extends BasePage {
         this.setStatusPaginationBtns();
     }
     addListeners() {
-        (document.querySelector('.words-container') as HTMLElement).addEventListener('click', (e) =>
-            this.wordContainerEvents(e)
-        );
-        (document.querySelector('.pagination-page-previous') as HTMLElement).addEventListener('click', () =>
-            this.previousPage()
-        );
-        (document.querySelector('.pagination-page-next') as HTMLElement).addEventListener('click', () =>
-            this.nextPage()
-        );
-        (document.querySelector('.submit-page-number') as HTMLElement).addEventListener('click', () =>
-            this.switchPage()
-        );
-        (document.querySelector('.input-page-number') as HTMLElement).addEventListener('keypress', (e) =>
-            this.pressEnterKey(e)
-        );
+        const wordContainer = document.querySelector('.words-container') as HTMLElement;
+        const paginationPreviousBtn = document.querySelector('.pagination-page-previous') as HTMLElement;
+        const paginationNextBtn = document.querySelector('.pagination-page-next') as HTMLElement;
+        const submitPageNumber = document.querySelector('.submit-page-number') as HTMLElement;
+        const inputPageNumber = document.querySelector('.input-page-number') as HTMLElement;
+        const globalDesc = document.querySelector('.global-description') as HTMLElement;
+        const globalTranslate = document.querySelector('.global-translate-on-btn') as HTMLElement;
+        wordContainer.addEventListener('click', (e) => this.wordContainerEvents(e));
+        paginationPreviousBtn.addEventListener('click', () => this.previousPage());
+        paginationNextBtn.addEventListener('click', () => this.nextPage());
+        submitPageNumber.addEventListener('click', () => this.switchPage());
+        inputPageNumber.addEventListener('keypress', (e) => this.pressEnterKey(e));
+        globalDesc.addEventListener('click', () => this.switchGlobalDesc());
+        globalTranslate.addEventListener('click', () => this.switchGlobalTranslate());
+        (document.querySelector('.sort-btn') as HTMLElement).addEventListener('click', () => {
+            this.sortWords(true);
+        });
+        (document.querySelector('.shuffle-btn') as HTMLElement).addEventListener('click', () => {
+            this.shuffleWords(true);
+        });
+        (document.querySelector('.reset-btn') as HTMLElement).addEventListener('click', () => {
+            this.resetSettings(true);
+        });
     }
     wordContainerEvents(e: MouseEvent) {
         const target: HTMLElement = (e.target as HTMLElement).closest('.word-container') as HTMLElement;
@@ -71,15 +88,28 @@ class WordListPage extends BasePage {
     changeWordDescription(word: WordCard) {
         word.updateVisibleDescription(!word.descriptionVisible);
     }
-    previousPage() {
+    switchGroup(group: number) {
+        this.group = group;
+        this.render();
+    }
+    async generateWordList() {
+        const words = await this.api.getWordList(this.group, this.page);
+        this.wordsList = words.map((word) => new WordCard(word));
+        this.switchGlobalDesc(this.isGlobalDescription);
+        this.switchGlobalTranslate(this.isGlobalTranslate);
+        localStorage.getItem('sortWords') === 'shuffle' ? this.shuffleWords() : this.sortWords();
+    }
+    async previousPage() {
         if (this.page > 0) {
             this.page = this.page - 1;
+            await this.generateWordList();
             this.render();
         }
     }
-    nextPage() {
+    async nextPage() {
         if (this.page < Constants.PAGE_PER_GROUP) {
             this.page = this.page + 1;
+            await this.generateWordList();
             this.render();
         }
     }
@@ -88,7 +118,8 @@ class WordListPage extends BasePage {
         const page = Number(inputPageNumber.value);
         if (page > 0 && page <= Constants.PAGE_PER_GROUP) {
             this.page = page - 1;
-            await this.render();
+            await this.generateWordList();
+            this.render();
         } else {
             inputPageNumber.value = (this.page + 1).toString();
         }
@@ -118,14 +149,44 @@ class WordListPage extends BasePage {
         const wordsPageBtnsContainer = document.querySelector('.words-page-btns-container') as HTMLElement;
         const wordsPartitionBtn = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
         const wordsPagination = document.querySelector('.words-pagination') as HTMLElement;
-        const wordsContainer = document.querySelector('.words-container') as HTMLElement;
 
-        body.style.backgroundColor = `${Constants.groupColors1[this.group]}`;
-        headerNav.style.backgroundColor = `${Constants.groupColors1[this.group]}`;
-        wordsPageBtnsContainer.style.backgroundColor = `${Constants.groupColors1[this.group]}`;
-        wordsPartitionBtn.forEach((el, i) => (el.style.backgroundColor = `${Constants.groupColors1[i]}`));
-        wordsPagination.style.backgroundColor = `${Constants.groupColors1[this.group]}`;
-        wordsContainer.style.backgroundColor = `${Constants.groupColors2[this.group]}`;
+        body.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+        headerNav.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+        wordsPageBtnsContainer.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+        wordsPartitionBtn.forEach((el, i) => (el.style.backgroundColor = `${Constants.groupColor[i]}`));
+        wordsPagination.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+    }
+    switchGlobalDesc(visible = !this.isGlobalDescription) {
+        this.isGlobalDescription = visible;
+        this.wordsList.forEach((el) => el.updateVisibleDescription(this.isGlobalDescription));
+        (document.querySelector('.global-description') as HTMLElement).innerHTML = this.isGlobalDescription
+            ? 'ON'
+            : 'OFF';
+    }
+    switchGlobalTranslate(visible = !this.isGlobalTranslate) {
+        this.isGlobalTranslate = visible;
+        this.wordsList.forEach((el) => el.updateVisibleTranslate(this.isGlobalTranslate));
+        (document.querySelector('.global-translate-on-btn') as HTMLElement).innerHTML = this.isGlobalTranslate
+            ? 'ON'
+            : 'OFF';
+    }
+    sortWords(render = false) {
+        this.wordsList = [...this.wordsList].sort((a, b) =>
+            a.word.word.toLowerCase() > b.word.word.toLowerCase() ? 1 : -1
+        );
+        localStorage.setItem('sortWords', 'sortABC');
+        render && this.render();
+    }
+    shuffleWords(render = false) {
+        this.wordsList = shuffle(this.wordsList);
+        localStorage.setItem('sortWords', 'shuffle');
+        render && this.render();
+    }
+    resetSettings(render = false) {
+        this.sortWords();
+        this.switchGlobalDesc(true);
+        this.switchGlobalTranslate(true);
+        render && this.render();
     }
 }
 

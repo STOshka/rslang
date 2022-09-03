@@ -97,21 +97,21 @@ const wordContainerHTML = `
         <div class="word-btns-container">
             <p class="word-btns-title">Voice:</p>
             <div class="word-btns-subcontainer">
-                <button class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</button>
-                <button class="word-btn word-stop-sound-btn" data-id="">STOP</button>
+                <div class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</div>
+                <div class="word-btn word-stop-sound-btn" data-id="">STOP</div>
             </div>
             <p class="word-btns-title">Translate:</p>
             <div class="word-btns-subcontainer">
-                <button class="word-btn word-translate-btn-on" data-id="">ON</button>
-                <button class="word-btn word-translate-btn-off" data-id="">OFF</button>
+                <div class="word-btn word-translate-btn-on" data-id="">ON</div>
+                <div class="word-btn word-translate-btn-off" data-id="">OFF</div>
             </div>
             <p class="word-btns-title">Description:</p>
             <div class="word-btns-subcontainer">
-                <button class="word-btn word-description-on" data-id="">ON</button>
-                <button class="word-btn word-description-off" data-id="">OFF</button>
+                <div class="word-btn word-description-on" data-id="">ON</div>
+                <div class="word-btn word-description-off" data-id="">OFF</div>
             </div>
-        <button class="word-btn word-btn-learned">Studied</button>
-        <button class="word-btn word-btn-hard">Difficult</button>
+        <div class="word-btn word-btn-learned">Studied</div>
+        <div class="word-btn word-btn-hard">Difficult</div>
     </div>
     </div>
 `.repeat(Constants.WORDS_PER_GROUP);
@@ -119,36 +119,36 @@ const wordContainerHTML = `
 export const wordsPageHTML = `
     <div class="words-page-btns-container">
         <div class="words-partitions-btns-container">
-            <button class="words-partition-btn" id="group0" data-group="0">Часть 1</button>
-            <button class="words-partition-btn" id="group1" data-group="1">Часть 2</button>
-            <button class="words-partition-btn" id="group2" data-group="2">Часть 3</button>
-            <button class="words-partition-btn" id="group3" data-group="3">Часть 4</button>
-            <button class="words-partition-btn" id="group4" data-group="4">Часть 5</button>
-            <button class="words-partition-btn" id="group5" data-group="5">Часть 6</button>
+            <div class="words-partition-btn" >Часть 1</div>
+            <div class="words-partition-btn">Часть 2</div>
+            <div class="words-partition-btn">Часть 3</div>
+            <div class="words-partition-btn">Часть 4</div>
+            <div class="words-partition-btn">Часть 5</div>
+            <div class="words-partition-btn">Часть 6</div>
         </div>
         <div class="settings-func-btns-container">
             <div class="settings-func-btns-subcontainer">
                 <p class="settings-btns-title">Значение</p>
-                <button class="settings-func-btn global-description">ON</button>
+                <div class="settings-func-btn global-description">ON</div>
             </div>
             <div class="settings-func-btns-subcontainer">
                 <p class="settings-btns-title">Перевод</p>
-                <button class="settings-func-btn global-translate-on-btn">ON</button>
+                <div class="settings-func-btn global-translate-on-btn">ON</div>
             </div>
-            <button class="settings-func-btn sort-btn">По алфавиту</button>
-            <button class="settings-func-btn shuffle-btn">Перемешать</button>
-            <button class="settings-func-btn reset-btn">Сбросить</button>
+            <div class="settings-func-btn sort-btn">По алфавиту</div>
+            <div class="settings-func-btn shuffle-btn">Перемешать</div>
+            <div class="settings-func-btn reset-btn">Сбросить</div>
         </div>
     </div>
     <div class="words-container">${wordContainerHTML}</div>
     <div class="words-pagination">
-        <button class="pagination-page-btn pagination-page-previous" data-page="previos"> ❰❰❰ </button>
+        <div class="pagination-page-btn pagination-page-previous" data-page="previos"> ❰❰❰ </div>
         <h3 class="page-number-title">Стр.:</h3>
         <div class="input-container">
             <input class="input-page-number" type="text">
             <input class="submit-page-number" placeholder="⎆" readonly="readonly">
         </div>
         <h3 class="page-number-title">из 30</h3>
-        <button class="pagination-page-btn pagination-page-next" data-page="next"> ❱❱❱ </button>
+        <div class="pagination-page-btn pagination-page-next" data-page="next"> ❱❱❱ </div>
     </div>
 `;

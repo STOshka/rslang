@@ -14,6 +14,7 @@ class WordListPage extends BasePage {
     wordsList: WordCard[] = [];
     isGlobalDescription = true;
     isGlobalTranslate = true;
+    audio: HTMLAudioElement | undefined;
     constructor(api: API) {
         super(api);
     }
@@ -75,8 +76,8 @@ class WordListPage extends BasePage {
         const word = this.wordsList.find((el) => el.node === target);
         if (!word) return;
         const EVENTS: Record<string, (word: WordCard) => void> = {
-            'word-btn word-sound-btn': (word) => this.empty(word),
-            'word-btn word-stop-sound-btn': (word) => this.empty(word),
+            'word-btn word-sound-btn': (word) => this.playSound(word),
+            'word-btn word-stop-sound-btn': () => this.stopSound(),
             'word-btn word-translate': (word) => this.changeWordTranslate(word),
             'word-btn word-description': (word) => this.changeWordDescription(word),
             'word-btn word-btn-learned': (word) => this.changeDifficult(word, WordDifficulty.learning),
@@ -84,8 +85,21 @@ class WordListPage extends BasePage {
         };
         EVENTS[(e.target as HTMLElement).classList.toString()]?.(word);
     }
-    empty(word: WordCard) {
-        console.log(word);
+    playSound(word: WordCard) {
+        this.stopSound();
+        this.audio = new Audio(`${Constants.URL}${word.word.audio}`);
+        this.audio.play();
+        this.audio.onended = () => {
+            this.audio = new Audio(`${Constants.URL}${word.word.audioMeaning}`);
+            this.audio.play();
+            this.audio.onended = () => {
+                this.audio = new Audio(`${Constants.URL}${word.word.audioExample}`);
+                this.audio.play();
+            };
+        };
+    }
+    stopSound() {
+        this.audio?.pause();
     }
     changeWordTranslate(word: WordCard) {
         word.updateVisibleTranslate(!word.translateVisible);

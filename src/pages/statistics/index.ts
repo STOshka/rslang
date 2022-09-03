@@ -3,6 +3,7 @@ import LocalStorage from '../../application/localStorage';
 import BasePage from '../basePage';
 import { FullGameStats } from '../../utils/types';
 import { createHTMLElement } from '../../utils/helpers';
+import './index.css';
 
 class Statistics extends BasePage {
     stat: FullGameStats | undefined;
@@ -14,22 +15,38 @@ class Statistics extends BasePage {
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
         if (!LocalStorage.instance.isAuth()) {
-            MAIN.innerHTML = `<h2 class="statistics__title">Статистика доступна только авторизованным пользоватям</h2>`;
+            MAIN.innerHTML = `
+            <div class="statistics__background-non-auth">
+                <div class="statistics__background2">
+                    <h2 class="statistics__title">
+                        Статистика доступна только авторизованным пользоватям
+                    </h2>
+                </div>
+            </div>
+            `;
+
             return;
         }
         this.stat = await (await this.api.getStatistic()).json();
-        MAIN.innerHTML = `<h2 class="statistics__title">Статистика</h2>
-            <div class="statistics__wrapper">
-            <div class="statistics__block statistics__block__common">
-                <h3 class="statistics__block__title">Общая статистика</h3>
+        MAIN.innerHTML = `
+        <div class="statistics__background1">
+            <div class="statistics__background2">
+                <h2 class="statistics__title">Статистика</h2>
+                <div class="statistics__wrapper">
+                    <div class="statistics__block statistics__block__common">
+                        <h3 class="statistics__block__title">Общая статистика</h3>
+                    </div>
+                    <div class="statistics__block statistics__block__audiochallenge">
+                        <h3 class="statistics__block__title">Аудиовызов</h3>
+                    </div>
+                    <div class="statistics__block statistics__block__sprint">
+                        <h3 class="statistics__block__title">Спринт</h3>
+                    </div>
+                </div>
             </div>
-            <div class="statistics__block statistics__block__audiochallenge">
-                <h3 class="statistics__block__title">Аудиовызов</h3>
-            </div>
-            <div class="statistics__block statistics__block__sprint">
-                <h3 class="statistics__block__title">Спринт</h3>
-            </div>
-        </div>`;
+        </div>
+        `;
+
         ['common', 'audiochallenge', 'sprint'].forEach((type) => {
             (MAIN.querySelector(`.statistics__block__${type}`) as HTMLElement).append(this.renderStatistics(type));
         });

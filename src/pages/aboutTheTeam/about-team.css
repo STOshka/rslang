@@ -26,6 +26,7 @@
 
 .about__card {
     display: flex;
+    align-items: center;
     width: 75%;
     border: 5px solid burlywood;
     border-radius: 7px;

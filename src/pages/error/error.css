@@ -1,0 +1,39 @@
+.error__background1 {
+    background-image: url('../../assets/png/1.png');
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+    background-color: #C2DED1;
+}
+
+.error__background2 {
+    display: flex;
+    min-height: 100vh;
+    padding: 60px 20px 0;
+    background-image: url('../../assets/png/error.png');
+    background-repeat: no-repeat;
+    background-position: bottom 100px left 50%;
+    background-size: auto 50%;
+    background-attachment: fixed;
+}
+
+.error__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.error__text_title {
+    font-size: 40px;
+    color: var(--color1);
+}
+
+.error__text {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--color1);
+}
+.error__text_link {
+    font-size: 30px;
+    font-weight: bold;
+    color: #DF7861;
+}

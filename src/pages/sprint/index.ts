@@ -22,11 +22,13 @@ class SprintPage extends BaseGamePage {
     timer() {
         const setIntervalId = setInterval(() => {
             const timeSprint = document.querySelector('#sprint-time');
-            if (this.time >= 0 && timeSprint) {
+            if (!timeSprint) {
+                clearInterval(setIntervalId);
+            }
+            if (this.time) {
                 (timeSprint as HTMLElement).innerText = `Время: ${this.time}`;
                 this.time -= 1;
             } else {
-                clearInterval(setIntervalId);
                 this.endGame();
             }
             return this.time;

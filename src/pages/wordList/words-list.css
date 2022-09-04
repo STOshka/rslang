@@ -303,10 +303,6 @@
     color: var(--color4);
 }
 
-.display-none {
-    display: none;
-}
-
 .active-btn,
 .active-nav {
     pointer-events: none;

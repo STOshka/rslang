@@ -32,9 +32,6 @@ class BaseGamePage extends BasePage {
     constructor(api: API) {
         super(api);
     }
-    createFooter(): string {
-        return ``;
-    }
     init(query: URLSearchParams) {
         super.init(query);
         this.page = inRange(
@@ -221,6 +218,9 @@ class BaseGamePage extends BasePage {
             answers: data.newWords + this.statistic.length,
             streak: data.streak > this.longestStreak ? data.streak : this.longestStreak,
         };
+    }
+    changeFooter() {
+        (document.querySelector('.footer') as HTMLElement).classList.add('display-none');
     }
 }
 

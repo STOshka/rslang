@@ -18,16 +18,20 @@ class SprintPage extends BaseGamePage {
     async generateGame(): Promise<void> {
         await super.generateGame();
         this.renderSprintGame();
+        this.timer();
         this.nextWord();
     }
     timer() {
         const setIntervalId = setInterval(() => {
             const timeSprint = document.querySelector('#sprint-time');
-            if (this.time >= 0 && timeSprint) {
+            if (!timeSprint) {
+                clearInterval(setIntervalId);
+                return;
+            }
+            if (this.time) {
                 (timeSprint as HTMLElement).innerText = `Время: ${this.time}`;
                 this.time -= 1;
             } else {
-                clearInterval(setIntervalId);
                 this.endGame();
             }
             return this.time;
@@ -49,7 +53,7 @@ class SprintPage extends BaseGamePage {
         this.gameState = GameState.Question;
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<main class="sprint__main">
-            <div class="sprint__timer" id="sprint-time">${this.timer()}</div>
+            <div class="sprint__timer" id="sprint-time">Время: ${this.time}</div>
             <div class="sprint__score">${this.score}</div>
             <div class="sprint__score_points">${this.addSpans()}</div>
             <div class="sprint__word"></div>
@@ -58,14 +62,14 @@ class SprintPage extends BaseGamePage {
             <button class="sprint__button" type="button"id="sprint-no">Неверно</button>
         </main>`;
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
-            this.checkAnswer(true, this.words[this.wordIndex] as IWord);
+            this.checkAnswer(true);
             this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
         });
         (MAIN.querySelector('#sprint-no') as HTMLElement).addEventListener('click', () => {
-            this.checkAnswer(false, this.words[this.wordIndex] as IWord);
+            this.checkAnswer(false);
             this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
         });
-        this.answerKey(this.words[this.wordIndex] as IWord);
+        this.answerKey();
     }
     addStyleBtn(idAdd: string, idRemove: string, style: string) {
         (document.querySelector(idAdd) as HTMLElement).classList.add(style);
@@ -100,7 +104,8 @@ class SprintPage extends BaseGamePage {
             span3.classList.add('active');
         }
     }
-    checkAnswer(bthAnswer: boolean, word: IWord) {
+    checkAnswer(bthAnswer: boolean) {
+        const word = this.words[this.wordIndex] as IWord;
         super.addWordStatistic(word, bthAnswer === this.isCorrect, this.getPoints());
         const score = document.querySelector('.sprint__score') as HTMLElement;
         const point = document.querySelector('.points') as HTMLElement;
@@ -110,17 +115,17 @@ class SprintPage extends BaseGamePage {
         score.innerText = `${this.score}`;
         this.nextWord();
     }
-    answerKey(word: IWord) {
+    answerKey() {
         (document.querySelector('body') as HTMLElement).addEventListener('keydown', (event) => {
             const score = document.querySelector('.sprint__score') as HTMLElement;
             const keyName = event.key;
             if (keyName === 'ArrowLeft') {
                 this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');
-                return this.checkAnswer(true, word);
+                return this.checkAnswer(true);
             }
             if (keyName === 'ArrowRight') {
                 this.addStyleBtn('#sprint-no', '#sprint-yes', 'active-button');
-                return this.checkAnswer(false, word);
+                return this.checkAnswer(false);
             }
             score.innerText = `${this.score}`;
         });

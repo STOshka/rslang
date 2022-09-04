@@ -75,8 +75,11 @@ class AudioChallengePage extends BaseGamePage {
         this.addHotKeys();
     }
     addHotKeys() {
-        (document.querySelector('.main') as HTMLElement).addEventListener('keypress', (e: KeyboardEvent) => {
-            if (this.gameState !== GameState.Question && this.gameState !== GameState.Answer) return;
+        (document.querySelector('body') as HTMLElement).addEventListener('keypress', (e: KeyboardEvent) => {
+            if (e.code === 'Space' && this.gameState === GameState.Answer) {
+                return this.handleGameButton();
+            }
+            if (this.gameState !== GameState.Question) return;
             const HOT_KEYS: Record<string, () => void> = {
                 Numpad1: () => this.checkAnswer(this.answers[0]),
                 Numpad2: () => this.checkAnswer(this.answers[1]),

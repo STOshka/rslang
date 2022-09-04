@@ -121,7 +121,7 @@ class BaseGamePage extends BasePage {
                 : await response.json();
         data.optional = {
             found: data.optional.found + 1,
-            correct: isCorrect ? data.optional.correct + 1 : 0,
+            correct: isCorrect ? data.optional.correct + 1 : data.optional.correct,
             repeat: isCorrect ? data.optional.repeat + 1 : 0,
         };
         data.difficulty = this.checkUserWord(data);
@@ -129,7 +129,7 @@ class BaseGamePage extends BasePage {
             await this.api.createWordById(word._id, data);
             this.newWords += 1;
         } else {
-            await this.api.updateWordById(word._id, data);
+            await this.api.updateWordById(word._id, { difficulty: data.difficulty, optional: data.optional });
         }
     }
     checkUserWord(data: UserWord): string {
@@ -180,7 +180,7 @@ class BaseGamePage extends BasePage {
                     ${this.statistic.filter((el) => el.isCorrect === isCorrect).length}
                 </span>
             </div>
-            <div class="root__statistics__correct__words"></div>
+            <div class="root__statistics__${isCorrect ? '' : 'in'}correct__words"></div>
         </div>
         `;
     }
@@ -221,6 +221,9 @@ class BaseGamePage extends BasePage {
                   }
                 : await response.json();
         const date = new Date().toLocaleDateString();
+        if (!data.optional.games[this.game_name]) {
+            data.optional.games[this.game_name] = {};
+        }
         data.optional.games[this.game_name][date] = this.updateUserStatistic(data.optional.games[this.game_name][date]);
         data.optional.games['common'][date] = this.updateUserStatistic(data.optional.games['common'][date]);
         await this.api.updateStatistic({ optional: data.optional });

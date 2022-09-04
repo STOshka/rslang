@@ -88,36 +88,32 @@ class BaseGamePage extends BasePage {
         }
     }
     async addWordforUser(word: IWord, isCorrect: boolean) {
-        const response = await this.api.getWordById(word._id);
-        const data =
-            response.status === 404
-                ? {
-                      difficulty: WordDifficulty.normal,
-                      optional: { found: 0, correct: 0, repeat: 0 },
-                  }
-                : await response.json();
-        data.optional = {
-            found: data.optional.found + 1,
-            correct: isCorrect ? data.optional.correct + 1 : data.optional.correct,
-            repeat: isCorrect ? data.optional.repeat + 1 : 0,
-        };
-        data.difficulty = this.checkUserWord(data);
-        if (response.status === 404) {
-            await this.api.createWordById(word._id, data);
+        const firstFound = !Boolean(word.userWord);
+        if (firstFound) {
             this.newWords += 1;
-        } else {
-            await this.api.updateWordById(word._id, { difficulty: data.difficulty, optional: data.optional });
+            word.userWord = {
+                difficulty: WordDifficulty.normal,
+                optional: { found: 1, correct: Number(isCorrect), repeat: Number(isCorrect) },
+            };
+            this.api.createWordById(word._id, word.userWord);
+            return;
         }
+        word.userWord = {
+            difficulty: this.checkUserWord(word.userWord),
+            optional: {
+                found: word.userWord.optional.found + 1,
+                correct: isCorrect ? word.userWord.optional.correct + 1 : word.userWord.optional.correct,
+                repeat: isCorrect ? word.userWord.optional.repeat + 1 : 0,
+            },
+        };
+        this.api.updateWordById(word._id, word.userWord);
     }
-    checkUserWord(data: UserWord): string {
+    checkUserWord(data: UserWord): WordDifficulty {
         const needRepeat = {
             [WordDifficulty.normal]: 3,
             [WordDifficulty.learning]: -1,
             [WordDifficulty.hard]: 5,
         };
-        if (!data.difficulty || !data.optional) {
-            return WordDifficulty.normal;
-        }
         if (!Boolean(data.optional.repeat) && data.difficulty === WordDifficulty.learning) {
             return WordDifficulty.normal;
         }

@@ -15,14 +15,21 @@ class AuthPage extends BasePage {
         }
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = `<div class="root__auth">
-            <div class="root__auth__buttons">
-                <button class="root__auth__button root__auth__login">Войти</button>
-                <button class="root__auth__button root__auth__reg">Регистрация</button>
+        MAIN.innerHTML = `
+        <div class="root__auth__background1">
+            <div class="root__auth__background2">
+                <div class="root__auth">
+                    <div class="root__auth__buttons">
+                        <button class="root__auth__button root__auth__login">Вход</button>
+                        <span class="root__auth__slash">/</span>
+                        <button class="root__auth__button root__auth__reg">Регистрация</button>
+                    </div>
+                    <div class="root__auth__form"></div>
+                    <div class="root__auth__message"></div>
+                </div>
             </div>
-            <div class="root__auth__form"></div>
-            <div class="root__auth__message"></div>
-        </div>`;
+        </div>
+        `;
         this.renderLogin();
         this.addButtonListener();
     }

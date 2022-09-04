@@ -32,7 +32,6 @@ p {
     height: 40px;
     padding: 0 20px;
     background-color: var(--color5);
-    opacity: 0.9;
 }
 
 .header-nav-list {
@@ -91,16 +90,16 @@ p {
 }
 
 .header-nav-games {
-    position: relative;
     cursor: default;
-    z-index: 1;
 }
 
 .header-nav-games-container {
     display: none;
-    background-color: rgb(231, 231, 231);
-    width: 90px;
+    position: absolute;
+    background-color: var(--color5);
+    width: 150px;
     height: 90px;
+    margin-top: 120px;
     border-radius: 3px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
@@ -122,6 +121,13 @@ p {
     cursor: default;
 }
 
+.header-nav-link-game {
+    width: 135px;
+    height: 30px;
+    border-radius: 3px;
+    background-color: var(--color1);
+}
+
 .active-btn,
 .active-nav {
     background-color: var(--color4);
@@ -139,12 +145,6 @@ p {
 .no-click-btn {
     pointer-events: none;
 }
-
-/* .main {
-    height: calc(100vh - 65px);
-    margin-top: 40px;
-    background-color: beige;
-} */
 
 .footer {
     position: fixed;

@@ -1,5 +1,5 @@
 import API from '../../application/api';
-import LocalStorage from '../../application/localStorage';
+import Authorization from '../../application/auth';
 import BasePage from '../basePage';
 import { FullGameStats } from '../../utils/types';
 import { createHTMLElement } from '../../utils/helpers';
@@ -14,7 +14,7 @@ class Statistics extends BasePage {
     async init(query: URLSearchParams) {
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
-        if (!LocalStorage.instance.isAuth()) {
+        if (!Authorization.instance.isAuth()) {
             MAIN.innerHTML = `
             <div class="statistics__background-non-auth">
                 <div class="statistics__background2">
@@ -24,7 +24,6 @@ class Statistics extends BasePage {
                 </div>
             </div>
             `;
-
             return;
         }
         this.stat = await (await this.api.getStatistic()).json();

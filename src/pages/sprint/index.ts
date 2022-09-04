@@ -16,6 +16,7 @@ class SprintPage extends BaseGamePage {
     }
     async generateGame(): Promise<void> {
         await super.generateGame();
+        this.time = 60;
         this.renderSprintGame();
         this.timer();
         this.nextWord();

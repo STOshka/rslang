@@ -128,10 +128,6 @@ p {
     background-color: var(--color1);
 }
 
-.display-none {
-    display: none;
-}
-
 .active-btn,
 .active-nav {
     background-color: var(--color4);
@@ -210,4 +206,8 @@ p {
     background-repeat: no-repeat;
     transition: 0.3s;
     color: var(--color2);
+}
+
+.display-none {
+    display: none;
 }

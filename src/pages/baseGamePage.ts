@@ -1,5 +1,5 @@
 import API from '../application/api';
-import LocalStorage from '../application/localStorage';
+import Authorization from '../application/auth';
 import { Constants } from '../utils/constants';
 import { createHTMLElement, getAudioSvg, inRange, randomInt, shuffle } from '../utils/helpers';
 import {
@@ -31,9 +31,6 @@ class BaseGamePage extends BasePage {
     learningWords = 0;
     constructor(api: API) {
         super(api);
-    }
-    createFooter(): string {
-        return ``;
     }
     init(query: URLSearchParams) {
         super.init(query);
@@ -76,9 +73,14 @@ class BaseGamePage extends BasePage {
         this.statistic = [];
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
+        this.correctStreak = 0;
+        this.longestStreak = 0;
+        this.score = 0;
+        this.newWords = 0;
+        this.learningWords = 0;
     }
     addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
-        if (LocalStorage.instance.isAuth()) {
+        if (Authorization.instance.isAuth()) {
             this.addWordforUser(word, isCorrect);
         }
         if (isCorrect) {
@@ -90,37 +92,33 @@ class BaseGamePage extends BasePage {
             this.longestStreak = this.correctStreak;
         }
     }
-    async addWordforUser(word: IWord, isCorrect: boolean) {
-        const response = await this.api.getWordById(word._id);
-        const data =
-            response.status === 404
-                ? {
-                      difficulty: WordDifficulty.normal,
-                      optional: { found: 0, correct: 0, repeat: 0 },
-                  }
-                : await response.json();
-        data.optional = {
-            found: data.optional.found + 1,
-            correct: isCorrect ? data.optional.correct + 1 : data.optional.correct,
-            repeat: isCorrect ? data.optional.repeat + 1 : 0,
-        };
-        data.difficulty = this.checkUserWord(data);
-        if (response.status === 404) {
-            await this.api.createWordById(word._id, data);
+    addWordforUser(word: IWord, isCorrect: boolean) {
+        const firstFound = !Boolean(word.userWord);
+        if (firstFound) {
             this.newWords += 1;
-        } else {
-            await this.api.updateWordById(word._id, { difficulty: data.difficulty, optional: data.optional });
+            word.userWord = {
+                difficulty: WordDifficulty.normal,
+                optional: { found: 1, correct: Number(isCorrect), repeat: Number(isCorrect) },
+            };
+            this.api.createWordById(word._id, word.userWord);
+            return;
         }
+        word.userWord = {
+            difficulty: this.checkUserWord(word.userWord),
+            optional: {
+                found: word.userWord.optional.found + 1,
+                correct: isCorrect ? word.userWord.optional.correct + 1 : word.userWord.optional.correct,
+                repeat: isCorrect ? word.userWord.optional.repeat + 1 : 0,
+            },
+        };
+        this.api.updateWordById(word._id, word.userWord);
     }
-    checkUserWord(data: UserWord): string {
+    checkUserWord(data: UserWord): WordDifficulty {
         const needRepeat = {
             [WordDifficulty.normal]: 3,
             [WordDifficulty.learning]: -1,
             [WordDifficulty.hard]: 5,
         };
-        if (!data.difficulty || !data.optional) {
-            return WordDifficulty.normal;
-        }
         if (!Boolean(data.optional.repeat) && data.difficulty === WordDifficulty.learning) {
             return WordDifficulty.normal;
         }
@@ -180,7 +178,7 @@ class BaseGamePage extends BasePage {
         });
     }
     async updateStatistic() {
-        if (!LocalStorage.instance.isAuth() || this.game_name === '') {
+        if (!Authorization.instance.isAuth() || this.game_name === '') {
             return null;
         }
         const response = await this.api.getStatistic();
@@ -221,6 +219,9 @@ class BaseGamePage extends BasePage {
             answers: data.newWords + this.statistic.length,
             streak: data.streak > this.longestStreak ? data.streak : this.longestStreak,
         };
+    }
+    changeFooter() {
+        (document.querySelector('.footer') as HTMLElement).classList.add('display-none');
     }
 }
 

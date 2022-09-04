@@ -73,6 +73,11 @@ class BaseGamePage extends BasePage {
         this.statistic = [];
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
+        this.correctStreak = 0;
+        this.longestStreak = 0;
+        this.score = 0;
+        this.newWords = 0;
+        this.learningWords = 0;
     }
     addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
         if (Authorization.instance.isAuth()) {
@@ -87,7 +92,7 @@ class BaseGamePage extends BasePage {
             this.longestStreak = this.correctStreak;
         }
     }
-    async addWordforUser(word: IWord, isCorrect: boolean) {
+    addWordforUser(word: IWord, isCorrect: boolean) {
         const firstFound = !Boolean(word.userWord);
         if (firstFound) {
             this.newWords += 1;

@@ -1,6 +1,6 @@
 import { Constants } from '../utils/constants';
 import { IWord, UserWord, FullGameStats, WordDifficulty } from '../utils/types';
-import LocalStorage from './localStorage';
+import Authorization from './auth';
 
 class API {
     url: string;
@@ -9,6 +9,15 @@ class API {
     }
     async getRequest(type: string, options: RequestInit): Promise<Response> {
         const response = await fetch(`${this.url}${type}`, options);
+        return response;
+    }
+    async generateToken(): Promise<Response> {
+        const response = await this.getRequest(`users/${Authorization.instance.getUserId()}/tokens`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${Authorization.instance.getRefreshToken()}`,
+            },
+        });
         return response;
     }
     async createUser(name: string, email: string, password: string): Promise<Response> {
@@ -32,7 +41,7 @@ class API {
         return response;
     }
     async getWordList(group: number, page: number): Promise<IWord[]> {
-        const result: IWord[] = await (LocalStorage.instance.isAuth()
+        const result: IWord[] = await (Authorization.instance.isAuth()
             ? this.getAggregatedWords(group, page)
             : await this.getWords(group, page));
         return result;
@@ -45,11 +54,11 @@ class API {
     }
     async getAggregatedWords(group: number, page: number): Promise<IWord[]> {
         const response = await this.getRequest(
-            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?wordsPerPage=20&filter={"$and":[{"page":${page}}, {"group":${group}}]}`,
+            `users/${Authorization.instance.getUserId()}/aggregatedWords?wordsPerPage=20&filter={"$and":[{"page":${page}}, {"group":${group}}]}`,
             {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                    Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
                 },
             }
         );
@@ -57,32 +66,32 @@ class API {
     }
     async getAggregatedHardWords(): Promise<IWord[]> {
         const response = await this.getRequest(
-            `users/${LocalStorage.instance.getUserId()}/aggregatedWords?filter={"$and":[{"userWord.difficulty":"${
+            `users/${Authorization.instance.getUserId()}/aggregatedWords?filter={"$and":[{"userWord.difficulty":"${
                 WordDifficulty.hard
             }"}]}`,
             {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                    Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
                 },
             }
         );
         return (await response.json())[0].paginatedResults;
     }
     async getWordById(wordId: string): Promise<Response> {
-        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+        const response = await this.getRequest(`users/${Authorization.instance.getUserId()}/words/${wordId}`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
             },
         });
         return response;
     }
     async changeWordById(wordId: string, method: string, data: UserWord): Promise<Response> {
-        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/words/${wordId}`, {
+        const response = await this.getRequest(`users/${Authorization.instance.getUserId()}/words/${wordId}`, {
             method: method,
             headers: {
-                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
@@ -96,19 +105,19 @@ class API {
         return this.changeWordById(wordId, 'PUT', data);
     }
     async getStatistic(): Promise<Response> {
-        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/statistics`, {
+        const response = await this.getRequest(`users/${Authorization.instance.getUserId()}/statistics`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
             },
         });
         return response;
     }
     async updateStatistic(data: FullGameStats): Promise<Response> {
-        const response = await this.getRequest(`users/${LocalStorage.instance.getUserId()}/statistics`, {
+        const response = await this.getRequest(`users/${Authorization.instance.getUserId()}/statistics`, {
             method: 'PUT',
             headers: {
-                Authorization: `Bearer ${LocalStorage.instance.getUserToken()}`,
+                Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),

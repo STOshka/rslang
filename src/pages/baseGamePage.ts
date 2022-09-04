@@ -1,5 +1,5 @@
 import API from '../application/api';
-import LocalStorage from '../application/localStorage';
+import Authorization from '../application/auth';
 import { Constants } from '../utils/constants';
 import { createHTMLElement, getAudioSvg, inRange, randomInt, shuffle } from '../utils/helpers';
 import {
@@ -75,7 +75,7 @@ class BaseGamePage extends BasePage {
         this.wordIndex = -1;
     }
     addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
-        if (LocalStorage.instance.isAuth()) {
+        if (Authorization.instance.isAuth()) {
             this.addWordforUser(word, isCorrect);
         }
         if (isCorrect) {
@@ -177,7 +177,7 @@ class BaseGamePage extends BasePage {
         });
     }
     async updateStatistic() {
-        if (!LocalStorage.instance.isAuth() || this.game_name === '') {
+        if (!Authorization.instance.isAuth() || this.game_name === '') {
             return null;
         }
         const response = await this.api.getStatistic();

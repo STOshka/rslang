@@ -21,11 +21,6 @@ p {
     margin: 0;
 }
 
-.display-none,
-.footer.display-none {
-    display: none;
-}
-
 .header-nav {
     position: fixed;
     top: 0;
@@ -211,4 +206,8 @@ p {
     background-repeat: no-repeat;
     transition: 0.3s;
     color: var(--color2);
+}
+
+.display-none {
+    display: none;
 }

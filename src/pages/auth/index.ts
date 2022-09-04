@@ -1,5 +1,5 @@
 import API from '../../application/api';
-import LocalStorage from '../../application/localStorage';
+import Authorization from '../../application/auth';
 import { ROUTES } from '../../utils/types';
 import BasePage from '../basePage';
 import { Constant } from './constants';
@@ -10,7 +10,7 @@ class AuthPage extends BasePage {
         super(api);
     }
     init(query: URLSearchParams) {
-        if (LocalStorage.instance.isAuth()) {
+        if (Authorization.instance.isAuth()) {
             window.location.hash = ROUTES.HOME_PAGE;
         }
         super.init(query);
@@ -94,8 +94,8 @@ class AuthPage extends BasePage {
                 throw new Error(Constant.USER_NOT_FOUND);
             }
             const answer = await response.json();
-            LocalStorage.instance.authUser(answer.userId, answer.name, answer.token);
-            window.location.hash = ROUTES.HOME_PAGE;
+            Authorization.instance.authUser(answer.userId, answer.token, answer.refreshToken);
+            window.location.href = window.location.origin + '/' + ROUTES.HOME_PAGE;
         } catch (error: unknown) {
             this.showMessage(Constant.LOGIN_FAILURE);
         }

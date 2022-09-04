@@ -1,5 +1,5 @@
 import API from '../../application/api';
-import LocalStorage from '../../application/localStorage';
+import Authorization from '../../application/auth';
 import BasePage from '../basePage';
 import { FullGameStats } from '../../utils/types';
 import { createHTMLElement } from '../../utils/helpers';
@@ -13,7 +13,7 @@ class Statistics extends BasePage {
     async init(query: URLSearchParams) {
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
-        if (!LocalStorage.instance.isAuth()) {
+        if (!Authorization.instance.isAuth()) {
             MAIN.innerHTML = `<h2 class="statistics__title">Статистика доступна только авторизованным пользоватям</h2>`;
             return;
         }

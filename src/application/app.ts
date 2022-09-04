@@ -1,6 +1,6 @@
 import { ROUTES } from '../utils/types';
 import API from './api';
-import LocalStorage from './localStorage';
+import Authorization from './auth';
 import { pages } from './pages';
 import Router from './router';
 
@@ -8,9 +8,17 @@ class App {
     mainAPI: API;
     router: Router;
     constructor() {
-        new LocalStorage();
         this.mainAPI = new API();
         this.router = new Router();
+        new Authorization(this.mainAPI);
+        this.generateSite();
+    }
+    async generateSite() {
+        try {
+            await Authorization.instance.checkToken();
+        } catch (e) {
+            Authorization.instance.logOut();
+        }
         this.generatePage();
         this.registerPages();
         this.router.onRouteChange();
@@ -23,12 +31,12 @@ class App {
         BODY.innerHTML = `<header class="header">${this.createHeader()}</header>
         <main class="main">MAIN</main>
         <footer class="footer">${this.createFooter()}</footer>`;
-        (document.querySelector('.logout') as HTMLElement).addEventListener('click', () => {
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userToken');
-            window.location.reload();
-        });
+        if (Authorization.instance.isAuth()) {
+            (document.querySelector('.logout') as HTMLElement).addEventListener('click', () => {
+                Authorization.instance.logOut();
+                window.location.reload();
+            });
+        }
     }
     createHeader(): string {
         return `<nav class="header-nav">
@@ -37,17 +45,24 @@ class App {
                     <li class="header-nav-item"><a href="${ROUTES.WORD_LIST}" class="header-nav-link">Учебник</a></li>
                     <li class="header-nav-item header-nav-games">Игры
                         <div class="header-nav-games-container">
-                            <a href="${ROUTES.AUDIO_CHALLENGE_GAME}" class="header-nav-link header-nav-link-game">Аудио</a>
+                            <a href="${
+                                ROUTES.AUDIO_CHALLENGE_GAME
+                            }" class="header-nav-link header-nav-link-game">Аудио</a>
                             <a href="${ROUTES.SPRINT_GAME}" class="header-nav-link header-nav-link-game">Спринт</a>
                         </div>
                     </li>
-                    <li class="header-nav-item"><a href="${ROUTES.STATISTICS}" class="header-nav-link">Статистика</a></li>
-                    <li class="header-nav-item auth-bnt auth">
+                    <li class="header-nav-item"><a href="${
+                        ROUTES.STATISTICS
+                    }" class="header-nav-link">Статистика</a></li>
+                    ${
+                        !Authorization.instance.isAuth()
+                            ? `<li class="header-nav-item auth-bnt auth">
                         <a href="${ROUTES.AUTH_PAGE}" class="header-nav-link">Вход
                             <div class="auth-in-logo"></div>
                         </a>
-                    </li>
-                    <li class="header-nav-item auth-bnt logout">Выход<div class="auth-out-logo"></div></li>
+                    </li>`
+                            : `<li class="header-nav-item auth-bnt logout">Выход<div class="auth-out-logo"></div></li>`
+                    }
                 </ul>
             </nav>`;
     }

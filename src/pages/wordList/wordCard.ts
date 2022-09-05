@@ -42,27 +42,23 @@ export class WordCard {
         ) {
             return ``;
         }
-        return `Количество правильных ответов: ${this.word.userWord.optional.correct} из ${this.word.userWord.optional.found}.`;
+        return `Количество правильных ответов: 
+                ${this.word.userWord.optional.correct} из ${this.word.userWord.optional.found}.`;
     }
     generateBtn() {
         return `<p class="word-btns-title">Звук:</p>
         <div class="word-btns-subcontainer">
             <div class="word-btn word-sound-btn">${soundLogoSvg}</div>
-            <div class="word-btn word-stop-sound-btn">СТОП</div>
+            <div class="word-btn word-stop-sound-btn">❚❚</div>
         </div>
-        <p class="word-btns-title">Перевод:</p>
-        <div class="word-btns-subcontainer">
-            <div class="word-btn word-translate">ВЫКЛ</div>
-        </div>
-        <p class="word-btns-title">Значение:</p>
-        <div class="word-btns-subcontainer">
-            <div class="word-btn word-description">ВЫКЛ</div>
-        </div>
+        <div class="word-btn word-description">Значение ВЫКЛ</div>
+        <div class="word-btn word-translate">Перевод ВЫКЛ</div>
+        
         ${this.generateBtnAuth()}`;
     }
     generateBtnAuth() {
         return LocalStorage.instance.isAuth()
-            ? `<div class="word-btn word-btn-learned">Изученое</div>
+            ? `<div class="word-btn word-btn-learned">Изученное</div>
         <div class="word-btn word-btn-hard">Сложное</div>`
             : ``;
     }
@@ -84,8 +80,8 @@ export class WordCard {
         <p class="word-text word-example">${this.word.textExample}</p>`
             : ``;
         (this.node.querySelector('.word-description') as HTMLElement).innerHTML = this.descriptionVisible
-            ? 'ВЫКЛ'
-            : 'ВКЛ';
+            ? 'Значение ВЫКЛ'
+            : 'Значение ВКЛ';
     }
 
     updateVisibleTranslate(visible = false) {
@@ -96,6 +92,6 @@ export class WordCard {
             <p class="word-text word-meaning-translate">${this.word.textMeaningTranslate}</p>
             <p class="word-text word-example-translate">${this.word.textExampleTranslate}</p>`
             : ``;
-        (this.node.querySelector('.word-translate') as HTMLElement).innerHTML = this.translateVisible ? 'ВЫКЛ' : 'ВКЛ';
+        (this.node.querySelector('.word-translate') as HTMLElement).innerHTML = this.translateVisible ? 'Перевод ВЫКЛ' : 'Перевод ВКЛ';
     }
 }

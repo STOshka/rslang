@@ -32,8 +32,8 @@ class BasePage {
                     <li class="header-nav-item"><a href="${ROUTES.WORD_LIST}" class="header-nav-link">Учебник</a></li>
                     <li class="header-nav-item header-nav-games">Игры
                         <div class="header-nav-games-container">
-                            <a href="${ROUTES.AUDIO_CHALLENGE_GAME}" class="header-nav-link header-nav-link-game">Аудиовызов</a>
-                            <a href="${ROUTES.SPRINT_GAME}" class="header-nav-link header-nav-link-game">Спринт</a>
+                            <a href="${ROUTES.AUDIO_CHALLENGE_GAME}" class="header-nav-link-game">Аудиовызов</a>
+                            <a href="${ROUTES.SPRINT_GAME}" class="header-nav-link-game">Спринт</a>
                         </div>
                     </li>
                     <li class="header-nav-item"><a href="${ROUTES.STATISTICS}" class="header-nav-link">Статистика</a></li>

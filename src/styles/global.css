@@ -53,7 +53,7 @@ p {
     height: 30px;
     list-style: none;
     font-size: 24px;
-    border: 2px solid var(--color1);
+    border: 1px solid var(--color4);
     border-radius: 3px;
     text-align: center;
     background-color: var(--color1);
@@ -65,14 +65,17 @@ p {
     border-radius: 3px;
     background-color: var(--color4);
     color: var(--color1);
+    transition: 0.2s;
 }
 
 .header-nav-item:hover .header-nav-link {
     color: var(--color1);
     background-color: var(--color4);
+    transition: 0.2s;
 }
 
-.header-nav-link {
+.header-nav-link,
+.header-nav-link-game {
     display: flex;
     justify-content: center;
     gap: 5px;
@@ -103,8 +106,8 @@ p {
 .header-nav-games:hover {
     background-color: var(--color4);
     color: var(--color1);
-    border: 1px solid #7d7d7d;
-    border-radius: 3px;
+    border: 2px solid #7d7d7d;
+    transition: 0.2s;
 }
 
 .header-nav-games:hover .header-nav-games-container {
@@ -113,19 +116,27 @@ p {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    transition: 1s;
+    transition: 0.2s;
 }
 
 .header-nav-link-game {
     width: 135px;
     height: 30px;
+    border: 2px solid var(--color4);
     border-radius: 3px;
     background-color: var(--color1);
 }
 
+.header-nav-link-game:hover {
+    background-color: var(--color4);
+    color: var(--color1);
+    border: 2px solid #7d7d7d;
+    transition: 0.2s;
+}
+
 .auth-bnt {
     width: 105px;
-    margin-left: 30px;
+    margin-left: 25px;
     cursor: pointer;
 }
 
@@ -140,11 +151,13 @@ p {
 }
 
 .auth:hover .auth-in-svg {
-    fill: var(--color1)
+    fill: var(--color1);
+    transition: 0.2s;
 }
 
 .logout:hover .auth-out-svg {
-    fill: var(--color1)
+    fill: var(--color1);
+    transition: 0.2s;
 }
 
 .game__main {
@@ -203,8 +216,8 @@ p {
 .game__group:hover {
     background-color: var(--color4);
     color: var(--color1);
-    border: 2px solid #7d7d7d;
-    border-radius: 3px;
+    border: 2px solid var(--color2);
+    transition: 0.2s;
 }
 
 .footer {
@@ -288,7 +301,7 @@ p {
 .inactive-btn {
     pointer-events: none;
     color: #CDCDCD;
-    border: 1px solid #CDCDCD;
+    border: 1px solid #bdbdbd;
 }
 
 .no-click-btn {

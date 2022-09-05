@@ -96,23 +96,15 @@ const wordContainerHTML = `
             <p class="word-text word-example-translate"></p>                                                 
         </div>
         <div class="word-btns-container">
-            <p class="word-btns-title">Voice:</p>
-            <div class="word-btns-subcontainer">
-                <div class="word-btn word-sound-btn" data-id="">${soundLogoSvg}</div>
-                <div class="word-btn word-stop-sound-btn" data-id="">STOP</div>
-            </div>
-            <p class="word-btns-title">Translate:</p>
-            <div class="word-btns-subcontainer">
-                <div class="word-btn word-translate-btn-on" data-id="">ON</div>
-                <div class="word-btn word-translate-btn-off" data-id="">OFF</div>
-            </div>
-            <p class="word-btns-title">Description:</p>
-            <div class="word-btns-subcontainer">
-                <div class="word-btn word-description-on" data-id="">ON</div>
-                <div class="word-btn word-description-off" data-id="">OFF</div>
-            </div>
-        <div class="word-btn word-btn-learned">Studied</div>
-        <div class="word-btn word-btn-hard">Difficult</div>
+        <p class="word-btns-title">Звук:</p>
+        <div class="word-btns-subcontainer">
+            <div class="word-btn word-sound-btn">${soundLogoSvg}</div>
+            <div class="word-btn word-stop-sound-btn">❚❚</div>
+        </div>
+        <div class="word-btn word-description">Значение ВЫКЛ</div>
+        <div class="word-btn word-translate">Перевод ВЫКЛ</div>
+        <div class="word-btn word-btn-learned">Изученное</div>
+        <div class="word-btn word-btn-hard">Сложное</div>
     </div>
     </div>
 `.repeat(Constants.WORDS_PER_GROUP);
@@ -128,22 +120,17 @@ export const wordsPageHTML = `
             <div class="words-partition-btn">Часть 6</div>
         </div>
         <div class="func-btns-container">
-            <div class="func-btns-subcontainer">
-                <p class="btns-title">Значение</p>
-                <div class="func-btn global-description">ON</div>
+            <div class="games-btns-container">    
+                <div class="func-btn game-audiochallenge">Игра Аудиовызов</div>
+                <div class="func-btn game-sprint">Игра Спринт</div>
             </div>
-            <div class="func-btns-subcontainer">
-                <p class="btns-title">Перевод</p>
-                <div class="func-btn global-translate-on-btn">ON</div>
-            </div>
-            <div class="func-btn sort-btn">По алфавиту</div>
-            <div class="func-btn shuffle-btn">Перемешать</div>
-            <div class="func-btn reset-btn">Сбросить</div>
-        </div>
-        <div class="games-btn-container">    
-            <p class="btns-title">Игры: </p>
-            <div class="func-btn game-audiochallenge">Аудиовызов</div>
-            <div class="func-btn game-sprint">Спринт</div>
+            <div class="settings-btns-container">
+                <div class="func-btn global-description">Значение ВЫКЛ</div>
+                <div class="func-btn global-translate-on-btn">Перевод ВЫКЛ</div>
+                <div class="func-btn sort-btn">Слова по алфавиту</div>
+                <div class="func-btn shuffle-btn">Слова перемешать</div>
+                <div class="func-btn reset-btn">Сбросить настройки</div>
+            </div>  
         </div>
     </div>
     <div class="words-container">${wordContainerHTML}</div>

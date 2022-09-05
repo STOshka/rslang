@@ -102,7 +102,7 @@ class AuthPage extends BasePage {
             }
             const answer = await response.json();
             Authorization.instance.authUser(answer.userId, answer.token, answer.refreshToken);
-            window.location.href = window.location.origin + '/' + ROUTES.HOME_PAGE;
+            window.location.href = ROUTES.HOME_PAGE;
         } catch (error: unknown) {
             this.showMessage(Constant.LOGIN_FAILURE);
         }

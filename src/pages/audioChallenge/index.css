@@ -1,0 +1,163 @@
+.audio__challenge__background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #D8B384;
+    background-image: url('../../assets/png/1.png');
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+    padding: 60px 20px 50px;
+}
+
+.audio__challenge__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-width: 60%;
+    padding: 30px;
+    border: 2px solid var(--color2);
+    border-radius: 7px;
+    background-color: rgba(245, 245, 233, 0.9);
+}
+
+.audio__challenge__svg {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    width: 60%;
+    min-height: 60px;
+    padding: 10px;
+    background-color: rgba(245, 245, 233);
+    border: 2px solid var(--color2);
+    border-radius: 5px;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.audio__challenge__svg__text {
+    margin: 0 auto;
+    user-select: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.audio__challenge__svg:hover {
+    background-color: var(--color4);
+}
+
+.audio__challenge__svg:hover .word-sound-svg {
+    fill: var(--color1);
+}
+
+.audio__challenge__svg:hover .audio__challenge__svg__text  {
+    color: var(--color1);
+}
+
+.audio__challenge__answers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 60%;
+}
+
+.audio__challenge__answer,
+.audio__challenge__group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 60px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.3s;
+    padding: 3px 15px;
+    border: 2px solid var(--color2);
+    border-radius: 5px;
+    background-color: rgba(245, 245, 233);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.audio__challenge__answer:hover {
+    background-color: #A7D0CD;
+}
+
+.audio__challenge__answer.correct {
+    background-color: #87d2bc;
+}
+
+.audio__challenge__answer.incorrect {
+    background-color: #df92a5;
+}
+
+.audio__challenge__button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    min-height: 60px;
+    padding: 5px;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid var(--color2);
+    border-radius: 5px;
+    background-color: rgba(245, 245, 233);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.audio__challenge__button:hover {
+    background-color: var(--color4);
+    color: var(--color1);
+}
+
+
+/* .audio__challenge__main {
+    background: aliceblue;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.2em;
+}
+
+.audio__challenge__name {
+    font-size: 4rem;
+}
+
+.audio__challenge__groups__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.audio__challenge__groups {
+    display: flex;
+    gap: 10px;
+}
+
+.audio__challenge__group {
+    font-size: 1.5rem;
+    border-radius: 20%;
+}
+
+.audio__challenge__group:hover {
+    background-color: #0000ff;
+    color: #ffffff;
+} */

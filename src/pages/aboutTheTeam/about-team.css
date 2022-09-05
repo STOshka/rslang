@@ -1,0 +1,86 @@
+:root {
+    --color1: #fdffe7;
+    --color2: #424242;
+    --color3: #7897AB;
+    --color4: #50666B;
+    --color5: #d1d1d1;
+}
+
+.about__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100vw;
+    min-height: 100vh;
+    padding: 60px 20px 50px;
+    background-image: url('../../assets/img/2.jpg');
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+}
+
+.about_title {
+    font-size: 34px;
+    color: var(--color1);
+}
+
+.about__card {
+    display: flex;
+    align-items: center;
+    width: 75%;
+    border: 5px solid burlywood;
+    border-radius: 7px;
+    background-color: var(--color1);
+}
+
+.about__card_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 200px;
+
+}
+
+.img {
+    width: 140px;
+    height: 190px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin: 5px;
+}
+
+.about__card_text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 20px;
+}
+
+.about__card_name {
+    font-size: 26px;
+    color: var(--color2);
+}
+
+.about__card_role {
+    margin-left: 30px;
+    font-size: 20px;
+    color: var(--color2);
+}
+
+.about__card_link {
+    width: 130px;
+    height: 25px;
+    background-image: url('../../assets/svg/github.svg');
+    background-repeat: no-repeat;
+    text-decoration: none;
+    color: var(--color2);
+}
+
+.about__card_details {
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--color2);
+}
+

@@ -34,11 +34,7 @@ class BaseGamePage extends BasePage {
     }
     init(query: URLSearchParams) {
         super.init(query);
-        this.page = inRange(
-            parseInt(query.get('page') as string) as number,
-            Constants.PAGE_PER_GROUP - 1,
-            randomInt(Constants.PAGE_PER_GROUP)
-        );
+        this.page = inRange(parseInt(query.get('page') as string) as number, Constants.PAGE_PER_GROUP - 1, -1);
         this.group = inRange(parseInt(query.get('group') as string) as number, Constants.COUNT_GROUPS - 1, -1);
         if (this.group < 0) {
             this.chooseLevel();
@@ -70,8 +66,8 @@ class BaseGamePage extends BasePage {
         return `NO NAME`;
     }
     async generateGame() {
-        const words = await this.api.getWordList(this.group, this.page);
-        this.words = shuffle(words);
+        await this.getWords();
+        this.words = shuffle(this.words);
         this.statistic = [];
         this.gameState = GameState.StartScreen;
         this.wordIndex = -1;
@@ -81,7 +77,36 @@ class BaseGamePage extends BasePage {
         this.newWords = 0;
         this.learningWords = 0;
     }
+    async getWords() {
+        const page = this.page < 0 ? randomInt(Constants.PAGE_PER_GROUP) : this.page;
+        if (Authorization.instance.isAuth()) {
+            try {
+                const response = await this.api.getAllAggregatedWords(this.group);
+                const words = (await response.json())[0].paginatedResults as IWord[];
+                this.words = words.filter((word) => word.page === page);
+                if (this.page === page) {
+                    this.words = this.words.filter((word) => word.userWord?.difficulty !== WordDifficulty.learning);
+                }
+                if (this.words.length < Constants.WORDS_PER_GROUP) {
+                    this.words = [
+                        ...this.words,
+                        ...words.filter(
+                            (word) => word.page !== page && word.userWord?.difficulty !== WordDifficulty.learning
+                        ),
+                    ].slice(0, Constants.WORDS_PER_GROUP);
+                }
+            } catch (e) {
+                localStorage.removeItem('userId');
+                const response = await this.api.getWordList(this.group, page);
+                this.words = await response.json();
+            }
+        } else {
+            const response = await this.api.getWordList(this.group, page);
+            this.words = await response.json();
+        }
+    }
     addWordStatistic(word: IWord, isCorrect: boolean, potPoints = 10) {
+        console.log(word);
         if (Authorization.instance.isAuth()) {
             this.addWordforUser(word, isCorrect);
         }

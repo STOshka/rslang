@@ -134,11 +134,11 @@ class WordListPage extends BasePage {
         } else {
             _word.userWord.difficulty = _word.userWord.difficulty === difficulty ? WordDifficulty.normal : difficulty;
             await this.api.updateWordById(_word._id, _word.userWord);
-            word.generateDifficulty();
             if (this.group === Constants.COUNT_GROUPS && _word.userWord.difficulty !== WordDifficulty.hard) {
                 (document.querySelector('.words-container') as HTMLElement).removeChild(word.node);
             }
         }
+        word.generateDifficulty();
         this.setColorForGroup();
     }
     async switchGroup(group: number) {

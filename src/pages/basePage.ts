@@ -1,6 +1,7 @@
 import API from '../application/api';
 import LocalStorage from '../application/localStorage';
 import { ROUTES } from '../utils/types';
+import { getAuthInSvg, getAuthOutSvg } from '../utils/helpers';
 
 class BasePage {
     api: API;
@@ -38,10 +39,12 @@ class BasePage {
                     <li class="header-nav-item"><a href="${ROUTES.STATISTICS}" class="header-nav-link">Статистика</a></li>
                     <li class="header-nav-item auth-bnt auth">
                         <a href="${ROUTES.AUTH_PAGE}" class="header-nav-link">Вход
-                            <div class="auth-in-logo"></div>
+                            <div class="auth-in-logo">${getAuthInSvg()}</div>
                         </a>
                     </li>
-                    <li class="header-nav-item auth-bnt logout">Выход<div class="auth-out-logo"></div></li>
+                    <li class="header-nav-item auth-bnt logout">Выход
+                        <div class="auth-out-logo">${getAuthOutSvg()}</div>
+                    </li>
                 </ul>
             </nav>`;
     }
@@ -50,7 +53,7 @@ class BasePage {
                     <p class="footer-item">©</p>
                     <p class="footer-item">2022</p>
                 </div>
-                <div class="footer-items">
+                <div class="footer-items footer-items-developers">
                     <a class="gh-link" href="https://github.com/STOshka/">
                         <div class="gh-logo"></div>
                         <p class="gh-title">Alexandr Stoyanov</p>

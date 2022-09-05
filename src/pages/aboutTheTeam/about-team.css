@@ -30,7 +30,7 @@
     width: 75%;
     border: 5px solid burlywood;
     border-radius: 7px;
-    background-color: beige;
+    background-color: var(--color1);
 }
 
 .about__card_img {

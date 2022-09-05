@@ -208,12 +208,14 @@ class WordListPage extends BasePage {
     getColorForGroup() {
         const body = document.querySelector('body') as HTMLElement;
         const headerNav = document.querySelector('.header-nav') as HTMLElement;
+        const footer = document.querySelector('.footer') as HTMLElement;
         const wordsPageBtnsContainer = document.querySelector('.words-page-btns-container') as HTMLElement;
         const wordsPartitionBtn = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
         const wordsPagination = document.querySelector('.words-pagination') as HTMLElement;
 
         body.style.backgroundColor = `${Constants.groupColor[this.group]}`;
         headerNav.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+        footer.style.backgroundColor = `${Constants.groupColor[this.group]}`;
         wordsPageBtnsContainer.style.backgroundColor = `${Constants.groupColor[this.group]}`;
         wordsPartitionBtn.forEach((el, i) => (el.style.backgroundColor = `${Constants.groupColor[i]}`));
         wordsPagination.style.backgroundColor = `${Constants.groupColor[this.group]}`;

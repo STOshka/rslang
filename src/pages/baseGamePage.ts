@@ -37,7 +37,7 @@ class BaseGamePage extends BasePage {
                     <p class="footer-item">©</p>
                     <p class="footer-item">2022</p>
                 </div>
-                <div class="footer-items">
+                <div class="footer-items footer-items-developers">
                     <a class="gh-link" href="https://github.com/STOshka/">
                         <div class="gh-logo"></div>
                         <p class="gh-title">Alexandr Stoyanov</p>
@@ -158,13 +158,18 @@ class BaseGamePage extends BasePage {
         this.gameState = GameState.GameOver;
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `
-        <div class="root__statistics">
-            <div class="root__statistics__label">Набрано баллов: ${this.score}</div>
-            <div class="root__statistics__label">Длинная серия правильных ответов: ${this.longestStreak}</div>
-            <div class="root__statistics__correct">${this.generateSpanWords(true)}</div>
-            <div class="root__statistics__incorrect">${this.generateSpanWords(false)}</div>
-            <button class="root__statistics__return">Вернуться к учебнику</button>
-        </div>`;
+        <div class="root__statistics__background">
+            <div class="root__statistics">
+                <div class="root__statistics__labels">
+                    <div class="root__statistics__label">Набрано баллов: ${this.score}</div>
+                    <div class="root__statistics__label">Серии правильных ответов: ${this.longestStreak}</div>
+                </div>
+               <div class="root__statistics__correct">${this.generateSpanWords(true)}</div>
+                <div class="root__statistics__incorrect">${this.generateSpanWords(false)}</div>
+                <button class="root__statistics__return">Перейти в учебник</button>
+            </div>
+        </div>
+        `;
         (MAIN.querySelector('.root__statistics__return') as HTMLElement).addEventListener('click', () => {
             window.location.hash = ROUTES.WORD_LIST + `?group=${this.group}`;
         });
@@ -173,7 +178,6 @@ class BaseGamePage extends BasePage {
     }
     generateSpanWords(isCorrect: boolean): string {
         return `
-        <div class="root__statistics__background">
             <div class="root__statistics__span">
                 <span class="root__statistics__label">Ответили ${isCorrect ? '' : 'не'}правильно:</span>
                 <span class="root__statistics__count">
@@ -181,7 +185,6 @@ class BaseGamePage extends BasePage {
                 </span>
             </div>
             <div class="root__statistics__${isCorrect ? '' : 'in'}correct__words"></div>
-        </div>
         `;
     }
     generateStatistic() {

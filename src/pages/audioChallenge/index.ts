@@ -49,11 +49,9 @@ class AudioChallengePage extends BaseGamePage {
         MAIN.innerHTML = `
         <div class="audio__challenge__background">
             <div class="audio__challenge__container">
-                <div class="audio__challenge__svg__container">
-                    <div class="audio__challenge__svg">
+                <div class="audio__challenge__svg">
                     ${getAudioSvg()} 
-                    </div>
-                    <p class="audio__challenge__svg__text">Нажмите для повтора воспроизведения</p>
+                    <p class="audio__challenge__svg__text">Повторить</p>
                 </div>
                 <div class="audio__challenge__answers"></div>
                 <div class="audio__challenge__button"></div>
@@ -118,7 +116,7 @@ class AudioChallengePage extends BaseGamePage {
             (answer) => answer.text === this.words[this.wordIndex].wordTranslate
         ) as Answer;
         correctAnswer.markAsCorrect();
-        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '&#10230;';
+        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = 'Продолжить';
         this.gameState = GameState.Answer;
     }
 }

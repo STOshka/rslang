@@ -12,7 +12,8 @@ class Answer {
         this.node = this.generateNode();
     }
     generateNode(): HTMLElement {
-        return createHTMLElement('div', 'audio__challenge__answer', `${this.index + 1} ${this.text}`);
+        return createHTMLElement('div', 'audio__challenge__answer',
+            `${this.index + 1}&nbsp&nbsp&nbsp${this.text}`);
     }
     markAnswer(type: string) {
         this.node.classList.add(type);

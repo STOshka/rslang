@@ -1,0 +1,135 @@
+.sprint__background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-height: 100vh;
+    padding: 60px 20px 50px;
+    background-color: #C2DED1;
+    background-image: url('../../assets/png/1.png');
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+}
+
+.sprint__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 85%;
+    padding: 20px;
+    border-radius: 7px;
+    background-color: var(--color6);
+}
+
+.sprint__timer_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-right: 20px;
+}
+
+.sprint__timer,
+.sprint__score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--color5);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.sprint__timer_text {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.sprint__score_points {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.circles {
+    height: 25px;
+    width: 25px;
+    background-color: var(--color5);
+    border-radius: 50%;
+    display: inline-block;
+    margin: 5px;
+}
+
+.sprint__words {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-width: 275px;
+    padding: 20px;
+    margin: 30px 0 50px;
+    border: 2px solid #7d7d7d;
+    border-radius: 5px;
+}
+
+.sprint__word,
+.sprint__translate {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.sprint__buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.sprint__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 130px;
+    border: 2px solid #7d7d7d;
+    border-radius: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.sprint__button:hover {
+    background-color: var(--color3);
+    color: var(--color1);
+    border: 2px solid #7d7d7d;
+    transition: 0.2s;
+}
+
+/* .sprint-yes {
+    background-color: #87d2bc;
+}
+
+.sprint-no {
+    background-color: #df92a5;
+} */
+
+
+
+.active {
+    background-color: #cd7f32;
+}
+
+/* .active-button {
+    background-color: aquamarine;
+} */

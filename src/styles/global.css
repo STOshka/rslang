@@ -3,7 +3,9 @@
     --color2: #424242;
     --color3: #7897AB;
     --color4: #50666B;
-    --color5: #d1d1d1;
+    --color5: #50666b48;
+    --color6: #fdffe7ec;
+    --color7: #C2DED1;
 }
 
 * {
@@ -14,6 +16,7 @@ html {
     scroll-behavior: smooth;
 }
 
+h2,
 h3,
 h4,
 h5,
@@ -54,13 +57,19 @@ p {
     border-radius: 3px;
     text-align: center;
     background-color: var(--color1);
+    cursor: pointer;
 }
 
 .header-nav-item:hover {
-    background-color: rgb(113, 113, 113);
-    color: rgb(241, 241, 241);
-    border: 1px solid #7d7d7d;
+    border: 2px solid var(--color3);
     border-radius: 3px;
+    background-color: var(--color4);
+    color: var(--color1);
+}
+
+.header-nav-item:hover .header-nav-link {
+    color: var(--color1);
+    background-color: var(--color4);
 }
 
 .header-nav-link {
@@ -68,26 +77,11 @@ p {
     justify-content: center;
     gap: 5px;
     align-items: center;
+    width: 100%;
+    height: 100%;
     text-decoration: none;
     font-size: 24px;
-    color: rgb(65, 64, 64);
-}
-
-.auth-bnt {
-    width: 105px;
-    margin-left: 30px;
-}
-
-.auth-in-logo {
-    width: 30px;
-    height: 30px;
-    background-image: url('../assets/svg/user.svg');
-}
-
-.auth-out-logo {
-    width: 25px;
-    height: 25px;
-    background-image: url('../assets/svg/logout.svg');
+    color: var(--color2);
 }
 
 .header-nav-games {
@@ -97,29 +91,29 @@ p {
 .header-nav-games-container {
     display: none;
     position: absolute;
-    background-color: rgba(128, 128, 128, 0.1);
     width: 150px;
     height: 90px;
     margin-top: 120px;
     border-radius: 3px;
+    background-color: #50666b23;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    cursor: default;
 }
 
 .header-nav-games:hover {
-    background-color: rgb(113, 113, 113);
-    color: rgb(241, 241, 241);
+    background-color: var(--color4);
+    color: var(--color1);
     border: 1px solid #7d7d7d;
     border-radius: 3px;
 }
 
 .header-nav-games:hover .header-nav-games-container {
-    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    cursor: default;
+    transition: 1s;
 }
 
 .header-nav-link-game {
@@ -129,10 +123,35 @@ p {
     background-color: var(--color1);
 }
 
+.auth-bnt {
+    width: 105px;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.auth-in-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.auth-out-logo {
+    width: 25px;
+    height: 25px;
+}
+
+.auth:hover .auth-in-svg {
+    fill: var(--color1)
+}
+
+.logout:hover .auth-out-svg {
+    fill: var(--color1)
+}
+
 .game__main {
     display: flex;
     justify-content: center;
     min-height: 100vh;
+    background-color: var(--color7);
     background-image: url('../assets/png/1.png');
     background-size: 100vw 100vh;
     background-attachment: fixed;
@@ -147,7 +166,8 @@ p {
     height: max-content;
     padding: 50px 30px;
     margin-top: 20%;
-    background-color: #7897AB;
+    border-radius: 7px;
+    background-color: var(--color6);
 }
 
 .game__name {
@@ -180,6 +200,13 @@ p {
     color: var(--color2);
 }
 
+.game__group:hover {
+    background-color: var(--color4);
+    color: var(--color1);
+    border: 2px solid #7d7d7d;
+    border-radius: 3px;
+}
+
 .footer {
     position: fixed;
     left: 0;
@@ -190,7 +217,6 @@ p {
     width: 100%;
     padding-left: 5px;
     background-color: var(--color5);
-    opacity: 0.9;
 }
 
 .footer-items {
@@ -200,12 +226,17 @@ p {
     gap: 5px;
 }
 
+.footer-items-developers {
+    padding-right: 10px;
+    background-color: #fdffe7d2;
+    border-radius: 9px;
+}
+
 .footer-item {
     margin: 0;
-    font-family: natuve;
     font-size: 16px;
     font-weight: 700;
-    color: var(--color2);
+    color: black;
 }
 
 .gh-link {
@@ -216,8 +247,8 @@ p {
 }
 
 .gh-logo {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     margin-left: 15px;
     background-image: url('../assets/svg/github.svg');
     background-size: contain;
@@ -226,7 +257,7 @@ p {
 }
 
 .gh-title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bolder;
     color: var(--color2);
 }

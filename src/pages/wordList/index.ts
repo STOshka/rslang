@@ -29,7 +29,6 @@ class WordListPage extends BasePage {
         const _page: unknown = query.get('page') || localStorage.getItem('wordListPage');
         this.page = inRange(Number(_page as string), Constants.PAGE_PER_GROUP, 1);
         localStorage.setItem('wordListPage', this.page.toString());
-        console.log(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = wordsPageHTML;
         (document.querySelector('.words-partitions-btns-container') as HTMLElement).innerHTML = '';

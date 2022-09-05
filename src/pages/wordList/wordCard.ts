@@ -63,12 +63,12 @@ export class WordCard {
             : ``;
     }
     generateDifficulty() {
-        if (this.word.userWord.difficulty === WordDifficulty.learning) {
+        if (this.word.userWord?.difficulty === WordDifficulty.learning) {
             this.node.classList.add(`word-container-${WordDifficulty.learning}`);
         } else {
             this.node.classList.remove(`word-container-${WordDifficulty.learning}`);
         }
-        if (this.word.userWord.difficulty === WordDifficulty.hard) {
+        if (this.word.userWord?.difficulty === WordDifficulty.hard) {
             this.node.classList.add(`word-container-${WordDifficulty.hard}`);
         } else {
             this.node.classList.remove(`word-container-${WordDifficulty.hard}`);

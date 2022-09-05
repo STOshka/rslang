@@ -144,10 +144,20 @@ class WordListPage extends BasePage {
         this.render();
     }
     async generateWordList() {
-        const words = await (this.group < Constants.COUNT_GROUPS
-            ? this.api.getWordList(this.group, this.page)
-            : this.api.getAggregatedHardWords());
-        this.wordsList = words.map((word) => new WordCard(word));
+        if (Authorization.instance.isAuth()) {
+            try {
+                const response = await this.api.getAggregatedWords(this.group, this.page);
+                this.words = (await response.json())[0].paginatedResults;
+            } catch (e) {
+                localStorage.removeItem('userId');
+                const response = await this.api.getWordList(this.group, this.page);
+                this.words = await response.json();
+            }
+        } else {
+            const response = await this.api.getWordList(this.group, this.page);
+            this.words = await response.json();
+        }
+        this.wordsList = (this.words as IWord[]).map((word) => new WordCard(word));
         this.switchGlobalDesc(this.isGlobalDescription);
         this.switchGlobalTranslate(this.isGlobalTranslate);
         localStorage.getItem('sortWords') === 'shuffle' ? this.shuffleWords() : this.sortWords();

@@ -1,5 +1,5 @@
 import { Constants } from '../utils/constants';
-import { IWord, UserWord, FullGameStats, WordDifficulty } from '../utils/types';
+import { UserWord, FullGameStats, WordDifficulty } from '../utils/types';
 import Authorization from './auth';
 
 class API {
@@ -40,19 +40,13 @@ class API {
         });
         return response;
     }
-    async getWordList(group: number, page: number): Promise<IWord[]> {
-        const result: IWord[] = await (Authorization.instance.isAuth()
-            ? this.getAggregatedWords(group, page)
-            : await this.getWords(group, page));
-        return result;
-    }
-    async getWords(group: number, page: number): Promise<IWord[]> {
+    async getWordList(group: number, page: number): Promise<Response> {
         const response = await this.getRequest(`words?group=${group}&page=${page}`, {
             method: 'GET',
         });
-        return await response.json();
+        return response;
     }
-    async getAggregatedWords(group: number, page: number): Promise<IWord[]> {
+    async getAggregatedWords(group: number, page: number): Promise<Response> {
         const response = await this.getRequest(
             `users/${Authorization.instance.getUserId()}/aggregatedWords?wordsPerPage=20&filter={"$and":[{"page":${page}}, {"group":${group}}]}`,
             {
@@ -62,9 +56,21 @@ class API {
                 },
             }
         );
-        return (await response.json())[0].paginatedResults;
+        return response;
     }
-    async getAggregatedHardWords(): Promise<IWord[]> {
+    async getAllAggregatedWords(group: number, page: number): Promise<Response> {
+        const response = await this.getRequest(
+            `users/${Authorization.instance.getUserId()}/aggregatedWords?wordsPerPage=600&filter={"$and":[{"group":${group}}]}`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${Authorization.instance.getUserToken()}`,
+                },
+            }
+        );
+        return response;
+    }
+    async getAggregatedHardWords(): Promise<Response> {
         const response = await this.getRequest(
             `users/${Authorization.instance.getUserId()}/aggregatedWords?filter={"$and":[{"userWord.difficulty":"${
                 WordDifficulty.hard
@@ -76,7 +82,7 @@ class API {
                 },
             }
         );
-        return (await response.json())[0].paginatedResults;
+        return response;
     }
     async getWordById(wordId: string): Promise<Response> {
         const response = await this.getRequest(`users/${Authorization.instance.getUserId()}/words/${wordId}`, {

@@ -46,9 +46,18 @@ class AudioChallengePage extends BaseGamePage {
     }
     renderWord() {
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = `<div class="audio__challenge__svg">${getAudioSvg()}</div>
-            <div class="audio__challenge__answers"></div>
-            <div class="audio__challenge__button"></div>`;
+        MAIN.innerHTML = `
+        <div class="audio__challenge__background">
+            <div class="audio__challenge__container">
+                <div class="audio__challenge__svg">
+                    ${getAudioSvg()} 
+                    <p class="audio__challenge__svg__text">Повторить</p>
+                </div>
+                <div class="audio__challenge__answers"></div>
+                <div class="audio__challenge__button"></div>
+            </div>
+        </div>
+        `;
         (MAIN.querySelector('.audio__challenge__svg') as HTMLElement).addEventListener('click', () =>
             this.playCurrentWordMusic()
         );
@@ -107,7 +116,7 @@ class AudioChallengePage extends BaseGamePage {
             (answer) => answer.text === this.words[this.wordIndex].wordTranslate
         ) as Answer;
         correctAnswer.markAsCorrect();
-        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = '&#10230;';
+        (document.querySelector('.audio__challenge__button') as HTMLElement).innerHTML = 'Продолжить';
         this.gameState = GameState.Answer;
     }
 }

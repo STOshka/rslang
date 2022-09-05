@@ -2,12 +2,12 @@ import API from '../../application/api';
 import BaseGamePage from '../baseGamePage';
 import { IWord, GameState } from '../../utils/types';
 import { shuffle, randomInt } from '../../utils/helpers';
-import './circles.css';
+import './sprint.css';
 
 class SprintPage extends BaseGamePage {
     game_name = 'sprint';
     isCorrect = false;
-    time = 60;
+    time = 600;
     constructor(api: API) {
         super(api);
     }
@@ -29,7 +29,7 @@ class SprintPage extends BaseGamePage {
                 return;
             }
             if (this.time) {
-                (timeSprint as HTMLElement).innerText = `Время: ${this.time}`;
+                (timeSprint as HTMLElement).innerText = `${this.time}`;
                 this.time -= 1;
             } else {
                 this.endGame();
@@ -52,15 +52,27 @@ class SprintPage extends BaseGamePage {
     renderSprintGame() {
         this.gameState = GameState.Question;
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = `<main class="sprint__main">
-            <div class="sprint__timer" id="sprint-time">Время: ${this.time}</div>
-            <div class="sprint__score">${this.score}</div>
-            <div class="sprint__score_points">${this.addSpans()}</div>
-            <div class="sprint__word"></div>
-            <div class="sprint__translate"></div>
-            <button class="sprint__button" type="button"id="sprint-yes">Верно</button>
-            <button class="sprint__button" type="button"id="sprint-no">Неверно</button>
-        </main>`;
+        MAIN.innerHTML = `
+        <div class="sprint__background">
+            <div class="sprint__container">
+                <div class="sprint__timer_container">
+                    <span class="sprint__timer_text">Осталось</span>
+                    <div class="sprint__timer" id="sprint-time">${this.time}</div>
+                    <span class="sprint__timer_text">секунд!</span>
+                </div>
+                <div class="sprint__score">${this.score}</div>
+                <div class="sprint__score_points">${this.addSpans()}</div>
+                <div class="sprint__words">
+                    <div class="sprint__word"></div>
+                    <div class="sprint__translate"></div>
+                </div>
+                <div class="sprint__buttons">
+                    <button class="sprint__button sprint-yes" type="button"id="sprint-yes">Верно</button>
+                    <button class="sprint__button sprint-no" type="button"id="sprint-no">Неверно</button>
+                </div>
+            </div>
+        </div>
+        `;
         (MAIN.querySelector('#sprint-yes') as HTMLElement).addEventListener('click', () => {
             this.checkAnswer(true);
             this.addStyleBtn('#sprint-yes', '#sprint-no', 'active-button');

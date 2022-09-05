@@ -3,7 +3,9 @@
     --color2: #424242;
     --color3: #7897AB;
     --color4: #50666B;
-    --color5: #d1d1d1;
+    --color5: #50666b48;
+    --color6: #fdffe7ec;
+    --color7: #C2DED1;
 }
 
 * {
@@ -14,6 +16,7 @@ html {
     scroll-behavior: smooth;
 }
 
+h2,
 h3,
 h4,
 h5,
@@ -32,6 +35,7 @@ p {
     height: 40px;
     padding: 0 20px;
     background-color: var(--color5);
+    z-index: 15;
 }
 
 .header-nav-list {
@@ -53,13 +57,19 @@ p {
     border-radius: 3px;
     text-align: center;
     background-color: var(--color1);
+    cursor: pointer;
 }
 
 .header-nav-item:hover {
-    background-color: rgb(113, 113, 113);
-    color: rgb(241, 241, 241);
-    border: 1px solid #7d7d7d;
+    border: 2px solid var(--color3);
     border-radius: 3px;
+    background-color: var(--color4);
+    color: var(--color1);
+}
+
+.header-nav-item:hover .header-nav-link {
+    color: var(--color1);
+    background-color: var(--color4);
 }
 
 .header-nav-link {
@@ -67,26 +77,11 @@ p {
     justify-content: center;
     gap: 5px;
     align-items: center;
+    width: 100%;
+    height: 100%;
     text-decoration: none;
     font-size: 24px;
-    color: rgb(65, 64, 64);
-}
-
-.auth-bnt {
-    width: 105px;
-    margin-left: 30px;
-}
-
-.auth-in-logo {
-    width: 30px;
-    height: 30px;
-    background-image: url('../assets/svg/user.svg');
-}
-
-.auth-out-logo {
-    width: 25px;
-    height: 25px;
-    background-image: url('../assets/svg/logout.svg');
+    color: var(--color2);
 }
 
 .header-nav-games {
@@ -96,29 +91,29 @@ p {
 .header-nav-games-container {
     display: none;
     position: absolute;
-    background-color: var(--color5);
     width: 150px;
     height: 90px;
     margin-top: 120px;
     border-radius: 3px;
+    background-color: #50666b23;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    cursor: default;
 }
 
 .header-nav-games:hover {
-    background-color: rgb(113, 113, 113);
-    color: rgb(241, 241, 241);
+    background-color: var(--color4);
+    color: var(--color1);
     border: 1px solid #7d7d7d;
     border-radius: 3px;
 }
 
 .header-nav-games:hover .header-nav-games-container {
-    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    cursor: default;
+    transition: 1s;
 }
 
 .header-nav-link-game {
@@ -126,6 +121,160 @@ p {
     height: 30px;
     border-radius: 3px;
     background-color: var(--color1);
+}
+
+.auth-bnt {
+    width: 105px;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.auth-in-logo {
+    width: 30px;
+    height: 30px;
+}
+
+.auth-out-logo {
+    width: 25px;
+    height: 25px;
+}
+
+.auth:hover .auth-in-svg {
+    fill: var(--color1)
+}
+
+.logout:hover .auth-out-svg {
+    fill: var(--color1)
+}
+
+.game__main {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--color7);
+    background-image: url('../assets/png/1.png');
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+}
+
+.game__interface__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    height: max-content;
+    padding: 50px 30px;
+    margin-top: 20%;
+    border-radius: 7px;
+    background-color: var(--color6);
+}
+
+.game__name {
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.game__groups_title {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.game__groups {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.game__group {
+    width: 70px;
+    height: 30px;
+    border: 2px solid #424242;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color2);
+}
+
+.game__group:hover {
+    background-color: var(--color4);
+    color: var(--color1);
+    border: 2px solid #7d7d7d;
+    border-radius: 3px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-left: 5px;
+    background-color: var(--color5);
+}
+
+.footer-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-items-developers {
+    padding-right: 10px;
+    background-color: #fdffe7d2;
+    border-radius: 9px;
+}
+
+.footer-item {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: black;
+}
+
+.gh-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+}
+
+.gh-logo {
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+    background-image: url('../assets/svg/github.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: 0.3s;
+}
+
+.gh-title {
+    font-size: 18px;
+    font-weight: bolder;
+    color: var(--color2);
+}
+
+.rss-logo {
+    width: 70px;
+    height: 25px;
+    margin-left: 15px;
+    background-image: url("../assets/svg/rs_school_js.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: 0.3s;
+    color: var(--color2);
+}
+
+.display-none {
+    display: none;
 }
 
 .active-btn,
@@ -144,70 +293,4 @@ p {
 
 .no-click-btn {
     pointer-events: none;
-}
-
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding-left: 5px;
-    background-color: var(--color5);
-    opacity: 0.9;
-}
-
-.footer-items {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-}
-
-.footer-item {
-    margin: 0;
-    font-family: natuve;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--color2);
-}
-
-.gh-link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    text-decoration: none;
-}
-
-.gh-logo {
-    width: 25px;
-    height: 25px;
-    margin-left: 15px;
-    background-image: url('../assets/svg/github.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    transition: 0.3s;
-}
-
-.gh-title {
-    font-size: 20px;
-    font-weight: bolder;
-    color: var(--color2);
-}
-
-.rss-logo {
-    width: 70px;
-    height: 25px;
-    margin-left: 15px;
-    background-image: url("../assets/svg/rs_school_js.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    transition: 0.3s;
-    color: var(--color2);
-}
-
-.display-none {
-    display: none;
 }

@@ -49,11 +49,13 @@ class BaseGamePage extends BasePage {
     chooseLevel() {
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `<main class="game__main">
+        <div class="game__interface__container">
             <div class="game__name">${this.gameName()}</div>
             <div class="game__groups__list">
-                <div>Выберите уровень сложности слов</div>
+                <div class="game__groups_title">Выберите уровень сложности слов:</div>
                 <div class="game__groups"></div>
             </div>
+        </div>    
         </main>`;
         const GROUPS = MAIN.querySelector('.game__groups') as HTMLElement;
         new Array(Constants.COUNT_GROUPS).fill(null).forEach((el, ind) => {
@@ -136,13 +138,18 @@ class BaseGamePage extends BasePage {
         this.gameState = GameState.GameOver;
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = `
-        <div class="root__statistics">
-            <div class="root__statistics__label">Набрано баллов: ${this.score}</div>
-            <div class="root__statistics__label">Длинная серия правильных ответов: ${this.longestStreak}</div>
-            <div class="root__statistics__correct">${this.generateSpanWords(true)}</div>
-            <div class="root__statistics__incorrect">${this.generateSpanWords(false)}</div>
-            <button class="root__statistics__return">Вернуться к учебнику</button>
-        </div>`;
+        <div class="root__statistics__background">
+            <div class="root__statistics">
+                <div class="root__statistics__labels">
+                    <div class="root__statistics__label">Набрано баллов: ${this.score}</div>
+                    <div class="root__statistics__label">Серии правильных ответов: ${this.longestStreak}</div>
+                </div>
+               <div class="root__statistics__correct">${this.generateSpanWords(true)}</div>
+                <div class="root__statistics__incorrect">${this.generateSpanWords(false)}</div>
+                <button class="root__statistics__return">Перейти в учебник</button>
+            </div>
+        </div>
+        `;
         (MAIN.querySelector('.root__statistics__return') as HTMLElement).addEventListener('click', () => {
             window.location.hash = ROUTES.WORD_LIST + `?group=${this.group}`;
         });
@@ -150,13 +157,15 @@ class BaseGamePage extends BasePage {
         this.updateStatistic();
     }
     generateSpanWords(isCorrect: boolean): string {
-        return `<div class="root__statistics__span">
-            <span class="root__statistics__label">Ответили ${isCorrect ? '' : 'не'}правильно:</span>
-            <span class="root__statistics__count">${
-                this.statistic.filter((el) => el.isCorrect === isCorrect).length
-            }</span>
+        return `
+            <div class="root__statistics__span">
+                <span class="root__statistics__label">Ответили ${isCorrect ? '' : 'не'}правильно:</span>
+                <span class="root__statistics__count">
+                    ${this.statistic.filter((el) => el.isCorrect === isCorrect).length}
+                </span>
             </div>
-        <div class="root__statistics__${isCorrect ? '' : 'in'}correct__words"></div>`;
+            <div class="root__statistics__${isCorrect ? '' : 'in'}correct__words"></div>
+        `;
     }
     generateStatistic() {
         const CORRECT_WORDS = document.querySelector('.root__statistics__correct__words') as HTMLElement;

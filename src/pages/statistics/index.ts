@@ -16,31 +16,27 @@ class Statistics extends BasePage {
         const MAIN = document.querySelector('.main') as HTMLElement;
         if (!Authorization.instance.isAuth()) {
             MAIN.innerHTML = `
-            <div class="statistics__background-non-auth">
-                <div class="statistics__background2">
+                <div class="statistics__background">
                     <h2 class="statistics__title">
                         Статистика доступна только авторизованным пользоватям
                     </h2>
                 </div>
-            </div>
             `;
             return;
         }
         this.stat = await (await this.api.getStatistic()).json();
         MAIN.innerHTML = `
-        <div class="statistics__background1">
-            <div class="statistics__background2">
-                <h2 class="statistics__title">Статистика</h2>
-                <div class="statistics__wrapper">
-                    <div class="statistics__block statistics__block__common">
-                        <h3 class="statistics__block__title">Общая статистика</h3>
-                    </div>
-                    <div class="statistics__block statistics__block__audiochallenge">
-                        <h3 class="statistics__block__title">Аудиовызов</h3>
-                    </div>
-                    <div class="statistics__block statistics__block__sprint">
-                        <h3 class="statistics__block__title">Спринт</h3>
-                    </div>
+        <div class="statistics__background">
+            <h2 class="statistics__title">Статистика</h2>
+            <div class="statistics__wrapper">
+                <div class="statistics__block statistics__block__common">
+                    <h3 class="statistics__block__title">Общая статистика</h3>
+                </div>
+                <div class="statistics__block statistics__block__audiochallenge">
+                    <h3 class="statistics__block__title">Аудиовызов</h3>
+                </div>
+                <div class="statistics__block statistics__block__sprint">
+                    <h3 class="statistics__block__title">Спринт</h3>
                 </div>
             </div>
         </div>
@@ -58,11 +54,11 @@ class Statistics extends BasePage {
             `<table class="statistics__block__info">
             <thead class="statistics__block__header">
                 <tr>
-                    <td class="statistics__block__cell">День</td>
-                    <td class="statistics__block__cell">Количество новых слов</td>
-                    <td class="statistics__block__cell">Количество изученных слов</td>
-                    <td class="statistics__block__cell">Процент правильных ответов</td>
-                    <td class="statistics__block__cell">Самая длинная серия ответов</td>
+                    <td class="statistics__block__cell cell_title">Дата</td>
+                    <td class="statistics__block__cell cell_title">Новых слов</td>
+                    <td class="statistics__block__cell cell_title">Изучено слов</td>
+                    <td class="statistics__block__cell cell_title">Правильных ответов</td>
+                    <td class="statistics__block__cell cell_title">Серия правильных ответов (max)</td>
                 </tr>
             </thead>
             <tbody class="statistics__block__body"></tbody>

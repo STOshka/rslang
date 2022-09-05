@@ -62,14 +62,16 @@ export class WordCard {
         <div class="word-btn word-btn-hard">Сложное</div>`
             : ``;
     }
-    generateDifficulty(difficulty: string = this.word.userWord?.difficulty as string) {
-        this.node.classList.remove(`word-container-${WordDifficulty.learning}`);
-        this.node.classList.remove(`word-container-${WordDifficulty.hard}`);
-        if (difficulty === WordDifficulty.learning) {
+    generateDifficulty() {
+        if (this.word.userWord.difficulty === WordDifficulty.learning) {
             this.node.classList.add(`word-container-${WordDifficulty.learning}`);
+        } else {
+            this.node.classList.remove(`word-container-${WordDifficulty.learning}`);
         }
-        if (difficulty === WordDifficulty.hard) {
+        if (this.word.userWord.difficulty === WordDifficulty.hard) {
             this.node.classList.add(`word-container-${WordDifficulty.hard}`);
+        } else {
+            this.node.classList.remove(`word-container-${WordDifficulty.hard}`);
         }
     }
     updateVisibleDescription(visible = false) {
@@ -92,6 +94,8 @@ export class WordCard {
             <p class="word-text word-meaning-translate">${this.word.textMeaningTranslate}</p>
             <p class="word-text word-example-translate">${this.word.textExampleTranslate}</p>`
             : ``;
-        (this.node.querySelector('.word-translate') as HTMLElement).innerHTML = this.translateVisible ? 'Перевод ВЫКЛ' : 'Перевод ВКЛ';
+        (this.node.querySelector('.word-translate') as HTMLElement).innerHTML = this.translateVisible
+            ? 'Перевод ВЫКЛ'
+            : 'Перевод ВКЛ';
     }
 }

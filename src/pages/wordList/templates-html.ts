@@ -121,8 +121,8 @@ export const wordsPageHTML = `
         </div>
         <div class="func-btns-container">
             <div class="games-btns-container">    
-                <div class="func-btn game-audiochallenge">Игра Аудиовызов</div>
-                <div class="func-btn game-sprint">Игра Спринт</div>
+                <div class="func-btn games game-audiochallenge">Игра Аудиовызов</div>
+                <div class="func-btn games game-sprint">Игра Спринт</div>
             </div>
             <div class="settings-btns-container">
                 <div class="func-btn global-description">Значение ВЫКЛ</div>

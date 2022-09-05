@@ -58,7 +58,7 @@ class API {
         );
         return response;
     }
-    async getAllAggregatedWords(group: number, page: number): Promise<Response> {
+    async getAllAggregatedWords(group: number): Promise<Response> {
         const response = await this.getRequest(
             `users/${Authorization.instance.getUserId()}/aggregatedWords?wordsPerPage=600&filter={"$and":[{"group":${group}}]}`,
             {

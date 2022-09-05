@@ -81,7 +81,7 @@ class BaseGamePage extends BasePage {
         const page = this.page < 0 ? randomInt(Constants.PAGE_PER_GROUP) : this.page;
         if (Authorization.instance.isAuth()) {
             try {
-                const response = await this.api.getAllAggregatedWords(this.group, page);
+                const response = await this.api.getAllAggregatedWords(this.group);
                 const words = (await response.json())[0].paginatedResults as IWord[];
                 this.words = words.filter((word) => word.page === page);
                 if (this.page === page) {

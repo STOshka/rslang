@@ -2,7 +2,7 @@ import API from '../../application/api';
 import Authorization from '../../application/auth';
 import { Constants } from '../../utils/constants';
 import { createHTMLElement, inRange, shuffle } from '../../utils/helpers';
-import { IWord, ROUTES, UserWord, WordDifficulty } from '../../utils/types';
+import { IWord, ROUTES, WordDifficulty } from '../../utils/types';
 import BasePage from '../basePage';
 import { wordsPageHTML } from './templates-html';
 import { WordCard } from './wordCard';
@@ -16,6 +16,7 @@ class WordListPage extends BasePage {
     isGlobalTranslate = true;
     audio: HTMLAudioElement | undefined;
     words: IWord[] | undefined;
+    isLearning = false;
     constructor(api: API) {
         super(api);
     }
@@ -24,8 +25,10 @@ class WordListPage extends BasePage {
         const countGroup = Constants.COUNT_GROUPS + (Authorization.instance.isAuth() ? 1 : 0);
         const _group: unknown = query.get('group') || localStorage.getItem('wordListGroup');
         this.group = inRange(Number(_group as string), countGroup, 1);
+        localStorage.setItem('wordListGroup', this.group.toString());
         const _page: unknown = query.get('page') || localStorage.getItem('wordListPage');
         this.page = inRange(Number(_page as string), Constants.PAGE_PER_GROUP, 1);
+        localStorage.setItem('wordListPage', this.page.toString());
         console.log(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
         MAIN.innerHTML = wordsPageHTML;
@@ -45,8 +48,9 @@ class WordListPage extends BasePage {
         const wordsContainer = document.querySelector('.words-container') as HTMLElement;
         wordsContainer.innerHTML = '';
         this.wordsList.map((word) => wordsContainer.append(word.node));
+
         document.documentElement.scrollTop = 0;
-        this.getColorForGroup();
+        this.setColorForGroup();
         this.setStatusPaginationBtns();
     }
     addListeners() {
@@ -76,7 +80,9 @@ class WordListPage extends BasePage {
         sprintGame.addEventListener('click', () => this.playGame(ROUTES.SPRINT_GAME));
     }
     playGame(game: string) {
-        window.location.hash = `${game}?group=${this.group}&page=${this.page}`;
+        if (!this.isLearning) {
+            window.location.hash = `${game}?group=${this.group}&page=${this.page}`;
+        }
     }
     wordContainerEvents(e: MouseEvent) {
         const target: HTMLElement = (e.target as HTMLElement).closest('.word-container') as HTMLElement;
@@ -119,23 +125,22 @@ class WordListPage extends BasePage {
             return;
         }
         const _word = word.word;
-        const response = await this.api.getWordById(_word._id);
-        if (response.status === 404) {
-            await this.api.createWordById(_word._id, {
+        const firstFound = !Boolean(_word.userWord);
+        if (firstFound) {
+            _word.userWord = {
                 difficulty: difficulty,
                 optional: { found: 0, correct: 0, repeat: 0 },
-            });
-            word.generateDifficulty(difficulty);
+            };
+            await this.api.createWordById(_word._id, _word.userWord);
         } else {
-            const data = (await response.json()) as UserWord;
-            console.log(data.difficulty);
-            data.difficulty = data.difficulty === difficulty ? WordDifficulty.normal : difficulty;
-            await this.api.updateWordById(_word._id, { difficulty: data.difficulty, optional: data.optional });
-            word.generateDifficulty(data.difficulty);
-            if (this.group === Constants.COUNT_GROUPS && data.difficulty !== WordDifficulty.hard) {
+            _word.userWord.difficulty = _word.userWord.difficulty === difficulty ? WordDifficulty.normal : difficulty;
+            await this.api.updateWordById(_word._id, _word.userWord);
+            word.generateDifficulty();
+            if (this.group === Constants.COUNT_GROUPS && _word.userWord.difficulty !== WordDifficulty.hard) {
                 (document.querySelector('.words-container') as HTMLElement).removeChild(word.node);
             }
         }
+        this.setColorForGroup();
     }
     async switchGroup(group: number) {
         this.group = group;
@@ -146,9 +151,15 @@ class WordListPage extends BasePage {
     async generateWordList() {
         if (Authorization.instance.isAuth()) {
             try {
-                const response = await this.api.getAggregatedWords(this.group, this.page);
+                const response =
+                    this.group === Constants.COUNT_GROUPS
+                        ? await this.api.getAggregatedHardWords()
+                        : await this.api.getAggregatedWords(this.group, this.page);
                 this.words = (await response.json())[0].paginatedResults;
             } catch (e) {
+                if (this.group === Constants.COUNT_GROUPS) {
+                    this.group = Constants.COUNT_GROUPS - 1;
+                }
                 localStorage.removeItem('userId');
                 const response = await this.api.getWordList(this.group, this.page);
                 this.words = await response.json();
@@ -216,7 +227,19 @@ class WordListPage extends BasePage {
         }
         (document.querySelector('.input-page-number') as HTMLInputElement).value = String(this.page + 1);
     }
-    getColorForGroup() {
+    setColorForGroup() {
+        this.isLearning = this.wordsList.every((word) =>
+            [WordDifficulty.hard, WordDifficulty.learning].includes(word.word.userWord?.difficulty)
+        );
+        (document.querySelectorAll('.games') as NodeListOf<HTMLElement>).forEach((el) => {
+            if (this.isLearning) {
+                el.classList.add('display-none');
+            } else {
+                el.classList.remove('display-none');
+            }
+        });
+
+        const color = this.isLearning ? Constants.groupLearningColor : Constants.groupColor[this.group];
         const body = document.querySelector('body') as HTMLElement;
         const headerNav = document.querySelector('.header-nav') as HTMLElement;
         const footer = document.querySelector('.footer') as HTMLElement;
@@ -224,12 +247,12 @@ class WordListPage extends BasePage {
         const wordsPartitionBtn = document.querySelectorAll('.words-partition-btn') as NodeListOf<HTMLButtonElement>;
         const wordsPagination = document.querySelector('.words-pagination') as HTMLElement;
 
-        body.style.backgroundColor = `${Constants.groupColor[this.group]}`;
-        headerNav.style.backgroundColor = `${Constants.groupColor[this.group]}`;
-        footer.style.backgroundColor = `${Constants.groupColor[this.group]}`;
-        wordsPageBtnsContainer.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+        body.style.backgroundColor = color;
+        headerNav.style.backgroundColor = color;
+        footer.style.backgroundColor = color;
+        wordsPageBtnsContainer.style.backgroundColor = color;
         wordsPartitionBtn.forEach((el, i) => (el.style.backgroundColor = `${Constants.groupColor[i]}`));
-        wordsPagination.style.backgroundColor = `${Constants.groupColor[this.group]}`;
+        wordsPagination.style.backgroundColor = color;
     }
     switchGlobalDesc(visible = !this.isGlobalDescription) {
         this.isGlobalDescription = visible;

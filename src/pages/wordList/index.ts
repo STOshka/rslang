@@ -1,8 +1,8 @@
 import API from '../../application/api';
-import LocalStorage from '../../application/localStorage';
+import Authorization from '../../application/auth';
 import { Constants } from '../../utils/constants';
 import { createHTMLElement, inRange, shuffle } from '../../utils/helpers';
-import { ROUTES, UserWord, WordDifficulty } from '../../utils/types';
+import { IWord, ROUTES, UserWord, WordDifficulty } from '../../utils/types';
 import BasePage from '../basePage';
 import { wordsPageHTML } from './templates-html';
 import { WordCard } from './wordCard';
@@ -15,12 +15,13 @@ class WordListPage extends BasePage {
     isGlobalDescription = true;
     isGlobalTranslate = true;
     audio: HTMLAudioElement | undefined;
+    words: IWord[] | undefined;
     constructor(api: API) {
         super(api);
     }
     async init(query: URLSearchParams) {
         super.init(query);
-        const countGroup = Constants.COUNT_GROUPS + (LocalStorage.instance.isAuth() ? 1 : 0);
+        const countGroup = Constants.COUNT_GROUPS + (Authorization.instance.isAuth() ? 1 : 0);
         const _group: unknown = query.get('group') || localStorage.getItem('wordListGroup');
         this.group = inRange(Number(_group as string), countGroup, 1);
         const _page: unknown = query.get('page') || localStorage.getItem('wordListPage');
@@ -114,7 +115,7 @@ class WordListPage extends BasePage {
         word.updateVisibleDescription(!word.descriptionVisible);
     }
     async changeDifficult(word: WordCard, difficulty: WordDifficulty) {
-        if (!LocalStorage.instance.isAuth()) {
+        if (!Authorization.instance.isAuth()) {
             return;
         }
         const _word = word.word;

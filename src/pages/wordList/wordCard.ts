@@ -1,4 +1,4 @@
-import LocalStorage from '../../application/localStorage';
+import Authorization from '../../application/auth';
 import { Constants } from '../../utils/constants';
 import { createHTMLElement } from '../../utils/helpers';
 import { IWord, WordDifficulty } from '../../utils/types';
@@ -36,7 +36,7 @@ export class WordCard {
     }
     generateUserStat() {
         if (
-            !LocalStorage.instance.isAuth() ||
+            !Authorization.instance.isAuth() ||
             !this.word.userWord?.optional ||
             !Boolean(this.word.userWord.optional.found)
         ) {
@@ -57,7 +57,7 @@ export class WordCard {
         ${this.generateBtnAuth()}`;
     }
     generateBtnAuth() {
-        return LocalStorage.instance.isAuth()
+        return Authorization.instance.isAuth()
             ? `<div class="word-btn word-btn-learned">Изученное</div>
         <div class="word-btn word-btn-hard">Сложное</div>`
             : ``;

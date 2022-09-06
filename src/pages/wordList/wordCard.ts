@@ -59,7 +59,9 @@ export class WordCard {
     generateBtnAuth() {
         return Authorization.instance.isAuth()
             ? `<div class="word-btn word-btn-learned">Изученное</div>
-        <div class="word-btn word-btn-hard">Сложное</div>`
+        <div class="word-btn word-btn-hard">Сложное</div>
+        <div class="word-indicator"></div>
+        `
             : ``;
     }
     generateDifficulty() {

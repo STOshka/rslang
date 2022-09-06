@@ -7,7 +7,7 @@ import './sprint.css';
 class SprintPage extends BaseGamePage {
     game_name = 'sprint';
     isCorrect = false;
-    time = 600;
+    time = 60;
     constructor(api: API) {
         super(api);
     }

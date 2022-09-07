@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 85%;
+    width: 90%;
     padding: 20px;
     border-radius: 7px;
     background-color: var(--color6);
@@ -62,4 +62,26 @@
 .cell_title {
     min-height: 50px;
     text-align: center;
+}
+
+@media (max-width: 767px) {
+
+    .statistics__block__title {
+        font-size: 22px;
+    }
+    
+    .statistics__block__cell {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 599px) {
+
+    .statistics__block__title {
+        font-size: 18px;
+    }
+    
+    .statistics__block__cell {
+        font-size: 14px;
+    }
 }

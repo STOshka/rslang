@@ -9,7 +9,8 @@ class MainPage extends BasePage {
     init(query: URLSearchParams) {
         super.init(query);
         const MAIN = document.querySelector('.main') as HTMLElement;
-        MAIN.innerHTML = `<div class="home-background1">
+        MAIN.innerHTML = `
+        <div class="home-background1">
             <div class="home-background2">
                 <div class="home-text1-container">
                     <p class="home-text home-word" align="justify">В настоящее время английский язык проник во многие сферы жизнедеятельности.</p>
@@ -28,11 +29,12 @@ class MainPage extends BasePage {
                     <q class="home-quote home-word">Сегодняшний специалист в чем-либо когда-то был новичком</q>
                     <cite class="home-autor home-word">Хелен Хейз</cite>
                 </div>
-                <div class="team-link-container">
-                    <a href="#about" class="team-link">О команде</a>
-                </div>
             </div>
-        </div>`;
+            <div class="team-link-container">
+                <a href="#about" class="team-link">О команде</a>
+            </div>
+        </div>
+        `;
     }
 }
 

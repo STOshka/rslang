@@ -133,6 +133,10 @@ export const wordsPageHTML = `
             </div>  
         </div>
     </div>
+    <div class="words-container-border-top"></div>
+    <div class="words-container-border-bottom"></div>
+    <div class="words-container-border-left"></div>
+    <div class="words-container-border-right"></div>
     <div class="words-container">${wordContainerHTML}</div>
     <div class="words-pagination">
         <div class="pagination-page-btn pagination-page-previous" data-page="previos"> ❰❰❰ </div>

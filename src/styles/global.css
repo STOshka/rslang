@@ -40,7 +40,6 @@ p {
 
 .header-nav-list {
     display: flex;
-    flex-wrap: wrap;
     gap: 10px;
     margin: 0;
     padding-top: 5px;
@@ -294,16 +293,18 @@ p {
 
 .active-btn,
 .active-nav {
+    pointer-events: none;
     background-color: var(--color4);
-    color: rgb(241, 241, 241);
+    color: var(--color1);
     border: none;
     border-radius: 3px;
+
 }
 
 .inactive-btn {
     pointer-events: none;
     color: #CDCDCD;
-    border: 1px solid #bdbdbd;
+    border: 1px solid #CDCDCD;
 }
 
 .no-click-btn {
@@ -321,22 +322,32 @@ p {
     .header-nav-item,
     .header-nav-link-game,
     .header-nav-link {
-        width: 115px;
-        height: 30px;
-        font-size: 20px;
+        width: 85px;
+        font-size: 17px;
     }
 
     .auth-bnt {
         margin: 0;
     }
 
+    .footer-items-developers {
+        padding-right: 5px;
+    }
+
+    .gh-logo {
+        margin-left: 0;
+    }
+
+    .gh-link {
+        gap: 0;
+    }
+
+    .gh-title {
+        font-size: 14px;
+    }
 }
 
-@media (max-width: 658px) {
-
-    .header-nav {
-        padding-bottom: 5px;
-    }
+@media (max-width: 599px) {
 
     .header-nav-list {
         justify-content: center;
@@ -347,13 +358,23 @@ p {
     .header-nav-item,
     .header-nav-link-game,
     .header-nav-link {
-        width: 115px;
-        height: 30px;
-        font-size: 20px;
+        width: 75px;
+        font-size: 15px;
     }
 
-    .auth-bnt {
-        margin: 0;
+    .footer-items-developers {
+        padding-right: 5px;
     }
 
+    .gh-logo {
+        margin-left: 0;
+    }
+
+    .gh-link {
+        gap: 0;
+    }
+
+    .gh-title {
+        font-size: 11px;
+    }
 }
